@@ -5,7 +5,7 @@
 
   <%= form_for(@sign_in_form, url: sign_in_url, method: :post, html: { class: 'form-horizontal' }) do |f| %>
     <% if @sign_in_form.errors.any? %>
-      <div class="bg-danger">
+      <div class="text-danger col-sm-offset-4 col-sm-8">
         <% @sign_in_form.errors.full_messages.each do |error| %>
             <p><%= error %></p>
         <% end %>
@@ -15,7 +15,7 @@
     <div class="form-group">
       <%= f.label(:email, 'E-mail', class: 'col-sm-4 control-label') %>
       <div class="col-sm-8">
-        <%= f.email_field(:email, placeholder: 'E-mail', class: 'form-control') %>
+        <%= f.email_field(:email, placeholder: 'E-mail', class: 'form-control', autofocus: '') %>
       </div>
     </div>
 
