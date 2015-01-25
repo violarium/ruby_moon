@@ -1,0 +1,31 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse">
+        <span class="sr-only">Toggle menu</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<%= home_page_url %>">Ruby Moon</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">About</a></li><!--  class="active" on li -->
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <% if user_signed_in? %>
+            <li><%= link_to 'Sign out', sign_out_url, method: :delete %></li>
+        <% else %>
+            <li><%= link_to 'Sign in', sign_in_url %></li>
+            <li><a href="#">Sign up</a></li>
+        <% end %>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

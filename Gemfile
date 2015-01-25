@@ -25,7 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'mongoid', '~> 4.0.0'
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -51,3 +51,5 @@ group :test do
   gem 'selenium-webdriver', '~> 2.44.0'
 end
 
+# For markup
+gem 'bootstrap-sass', '~> 3.3.3'

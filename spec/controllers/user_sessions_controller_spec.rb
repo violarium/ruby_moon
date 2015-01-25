@@ -1,0 +1,81 @@
+require 'rails_helper'
+
+describe UserSessionsController do
+
+  describe 'GET #new' do
+    context 'not signed in user' do
+      it 'should render new template' do
+        get :new
+        expect(response).to render_template(:new)
+      end
+
+      it 'should pass form object into template' do
+        form = double('sign_in_form')
+        expect(SignInForm).to receive(:new).and_return(form)
+        get :new
+        expect(assigns(:sign_in_form)).to eq form
+      end
+    end
+
+    context 'sign in user' do
+      before { controller_sign_in(User.create!) }
+
+      it 'should redirect to home page' do
+        get :new
+        expect(response).to redirect_to home_page_url
+      end
+    end
+  end
+
+
+  describe 'POST #create' do
+    let(:form) { double('sign_in_form') }
+    before do
+      expect(SignInForm).to receive(:new).and_return(form)
+    end
+
+    describe 'valid credentials' do
+      let(:user) { double('user', id: '100').as_null_object }
+      before do
+        expect(form).to receive(:submit).with(email: 'email', password: 'password').and_return(user)
+        post :create, email: 'email', password: 'password'
+      end
+
+      it 'redirects to calendar page' do
+        expect(response).to redirect_to(home_page_url)
+      end
+      it 'sets correct cookies' do
+        expect(session[:user_id]).to eq '100'
+      end
+    end
+
+    describe 'invalid credentials' do
+      before do
+        expect(form).to receive(:submit).with(email: 'email', password: 'invalid').and_return(nil)
+        post :create, email: 'email', password: 'invalid'
+      end
+
+      it 'should render "new" template' do
+        expect(response).to render_template(:new)
+      end
+      it 'should pass to view auth error flag' do
+        expect(assigns(:auth_error)).to eq true
+      end
+    end
+  end
+
+
+  describe 'DELETE #destroy' do
+
+    it 'should redirect to home page' do
+      delete :destroy
+      expect(response).to redirect_to home_page_url
+    end
+
+    it 'should keep user session as nil' do
+      session[:user_id] = 999
+      delete :destroy
+      expect(session[:user_id]).to be_nil
+    end
+  end
+end
