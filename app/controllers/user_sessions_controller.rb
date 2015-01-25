@@ -9,9 +9,8 @@ class UserSessionsController < ApplicationController
 
   def create
     @sign_in_form = SignInForm.new
-    user = @sign_in_form.submit(params.permit(:email, :password))
+    user = @sign_in_form.submit(params[:sign_in_form])
     if user.nil?
-      @auth_error = true
       render :new
     else
       sign_in_user(user)

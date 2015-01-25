@@ -38,7 +38,7 @@ describe UserSessionsController do
       let(:user) { double('user', id: '100').as_null_object }
       before do
         expect(form).to receive(:submit).with(email: 'email', password: 'password').and_return(user)
-        post :create, email: 'email', password: 'password'
+        post :create, sign_in_form: { email: 'email', password: 'password' }
       end
 
       it 'redirects to calendar page' do
@@ -52,14 +52,11 @@ describe UserSessionsController do
     describe 'invalid credentials' do
       before do
         expect(form).to receive(:submit).with(email: 'email', password: 'invalid').and_return(nil)
-        post :create, email: 'email', password: 'invalid'
+        post :create, sign_in_form: { email: 'email', password: 'invalid' }
       end
 
       it 'should render "new" template' do
         expect(response).to render_template(:new)
-      end
-      it 'should pass to view auth error flag' do
-        expect(assigns(:auth_error)).to eq true
       end
     end
   end

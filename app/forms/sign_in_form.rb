@@ -1,13 +1,26 @@
 # Form for sign in process.
 class SignInForm
+  include ActiveModel::Model
+
+  delegate :email, :password, to: :form_params
 
   # Submit sign in credentials and return nil or User.
   def submit(params)
-    user = User.where(email: params[:email]).first
-    if user && !user.password.nil? && user.password == params[:password]
+    @form_params = SignInStorage.new(params[:email], params[:password])
+    user = User.where(email: form_params.email).first
+    if user && !user.password.nil? && user.password == form_params.password
       user
     else
+      errors.add(:base, 'Invalid e-mail or password')
       nil
     end
   end
+
+  protected
+
+  def form_params
+    @form_params ||= SignInStorage.new
+  end
+
+  class SignInStorage < Struct.new(:email, :password); end
 end

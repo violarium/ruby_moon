@@ -13,6 +13,7 @@ describe 'User sessions' do
     sign_in_with('invalid@email.net', 'invalid password')
     expect(page).to have_content 'Invalid e-mail or password'
     expect(page).to have_title('Sign in')
+    expect(page).to have_field('E-mail', with: 'invalid@email.net')
   end
 
   it 'sign in with valid credentials' do
