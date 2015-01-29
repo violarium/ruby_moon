@@ -5,6 +5,8 @@ class User
   field :email, type: String
   field :encrypted_password, type: String
 
+  has_many :critical_periods
+
   index({ email: 1 }, { unique: true })
 
   # Get password - it will return special hash object according to encrypted password.
