@@ -1,43 +1,75 @@
-.calendar-month-list {
+.month-list {
   @include reset-list;
-}
 
-@media (min-width: $screen-md-min) {
-  .calendar-month-list > li {
-    float: left;
-    width: 50%;
+  & > li {
+    margin-bottom: 2em;
   }
 }
 
-.calendar-month {
+@media (min-width: $screen-md-min) {
+  .month-list > li {
+    float: left;
+    width: 46%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+
+.month-list .month-header {
+  text-align: center;
+  font-size: 4vw;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 2vw;
+  }
+}
+
+.month-days-grid {
   @include reset-list;
   & > li {
     float:left;
   }
 
-  .calendar-day {
-    box-sizing: border-box;
-    border: 1px solid black;
+  .week-day {
+    width: 1/7 * 100%;
+    text-align: center;
+    font-size: 2.4vw;
+    @media (min-width: $screen-md-min) {
+      font-size: 1.1vw;
+    }
+  }
+
+  .day {
     position: relative;
     width: 1/7 * 100%;
     padding-bottom : 1/7 * 100%; // = width for a 1:1 aspect ratio
+
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+
+    &.week-number-0 {
+      border-top: 1px solid black;
+    }
+    &.week-day-number-0 {
+      border-left: 1px solid black;
+    }
 
     &.inactive {
       color: lightgray;
     }
 
-    & > .calendar-day-content {
+
+    & > .day-content {
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      font-size: 4vw;
-    }
+      font-size: 4.4vw;
+      padding-left: 0.3em;
 
-    @media (min-width: $screen-md-min) {
-      & > .calendar-day-content {
-        font-size: 3vw;
+      @media (min-width: $screen-md-min) {
+        font-size: 2.6vw;
       }
     }
   }
