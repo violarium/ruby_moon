@@ -1,0 +1,16 @@
+<ul class="calendar-month-list">
+  <% @month_list[:month_list].each do |month| %>
+    <li>
+      <div class="month"><%= Date::MONTHNAMES[month[:first_date].month] %>, <%= month[:first_date].year %></div>
+      <ul class="calendar-month">
+        <% month[:dates].each do |date| %>
+          <li class="calendar-day <%= 'inactive' if date.month != month[:first_date].month %>">
+            <div class="calendar-day-content">
+              <%= date.day %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>

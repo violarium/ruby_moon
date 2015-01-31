@@ -1,0 +1,44 @@
+.calendar-month-list {
+  @include reset-list;
+}
+
+@media (min-width: $screen-md-min) {
+  .calendar-month-list > li {
+    float: left;
+    width: 50%;
+  }
+}
+
+.calendar-month {
+  @include reset-list;
+  & > li {
+    float:left;
+  }
+
+  .calendar-day {
+    box-sizing: border-box;
+    border: 1px solid black;
+    position: relative;
+    width: 1/7 * 100%;
+    padding-bottom : 1/7 * 100%; // = width for a 1:1 aspect ratio
+
+    &.inactive {
+      color: lightgray;
+    }
+
+    & > .calendar-day-content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-size: 4vw;
+    }
+
+    @media (min-width: $screen-md-min) {
+      & > .calendar-day-content {
+        font-size: 3vw;
+      }
+    }
+  }
+}

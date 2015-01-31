@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   post '/sign_in' => 'user_sessions#create'
   delete '/sign_out' => 'user_sessions#destroy', as: 'sign_out'
 
+  get '/calendar/(:year/:month)' => 'calendar#index', as: 'calendar_index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
