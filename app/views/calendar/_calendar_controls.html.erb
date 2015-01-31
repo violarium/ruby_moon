@@ -1,0 +1,13 @@
+<div class="calendar-controls">
+  <div class="month-before">
+    <a href="<%= calendar_index_url year: @prev_month.year, month: @prev_month.month %>">
+      <span class="glyphicon glyphicon-arrow-left"></span><%= Date::MONTHNAMES[@prev_month.month] %>, <%= @prev_month.year %>
+    </a>
+  </div>
+  <div class="month-after">
+    <a href="<%= calendar_index_url year: @next_month.year, month: @next_month.month %>">
+      <%= Date::MONTHNAMES[@next_month.month] %>, <%= @next_month.year %><span class="glyphicon glyphicon-arrow-right"></span>
+    </a>
+  </div>
+  <div class="clearfix"></div>
+</div>

@@ -74,3 +74,39 @@
     }
   }
 }
+
+
+.calendar-controls {
+  margin-left: 2%;
+  margin-right: 2%;
+  font-size: 1em;
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.5em;
+  }
+  @media (min-width: $screen-md-min) {
+    font-size: 2em;
+  }
+
+  & > .month-before, & > .month-after {
+    float: left;
+    width: 50%;
+  }
+
+  & > .month-before {
+    text-align: left;
+
+    .glyphicon {
+      display: inline-block;
+      margin-right: 0.5em;
+    }
+  }
+
+  & > .month-after {
+    text-align: right;
+
+    .glyphicon {
+      display: inline-block;
+      margin-left: 0.5em;
+    }
+  }
+}

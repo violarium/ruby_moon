@@ -1,9 +1,13 @@
+<%= render 'calendar/calendar_controls' %>
+
 <ul class="month-list">
   <% @month_list[:month_list].each do |month| %>
     <li>
-      <div class="month-header"><%= Date::MONTHNAMES[month[:first_date].month] %>, <%= month[:first_date].year %></div>
+      <div class="month-header">
+        <%= Date::MONTHNAMES[month[:first_date].month] %>, <%= month[:first_date].year %>
+      </div>
       <ul class="month-days-grid">
-        <% month[:week].each_with_index do |week_day, week_day_index| %>
+        <% month[:week].each do |week_day| %>
           <li class="week-day">
             <%= week_day %>
           </li>
@@ -21,3 +25,5 @@
   <% end %>
 </ul>
 <div class="clearfix"></div>
+
+<%= render 'calendar/calendar_controls' %>

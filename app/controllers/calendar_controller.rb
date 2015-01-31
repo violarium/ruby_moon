@@ -8,5 +8,7 @@ class CalendarController < ApplicationController
 
     formatter = CalendarFormatter::Formatter.new
     @month_list = formatter.month_list(date, amount: 2)
+    @prev_month = date - 1.month
+    @next_month = date + 1.month
   end
 end
