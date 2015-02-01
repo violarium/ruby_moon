@@ -4,7 +4,7 @@
   <% @month_list[:month_list].each do |month| %>
     <li>
       <div class="month-header">
-        <%= Date::MONTHNAMES[month[:first_date].month] %>, <%= month[:first_date].year %>
+        <%= month_with_year(month[:first_date]) %>
       </div>
       <ul class="month-days-grid">
         <% month[:week].each do |week_day| %>
