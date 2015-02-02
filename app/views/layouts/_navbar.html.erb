@@ -3,27 +3,27 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse">
-        <span class="sr-only"><%= t('views.layouts.toggle_menu') %></span>
+        <span class="sr-only"><%= t('.toggle_menu') %></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= home_page_url %>"><%= t('defaults.project_name') %></a>
+      <a class="navbar-brand" href="<%= home_page_url %>"><%= t('project_name') %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="main-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#"><%= t('views.layouts.about') %></a></li><!--  class="active" on li -->
-        <li><a href="#"><%= t('views.layouts.documentation') %></a></li>
-        <li><a href="#"><%= t('views.layouts.help') %></a></li>
+        <li><a href="#"><%= t('.about') %></a></li><!--  class="active" on li -->
+        <li><a href="#"><%= t('.documentation') %></a></li>
+        <li><a href="#"><%= t('.help') %></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-            <li><%= link_to t('views.layouts.sign_out'), sign_out_url, method: :delete %></li>
+            <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
         <% else %>
-            <li><%= link_to t('views.layouts.sign_in'), sign_in_url %></li>
-            <li><a href="#"><%= t('views.layouts.sign_up') %></a></li>
+            <li><%= link_to t('.sign_in'), sign_in_url %></li>
+            <li><a href="#"><%= t('.sign_up') %></a></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

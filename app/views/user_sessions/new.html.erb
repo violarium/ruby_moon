@@ -1,7 +1,7 @@
-<% content_for(:title, t('views.user_sessions.sign_in')) %>
+<% content_for(:title, t('.sign_in')) %>
 
 <div class="sign-in-container">
-  <h1 class="sign-in-title"><%= t('views.user_sessions.sign_in') %></h1>
+  <h1 class="sign-in-title"><%= t('.sign_in') %></h1>
 
   <%= form_for(@sign_in_form, url: sign_in_url, method: :post, html: { class: 'form-horizontal' }) do |f| %>
     <% if @sign_in_form.errors.any? %>
@@ -15,22 +15,22 @@
     <% end %>
 
     <div class="form-group">
-      <%= f.label(:email, t('views.user_sessions.email'), class: 'col-sm-4 control-label') %>
+      <%= f.label(:email, t('.email'), class: 'col-sm-4 control-label') %>
       <div class="col-sm-8">
-        <%= f.email_field(:email, placeholder: t('views.user_sessions.email'), class: 'form-control', autofocus: '') %>
+        <%= f.email_field(:email, placeholder: t('.email'), class: 'form-control', autofocus: '') %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label(:password, t('views.user_sessions.password'), class: 'col-sm-4 control-label') %>
+      <%= f.label(:password, t('.password'), class: 'col-sm-4 control-label') %>
       <div class="col-sm-8">
-        <%= f.password_field(:password, placeholder: t('views.user_sessions.password'), class: 'form-control') %>
+        <%= f.password_field(:password, placeholder: t('.password'), class: 'form-control') %>
       </div>
     </div>
 
     <div class="form-group">
       <div class="col-sm-offset-4 col-sm-8">
-        <%= f.button(t('views.user_sessions.sign_in'), class: 'btn btn-default') %>
+        <%= f.button(t('.sign_in'), class: 'btn btn-default') %>
       </div>
     </div>
   <% end %>

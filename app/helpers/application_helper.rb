@@ -1,7 +1,7 @@
 module ApplicationHelper
   # Get full title for page.
   def full_title(title = '')
-    postfix = t('defaults.project_name')
+    postfix = t('project_name')
     if title.empty?
       postfix
     else

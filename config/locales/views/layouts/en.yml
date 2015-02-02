@@ -1,6 +1,6 @@
 en:
-  views:
-    layouts:
+  layouts:
+    navbar:
       toggle_menu: Toggle menu
       about: About
       documentation: Documentation

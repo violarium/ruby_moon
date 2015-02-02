@@ -11,7 +11,7 @@ class SignInForm
     if user && !user.password.nil? && user.password == form_params.password
       user
     else
-      errors.add(:base, I18n.t('forms.sign_in_form.invalid_credentials'))
+      errors.add(:base, I18n.t('sign_in_form.invalid_credentials'))
       nil
     end
   end

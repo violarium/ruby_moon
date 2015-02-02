@@ -1,6 +1,6 @@
 en:
-  views:
-    user_sessions:
+  user_sessions:
+    new:
       email: E-mail
       password: Password
       sign_in: Sign in

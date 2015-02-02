@@ -1,26 +1,25 @@
 en:
-  defaults:
-    project_name: Ruby Moon
-    date:
-      month_names:
-        -
-        - January
-        - February
-        - March
-        - April
-        - May
-        - June
-        - July
-        - August
-        - September
-        - October
-        - November
-        - December
-      abbr_day_names:
-        sunday: Sun
-        monday: Mon
-        tuesday: Tue
-        wednesday: Wed
-        thursday: Thu
-        friday: Fri
-        saturday: Sat
+  project_name: Ruby Moon
+  date:
+    month_names:
+      -
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    abbr_day_names:
+      sunday: Sun
+      monday: Mon
+      tuesday: Tue
+      wednesday: Wed
+      thursday: Thu
+      friday: Fri
+      saturday: Sat
