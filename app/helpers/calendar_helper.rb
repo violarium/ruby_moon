@@ -1,7 +1,6 @@
 module CalendarHelper
-
   # Get string with month and year from date.
   def month_with_year(date)
-    Date::MONTHNAMES[date.month].to_s + ', ' + date.year.to_s
+    t('defaults.date.month_names')[date.month] + ', ' + date.year.to_s
   end
 end

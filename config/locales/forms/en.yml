@@ -1,0 +1,4 @@
+en:
+  forms:
+    sign_in_form:
+      invalid_credentials: Invalid e-mail or password

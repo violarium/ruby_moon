@@ -1,6 +1,7 @@
 # Form for sign in process.
 class SignInForm
   include ActiveModel::Model
+  include ActionView::Helpers
 
   delegate :email, :password, to: :form_params
 
@@ -11,7 +12,7 @@ class SignInForm
     if user && !user.password.nil? && user.password == form_params.password
       user
     else
-      errors.add(:base, 'Invalid e-mail or password')
+      errors.add(:base, t('forms.sign_in_form.invalid_credentials'))
       nil
     end
   end

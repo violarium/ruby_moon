@@ -6,7 +6,7 @@
   }
 }
 
-@media (min-width: $screen-md-min) {
+@media (min-width: $screen-sm-min) {
   .month-list > li {
     float: left;
     width: 46%;
@@ -17,10 +17,16 @@
 
 .month-list .month-header {
   text-align: center;
-  font-size: 4vw;
 
+  font-size: 1.4em;
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.7em;
+  }
   @media (min-width: $screen-md-min) {
-    font-size: 2vw;
+    font-size: 2em;
+  }
+  @media (min-width: $screen-lg-min) {
+    font-size: 2.3em;
   }
 }
 
@@ -67,12 +73,15 @@
       left: 0;
       padding-left: 0.3em;
 
-      font-size: 4.4vw;
+      font-size: 1.2em;
+      @media (min-width: $screen-sm-min) {
+        font-size: 1.6em;
+      }
       @media (min-width: $screen-md-min) {
-        font-size: 2.6vw;
+        font-size: 2em;
       }
       @media (min-width: $screen-lg-min) {
-        font-size: 2vw;
+        font-size: 2.4em;
       }
     }
   }
@@ -83,9 +92,15 @@
   margin-left: 2%;
   margin-right: 2%;
 
-  font-size: 3vw;
+  font-size: 1em;
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.2em;
+  }
   @media (min-width: $screen-md-min) {
-    font-size: 1.6vw;
+    font-size: 1.4em;
+  }
+  @media (min-width: $screen-lg-min) {
+    font-size: 1.6em;
   }
 
   & > .month-before, & > .month-after {

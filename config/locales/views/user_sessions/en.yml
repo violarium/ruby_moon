@@ -1,0 +1,6 @@
+en:
+  views:
+    user_sessions:
+      email: E-mail
+      password: Password
+      sign_in: Sign in

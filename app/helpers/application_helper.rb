@@ -1,7 +1,7 @@
 module ApplicationHelper
   # Get full title for page.
   def full_title(title = '')
-    postfix = 'Ruby Moon'
+    postfix = t('defaults.project_name')
     if title.empty?
       postfix
     else
