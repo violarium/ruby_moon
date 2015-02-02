@@ -1,6 +1,8 @@
 module Authenticable
   extend ActiveSupport::Concern
 
+  private
+
   # Sign in user.
   def sign_in_user(user)
     session[:user_id] = user.id.to_s
