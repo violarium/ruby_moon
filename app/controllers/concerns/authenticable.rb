@@ -23,6 +23,14 @@ module Authenticable
     !current_user.nil?
   end
 
+  # Filter to require sign in
+  def require_sign_in
+    unless user_signed_in?
+      flash[:error] = t('controllers.concerns.authenticable.require_sign_in')
+      redirect_to sign_in_url
+    end
+  end
+
   included do
     helper_method :current_user, :user_signed_in?
   end

@@ -1,0 +1,5 @@
+en:
+  controllers:
+    concerns:
+      authenticable:
+        require_sign_in: 'You are to sign in!'

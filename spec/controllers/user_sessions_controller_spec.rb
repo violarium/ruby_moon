@@ -18,7 +18,7 @@ describe UserSessionsController do
     end
 
     context 'sign in user' do
-      before { controller_sign_in(User.create!) }
+      before { controller_sign_in }
 
       it 'should redirect to home page' do
         get :new
