@@ -1,12 +1,12 @@
 <div class="calendar-controls">
   <div class="month-before">
-    <a href="<%= calendar_index_url year: @prev_month.year, month: @prev_month.month %>">
-      <span class="glyphicon glyphicon-arrow-left"></span><%= month_with_year(@prev_month) %>
+    <a href="<%= calendar_index_url year: @month_grid_data[:month_date].prev_month.year, month: @month_grid_data[:month_date].prev_month.month %>">
+      <span class="glyphicon glyphicon-arrow-left"></span><%= month_with_year(@month_grid_data[:month_date].prev_month) %>
     </a>
   </div>
   <div class="month-after">
-    <a href="<%= calendar_index_url year: @next_month.year, month: @next_month.month %>">
-      <%= month_with_year(@next_month) %><span class="glyphicon glyphicon-arrow-right"></span>
+    <a href="<%= calendar_index_url year: @month_grid_data[:month_date].next_month.year, month: @month_grid_data[:month_date].next_month.month %>">
+      <%= month_with_year(@month_grid_data[:month_date].next_month) %><span class="glyphicon glyphicon-arrow-right"></span>
     </a>
   </div>
   <div class="clearfix"></div>

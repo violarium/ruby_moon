@@ -6,52 +6,37 @@ describe CalendarController do
 
     describe 'when we are signed in' do
 
-      before { controller_sign_in }
+      before do
+        @user = controller_sign_in
+      end
 
       it 'should render "index" view' do
         get :index
         expect(response).to render_template(:index)
       end
 
-      it 'should pass to view received date' do
+      it 'should pass to view result of user calendar data provider' do
+        user_calendar = double('user_calendar')
+        expect(DataProvider::UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
+        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
+        expect(user_calendar).to receive(:month_grid_data)
+                                     .with(Date.new(2015, 1), limit: 2, current_date: Date.new(2015, 1, 10))
+                                     .and_return('month_grid_data')
+
         get :index, { year: 2015, month: 1 }
-        expect(assigns(:current_date)).to eq Date.new(2015, 1)
+        expect(assigns(:month_grid_data)).to eq 'month_grid_data'
       end
 
-      it 'should pass to view today date if date is not received' do
-        today = Date.new(2001, 1)
-        expect(Date).to receive(:today).and_return(today)
+      it 'should call calendar data provider with today date if date is not received' do
+        user_calendar = double('user_calendar')
+        expect(DataProvider::UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
+        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
+        expect(user_calendar).to receive(:month_grid_data)
+                                     .with(Date.new(2015, 1, 10), limit: 2, current_date: Date.new(2015, 1, 10))
+                                     .and_return('month_grid_data')
 
         get :index
-        expect(assigns(:current_date)).to eq today
-      end
-
-      it 'should pass to view formatted months according to received date' do
-        formatter = double('formatter')
-        month_list = double('month_list')
-
-        expect(CalendarFormatter::Formatter).to receive(:new).and_return(formatter)
-        expect(formatter).to receive(:month_list)
-                                 .with(Date.new(2015, 1), amount: 2)
-                                 .and_return(month_list)
-        get :index, { year: 2015, month: 1 }
-
-        expect(assigns(:month_list)).to eq month_list
-      end
-
-      it 'should pass to view formatted month according to current date when date is not specified' do
-        formatter = double('formatter')
-        month_list = double('month_list')
-        today = Date.new(2001, 1)
-
-        expect(Date).to receive(:today).and_return(today)
-        expect(CalendarFormatter::Formatter).to receive(:new).and_return(formatter)
-        expect(formatter).to receive(:month_list)
-                                 .with(today, amount: 2)
-                                 .and_return(month_list)
-        get :index
-
-        expect(assigns(:month_list)).to eq month_list
+        expect(assigns(:month_grid_data)).to eq 'month_grid_data'
       end
     end
 

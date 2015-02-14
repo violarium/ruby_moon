@@ -63,6 +63,12 @@
     &.inactive {
       color: lightgray;
     }
+    &.critical {
+      background-color: lighten(red, 25%);
+    }
+    &.critical.inactive {
+      background-color: lighten(red, 35%);
+    }
 
 
     & > .day-content {

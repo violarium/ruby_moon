@@ -1,21 +1,21 @@
-<% content_for(:title, month_with_year(@current_date)) %>
+<% content_for(:title, month_with_year(@month_grid_data[:month_date])) %>
 
 <%= render 'calendar/calendar_controls' %>
 
 <ul class="month-list">
-  <% @month_list[:month_list].each do |month| %>
+  <% @month_grid_data[:month_list].each do |month| %>
     <li>
       <div class="month-header">
-        <%= month_with_year(month[:first_date]) %>
+        <%= month_with_year(month[:month_date]) %>
       </div>
       <ul class="month-days-grid">
-        <% month[:week].each do |week_day| %>
+        <% month[:week_days].each do |week_day| %>
           <li class="week-day">
             <%= t('date.abbr_day_names')[week_day] %>
           </li>
         <% end %>
         <% month[:dates].each_with_index do |date, date_index| %>
-          <li class="day week-day-number-<%= date_index % 7 %> week-number-<%= date_index / 7 %> <%= 'inactive' if date.month != month[:first_date].month %>">
+          <li class="day week-day-number-<%= date_index % 7 %> week-number-<%= date_index / 7 %> <%= 'inactive' if date.month != month[:month_date].month %> <%= 'critical' if @month_grid_data[:critical_dates].include?(date) %>">
             <div class="day-content">
               <%= date.day %>
             </div>
