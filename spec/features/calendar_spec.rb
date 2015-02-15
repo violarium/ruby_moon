@@ -40,4 +40,13 @@ describe 'Calendar page' do
       expect(page).to have_selector('.day.critical', text: date.day)
     end
   end
+
+  it 'should open day info page when we click on day' do
+    we_are_signed_in_user
+    visit '/calendar/2015/2'
+    find('.month-list > li:first-child .day > a', text: 10).click
+
+    expect(page).to have_title('10 February, 2015')
+    expect(page).to have_selector('h1', '10 February, 2015')
+  end
 end

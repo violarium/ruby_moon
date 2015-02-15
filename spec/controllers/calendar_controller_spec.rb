@@ -49,4 +49,30 @@ describe CalendarController do
       end
     end
   end
+
+
+  describe 'GET #show' do
+    describe 'when we are not signed in' do
+      it 'should redirect to sign in action with error flash' do
+        get :show, { year: 2015, month: 1, day: 1 }
+        expect(response).to redirect_to(sign_in_url)
+        expect(flash[:error]).not_to be_nil
+      end
+    end
+
+
+    describe 'when we are signed in' do
+      before { controller_sign_in }
+
+      it 'should render "show template"' do
+        get :show, { year: 2015, month: 1, day: 1 }
+        expect(response).to render_template(:show)
+      end
+
+      it 'should pass recived date to template' do
+        get :show, { year: 2015, month: 1, day: 1 }
+        expect(assigns[:day]).to eq(Date.new(2015, 1, 1))
+      end
+    end
+  end
 end
