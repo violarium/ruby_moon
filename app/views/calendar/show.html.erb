@@ -1,3 +1,14 @@
 <% content_for(:title, full_date_title(@day)) %>
 
 <h1><%= full_date_title(@day) %></h1>
+
+<div>You are able to add a new critical period</div>
+
+<% if false %>
+<%= form_for(@day_form, url: update_calendar_day_url(@day.year, @day.month, @day.day), method: :put) do |f| %>
+    <%= f.label :has_period, 'Critical period' %>
+    <%= f.check_box :has_period %>
+
+    <%= f.submit('Save') %>
+<% end %>
+<% end %>

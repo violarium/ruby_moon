@@ -49,4 +49,38 @@ describe 'Calendar page' do
     expect(page).to have_title('10 February, 2015')
     expect(page).to have_selector('h1', '10 February, 2015')
   end
+
+
+  it 'should show as a message that we are going to add new period' do
+    we_are_signed_in_user
+    visit '/calendar/2015/2'
+    find('.month-list > li:first-child .day > a', text: 10).click
+
+    expect(page).to have_text('You are able to add a new critical period')
+  end
+
+
+  # it 'should add calendar period with 1 day by default' do
+  #   user = we_are_signed_in_user
+  #   visit '/calendar/2015/2'
+  #   find('.month-list > li:first-child .day > a', text: 10).click
+  #   click_on('Save')
+  #
+  #   added_period = user.critical_periods.first
+  #   expect(added_period.from).to eq Date.new(2015, 2, 10)
+  #   expect(added_period.to).to eq Date.new(2015, 2, 10)
+  #   # todo: add new page check?
+  # end
+  #
+  # it 'should add calendar period with 3 days if we select that' do
+  #   user = we_are_signed_in_user
+  #   visit '/calendar/2015/2'
+  #   find('.month-list > li:first-child .day > a', text: 10).click
+  #   select_option '12 February 2015', from: 'Period end'
+  #   click_on('Save')
+  #
+  #   added_period = user.critical_periods.first
+  #   expect(added_period.from).to eq Date.new(2015, 2, 10)
+  #   expect(added_period.to).to eq Date.new(2015, 2, 12)
+  # end
 end

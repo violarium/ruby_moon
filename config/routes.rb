@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get '/calendar/(:year/:month)' => 'calendar#index', as: 'calendar_index'
   get '/calendar/day/:year/:month/:day' => 'calendar#show', as: 'calendar_day'
+  put '/calendar/day/:year/:month/:day' => 'calendar#update', as: 'update_calendar_day'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
