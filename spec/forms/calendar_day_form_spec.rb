@@ -6,11 +6,11 @@ describe CalendarDayForm do
 
 
   describe 'form accessors' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1), { has_period: true,
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: true,
                                                                    period_length: 1,
                                                                    delete_period: 'all' }) }
-    it 'should respond to #has_period with received data' do
-      expect(form.has_period).to eq true
+    it 'should respond to #critical_day with received data' do
+      expect(form.critical_day).to eq true
     end
 
     it 'should respond to #period_length with received data' do
@@ -27,9 +27,9 @@ describe CalendarDayForm do
 
     describe 'when current date does not belong to any critical period' do
 
-      describe 'when receive "has_period"' do
+      describe 'when receive "critical_day"' do
         it 'should create new critical period with lenth 1' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 1), { has_period: true })
+          form = CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: true })
           form.submit
 
           critical_period = user.critical_periods.first
@@ -38,7 +38,7 @@ describe CalendarDayForm do
         end
 
         it 'should create new critical period with received length' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 1), { has_period: true, period_length: 2 })
+          form = CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: true, period_length: 2 })
           form.submit
 
           critical_period = user.critical_periods.first
@@ -47,7 +47,7 @@ describe CalendarDayForm do
         end
       end
 
-      describe 'when do not receive "has_period"' do
+      describe 'when do not receive "critical_day"' do
         it 'should not create critical period' do
           form = CalendarDayForm.new(user, Date.new(2015, 1, 1))
           form.submit
@@ -74,10 +74,10 @@ describe CalendarDayForm do
             expect { form.submit }.to change { user.critical_periods.count }.from(1).to(0)
           end
 
-          describe 'when receive "has_period"' do
+          describe 'when receive "critical_day"' do
             it 'should not delete critical period' do
               form = CalendarDayForm.new(user, Date.new(2015, 1, 6), { delete_period: CalendarDayForm::Delete::ALL,
-                                                                       has_period: true })
+                                                                       critical_day: true })
               expect { form.submit }.not_to change { user.critical_periods.count }
             end
           end
@@ -100,10 +100,10 @@ describe CalendarDayForm do
             expect { form.submit }.to change { user.critical_periods.count }.by(-1)
           end
 
-          describe 'when receive "has_period"' do
+          describe 'when receive "critical_day"' do
             it 'should do nothing with critical period' do
               form = CalendarDayForm.new(user, Date.new(2015, 1, 7), { delete_period: CalendarDayForm::Delete::TAIL,
-                                                                       has_period: true })
+                                                                       critical_day: true })
               form.submit
 
               critical_period = user.critical_periods.first
@@ -131,10 +131,10 @@ describe CalendarDayForm do
             expect { form.submit }.to change { user.critical_periods.count }.by(-1)
           end
 
-          describe 'when receive "has_period"' do
+          describe 'when receive "critical_day"' do
             it 'should do nothing with critical period' do
               form = CalendarDayForm.new(user, Date.new(2015, 1, 8), { delete_period: CalendarDayForm::Delete::HEAD,
-                                                                       has_period: true })
+                                                                       critical_day: true })
               form.submit
 
               critical_period = user.critical_periods.first

@@ -1,7 +1,7 @@
 class CalendarDayForm
   include ActiveModel::Model
 
-  attr_accessor :has_period, :period_length, :delete_period
+  attr_accessor :critical_day, :period_length, :delete_period
 
 
   # Create form object to handle calendar day.
@@ -15,15 +15,15 @@ class CalendarDayForm
     @user = user
     @date = date
     @period = user.critical_periods.has_date(date).first
-    super(params.slice(:has_period, :period_length, :delete_period))
+    super(params.slice(:critical_day, :period_length, :delete_period))
   end
 
 
   # Submit the form
   def submit
     if @period.nil?
-      @user.critical_periods.create(from: period_from_date, to: period_to_date) if has_period
-    elsif !has_period
+      @user.critical_periods.create(from: period_from_date, to: period_to_date) if critical_day
+    elsif !critical_day
       Delete.delete(@period, delete_period, @date)
     end
   end

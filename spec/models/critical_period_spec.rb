@@ -41,6 +41,32 @@ describe CriticalPeriod do
       expect(critical_period).not_to be_valid
     end
 
+    describe 'margin validation' do
+      describe 'margin before' do
+        it 'should not be valid if there are no enough space' do
+          user.critical_periods.create!(from: Date.new(2014, 12, 25), to: Date.new(2014, 12, 29))
+          expect(critical_period).not_to be_valid
+        end
+
+        it 'should be valid if there are enough space' do
+          user.critical_periods.create!(from: Date.new(2014, 12, 25), to: Date.new(2014, 12, 28))
+          expect(critical_period).to be_valid
+        end
+      end
+
+      describe 'margin after' do
+        it 'should not be valid if there are no enough space' do
+          user.critical_periods.create!(from: Date.new(2015, 1, 17), to: Date.new(2015, 1, 20))
+          expect(critical_period).not_to be_valid
+        end
+
+        it 'should be valid if there are enough space' do
+          user.critical_periods.create!(from: Date.new(2015, 1, 18), to: Date.new(2015, 1, 20))
+          expect(critical_period).to be_valid
+        end
+      end
+    end
+
 
     describe 'intersection validation' do
 
