@@ -2,6 +2,17 @@ require 'rails_helper'
 
 describe CriticalPeriod do
 
+  describe 'self#has_date' do
+    it 'should make query scoped to select critical period with received date' do
+      user = User.create!(email: 'email@example.net')
+      critical_period = user.critical_periods.create!(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10))
+
+      selected_period = CriticalPeriod.has_date(Date.new(2015, 1, 6)).first
+      expect(selected_period).to eq(critical_period)
+    end
+  end
+
+
   describe 'validation' do
     let(:user) { User.create!(email: 'email@example.net') }
     let(:critical_period) { user.critical_periods.new(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }

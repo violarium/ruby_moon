@@ -14,6 +14,11 @@ class CriticalPeriod
   validate :period_intersection
 
 
+  scope :has_date, -> (date) do
+    where(:from.lte => date, :to.gte => date)
+  end
+
+
   private
 
 
