@@ -21,18 +21,17 @@ class CalendarController < ApplicationController
 
   def show
     @day = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-    #@day_form = CalendarDayForm.new(current_user, @day)
+    @day_form = CalendarDayForm.new(current_user, @day)
   end
 
   def update
     @day = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-    # @day_form = CalendarDayForm.new(current_user, @day, params[:calendar_day_form])
-    # if @day_form.valid?
-    #   @day_form.submit
-    #   redirect_to calendar_index_url
-    # else
-    #   render :show
-    # end
-    render :show
+    @day_form = CalendarDayForm.new(current_user, @day, params[:calendar_day_form])
+     if @day_form.valid?
+       @day_form.submit
+       redirect_to calendar_index_url(@day.year, @day.month)
+     else
+       render :show
+     end
   end
 end

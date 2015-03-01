@@ -13,13 +13,16 @@ class CalendarDayForm
   #
   # @return [self]
   def initialize(user, date, params = {})
-    super(params.slice(:critical_day, :period_length, :delete_period))
     @user = user
     @date = date
+    super(params.slice(:critical_day, :period_length, :delete_period))
+
+    self.critical_day = 1 if (!period.new_record?) && critical_day.nil?
+    self.critical_day = critical_day.to_i
   end
 
 
-  # Submit the form
+  # Submit the form.
   #
   # @return [Boolean]
   def submit
@@ -29,35 +32,6 @@ class CalendarDayForm
       true
     else
       false
-    end
-  end
-
-
-  private
-
-
-  # Should we save period?
-  #
-  # @return [Boolean]
-  def save_period?
-    period.new_record? && critical_day || !period.new_record?
-  end
-
-
-  # Should we delete period?
-  #
-  # @return [Boolean]
-  def delete_period?
-    !period.new_record? && !critical_day && (period.from == period.to || delete_period == 'all')
-  end
-
-
-  # Validation period method.
-  def validate_period
-    unless period.valid?
-      period.errors.messages.each do |key, message|
-        errors[:base] << message
-      end
     end
   end
 
@@ -72,7 +46,7 @@ class CalendarDayForm
       @period = @user.critical_periods.has_date(@date).first
       if @period.nil?
         @period = @user.critical_periods.new(from: @date, to: period_end_date)
-      elsif !critical_day && @period.from < @period.to
+      elsif critical_day == 0 && @period.from < @period.to
         if delete_period == 'tail'
           @period.to = @date - 1.day
         elsif delete_period == 'head'
@@ -82,6 +56,34 @@ class CalendarDayForm
     end
 
     @period
+  end
+
+  private
+
+
+  # Should we save period?
+  #
+  # @return [Boolean]
+  def save_period?
+    period.new_record? && critical_day == 1 || !period.new_record?
+  end
+
+
+  # Should we delete period?
+  #
+  # @return [Boolean]
+  def delete_period?
+    !period.new_record? && critical_day == 0 && (period.from == period.to || delete_period == 'all')
+  end
+
+
+  # Validation period method.
+  def validate_period
+    unless period.valid?
+      period.errors.full_messages.each do |message|
+        errors[:base] << message
+      end
+    end
   end
 
 

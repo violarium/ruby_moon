@@ -62,16 +62,72 @@ describe CalendarController do
 
 
     describe 'when we are signed in' do
-      before { controller_sign_in }
+      let(:user) { User.create!(email: 'example@email.com') }
+      before { controller_sign_in(user) }
 
       it 'should render "show template"' do
         get :show, { year: 2015, month: 1, day: 1 }
         expect(response).to render_template(:show)
       end
 
-      it 'should pass recived date to template' do
+      it 'should pass received date to template' do
         get :show, { year: 2015, month: 1, day: 1 }
         expect(assigns[:day]).to eq(Date.new(2015, 1, 1))
+      end
+
+      it 'should pass calendar day form to view' do
+        form = double('calendar_form')
+        expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1)).and_return(form)
+        get :show, { year: 2015, month: 1, day: 1 }
+        expect(assigns[:day_form]).to eq(form)
+      end
+    end
+  end
+
+
+  describe 'PUT #update' do
+    describe 'when we are signed in' do
+      let(:user) { User.create!(email: 'example@email.com') }
+      before { controller_sign_in(user) }
+
+      let(:day_form) { double('calendar_day_form') }
+      before do
+        expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { params: 'foo' }).and_return(day_form)
+      end
+
+      describe 'if form data is valid' do
+        before { allow(day_form).to receive(:valid?).and_return(true) }
+
+        it 'should submit the form' do
+          expect(day_form).to receive(:submit).and_return true
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
+
+        it 'should redirect to calendar url into month of current critical period' do
+          allow(day_form).to receive(:submit).and_return true
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+          expect(response).to redirect_to calendar_index_url(2015, 1)
+        end
+      end
+
+      describe 'if form data is not valid' do
+        before { allow(day_form).to receive(:valid?).and_return(false) }
+
+        it 'should not submit the form' do
+          expect(day_form).not_to receive(:submit)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
+
+        it 'should render "show template"' do
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+          expect(response).to render_template(:show)
+        end
+
+        it 'should pass to template current date and form' do
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+          expect(assigns[:day]).to eq(Date.new(2015, 1, 1))
+          expect(assigns[:day_form]).to eq(day_form)
+        end
       end
     end
   end

@@ -1,9 +1,16 @@
 require 'rails_helper'
 
 describe 'Calendar page' do
+  let!(:user) { User.create!(email: 'example@email.com', password: 'password') }
+  before { sign_in_with('example@email.com', 'password') }
+
+
 
   describe 'when we are not signed in' do
-    before { visit '/calendar/2015/01' }
+    before do
+      sign_out_if_signed_in
+      visit '/calendar/2015/01'
+    end
 
     it 'should show sign in page if we are not signed in with error message' do
       expect(page).to have_title('Sign in')
@@ -14,22 +21,17 @@ describe 'Calendar page' do
 
 
   it 'should have title with received date' do
-    we_are_signed_in_user
     visit '/calendar/2015/01'
-
     expect(page).to have_title('January, 2015')
   end
 
   it 'should show 2 month with they days when we are signed in' do
-    we_are_signed_in_user
     visit '/calendar/2015/01'
-
     expect(page).to have_content('January, 2015')
     expect(page).to have_content('February, 2015')
   end
 
-  it 'should show critical periods of current user' do
-    user = we_are_signed_in_user
+  it 'should show critical periods for current user' do
     user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
     user.critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 4))
     user.critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 5))
@@ -42,7 +44,6 @@ describe 'Calendar page' do
   end
 
   it 'should open day info page when we click on day' do
-    we_are_signed_in_user
     visit '/calendar/2015/2'
     find('.month-list > li:first-child .day > a', text: 10).click
 
@@ -51,36 +52,58 @@ describe 'Calendar page' do
   end
 
 
-  it 'should show as a message that we are going to add new period' do
-    we_are_signed_in_user
-    visit '/calendar/2015/2'
-    find('.month-list > li:first-child .day > a', text: 10).click
 
-    expect(page).to have_text('You are able to add a new critical period')
+  describe 'when we click on empty day' do
+
+    it 'should show as a message that we are going to add new period' do
+      visit '/calendar/2015/2'
+      find('.month-list > li:first-child .day > a', text: 10).click
+
+      expect(page).to have_text('You are able to add a new critical period')
+    end
+
+    describe 'when we click "Save"' do
+      it 'should add calendar period with 1 day by default' do
+        visit '/calendar/2015/2'
+        find('.month-list > li:first-child .day > a', text: 10).click
+        check 'Critical day'
+        click_on('Save')
+
+        added_period = user.critical_periods.first
+        expect(added_period.from).to eq Date.new(2015, 2, 10)
+        expect(added_period.to).to eq Date.new(2015, 2, 10)
+        expect(page).to have_selector('.day.critical', text: 10)
+      end
+
+      it 'should show an error message if there is errors on submit' do
+        user.critical_periods.create!(from: Date.new(2015, 2, 15), to: Date.new(2015, 2, 16))
+        visit '/calendar/2015/2'
+        find('.month-list > li:first-child .day > a', text: 10).click
+        check 'Critical day'
+        click_on('Save')
+
+        expect(page).to have_text('There are errors')
+      end
+    end
   end
 
 
-  # it 'should add calendar period with 1 day by default' do
-  #   user = we_are_signed_in_user
-  #   visit '/calendar/2015/2'
-  #   find('.month-list > li:first-child .day > a', text: 10).click
-  #   click_on('Save')
-  #
-  #   added_period = user.critical_periods.first
-  #   expect(added_period.from).to eq Date.new(2015, 2, 10)
-  #   expect(added_period.to).to eq Date.new(2015, 2, 10)
-  #   # todo: add new page check?
-  # end
-  #
-  # it 'should add calendar period with 3 days if we select that' do
-  #   user = we_are_signed_in_user
-  #   visit '/calendar/2015/2'
-  #   find('.month-list > li:first-child .day > a', text: 10).click
-  #   select_option '12 February 2015', from: 'Period end'
-  #   click_on('Save')
-  #
-  #   added_period = user.critical_periods.first
-  #   expect(added_period.from).to eq Date.new(2015, 2, 10)
-  #   expect(added_period.to).to eq Date.new(2015, 2, 12)
-  # end
+  describe 'when we click on a day, which belongs to critical period' do
+    it 'should show us a message that this is existing period' do
+      user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
+      visit '/calendar/2015/1'
+      find('.month-list > li:first-child .day > a', text: 11).click
+
+      expect(page).to have_text('This day belongs to period 10 January, 2015 - 15 January, 2015')
+    end
+
+    it 'should have "critical day" checked' do
+      user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
+      visit '/calendar/2015/1'
+      find('.month-list > li:first-child .day > a', text: 11).click
+
+      checkbox = find(:checkbox, 'Critical day')
+      expect(checkbox).to be_checked
+    end
+  end
 end

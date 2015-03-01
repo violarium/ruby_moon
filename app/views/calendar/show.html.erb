@@ -2,13 +2,24 @@
 
 <h1><%= full_date_title(@day) %></h1>
 
-<div>You are able to add a new critical period</div>
+<% if @day_form.period.new_record? %>
+    <div>You are able to add a new critical period</div>
+<% else %>
+    <div>This day belongs to period <%= full_date_title(@day_form.period.from_was) %> - <%= full_date_title(@day_form.period.to_was) %></div>
+<% end %>
 
-<% if false %>
+<% if @day_form.errors.count > 0 %>
+    <div>There are errors</div>
+    <ul>
+      <% @day_form.errors.full_messages.each do |m| %>
+        <li><%= m %></li>
+      <% end %>
+    </ul>
+<% end %>
+
 <%= form_for(@day_form, url: update_calendar_day_url(@day.year, @day.month, @day.day), method: :put) do |f| %>
-    <%= f.label :has_period, 'Critical period' %>
-    <%= f.check_box :has_period %>
+    <%= f.label :critical_day, 'Critical day' %>
+    <%= f.check_box :critical_day %>
 
     <%= f.submit('Save') %>
-<% end %>
 <% end %>
