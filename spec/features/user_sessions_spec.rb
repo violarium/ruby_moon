@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'User sessions' do
 
-  let!(:existing_user) { User.create!(email: 'example@email.net', password: '123456') }
+  let!(:existing_user) { FactoryGirl.create(:user, email: 'example@email.net', password: '123456') }
 
   it 'checking sign in page' do
     visit '/sign_in'

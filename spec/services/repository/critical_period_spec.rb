@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Repository::CriticalPeriod do
   describe 'self#date_collection' do
-    let(:user) { User.create!(email: 'example@email.com') }
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
       user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2))

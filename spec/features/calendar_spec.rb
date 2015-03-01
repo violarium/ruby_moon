@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'Calendar page' do
-  let!(:user) { User.create!(email: 'example@email.com', password: 'password') }
-  before { sign_in_with('example@email.com', 'password') }
+  let(:user) { FactoryGirl.create(:user, password: 'password') }
+  before { sign_in_with(user.email, 'password') }
 
 
 

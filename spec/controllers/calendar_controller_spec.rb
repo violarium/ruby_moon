@@ -62,7 +62,7 @@ describe CalendarController do
 
 
     describe 'when we are signed in' do
-      let(:user) { User.create!(email: 'example@email.com') }
+      let(:user) { FactoryGirl.create(:user) }
       before { controller_sign_in(user) }
 
       it 'should render "show template"' do
@@ -87,7 +87,7 @@ describe CalendarController do
 
   describe 'PUT #update' do
     describe 'when we are signed in' do
-      let(:user) { User.create!(email: 'example@email.com') }
+      let(:user) { FactoryGirl.create(:user) }
       before { controller_sign_in(user) }
 
       let(:day_form) { double('calendar_day_form') }

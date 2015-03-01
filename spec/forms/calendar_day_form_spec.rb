@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe CalendarDayForm do
-  # todo: use factory girl
-  let(:user) { User.create!(email: 'example@email.net') }
+  let(:user) { FactoryGirl.create(:user) }
 
 
   describe 'form accessors' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe DataProvider::UserCalendar do
 
   describe 'integration' do
-    let(:user) { User.create!(email: 'example@email.com') }
+    let(:user) { FactoryGirl.create(:user) }
     let(:calendar_data_provider) { DataProvider::UserCalendar.new(user) }
 
     describe '#month_grid_data' do

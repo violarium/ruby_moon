@@ -16,7 +16,7 @@ end
 #
 # @return [User]
 def we_are_signed_in_user(email: 'example@email.net', password: 'password')
-  user = User.create!(email: email, password: password)
+  user = FactoryGirl.create(:user, email: email, password: password)
   sign_in_with(email, password)
   user
 end

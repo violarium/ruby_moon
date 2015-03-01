@@ -4,7 +4,7 @@ describe CriticalPeriod do
 
   describe 'self#has_date' do
     it 'should make query scoped to select critical period with received date' do
-      user = User.create!(email: 'email@example.net')
+      user = FactoryGirl.create(:user)
       critical_period = user.critical_periods.create!(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10))
 
       selected_period = CriticalPeriod.has_date(Date.new(2015, 1, 6)).first
@@ -14,7 +14,7 @@ describe CriticalPeriod do
 
 
   describe 'validation' do
-    let(:user) { User.create!(email: 'email@example.net') }
+    let(:user) { FactoryGirl.create(:user) }
     let(:critical_period) { user.critical_periods.new(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }
 
     it 'should be valid with correct data' do
@@ -114,7 +114,7 @@ describe CriticalPeriod do
       end
 
       it 'should be valid when periods belong to different users' do
-        another_user = User.create!(email: 'another@email.com')
+        another_user = FactoryGirl.create(:user, email: 'another@email.com')
         another_period = critical_period.dup
         another_period.user = another_user
         another_period.save!

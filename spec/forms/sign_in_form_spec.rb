@@ -19,8 +19,8 @@ describe SignInForm do
 
   describe 'submission' do
     it 'should return user when params are correct' do
-      user = User.create(email: 'example@email.net', password: 'password')
-      result = form.submit(email: 'example@email.net', password: 'password')
+      user = FactoryGirl.create(:user, password: 'password')
+      result = form.submit(email: user.email, password: 'password')
       expect(result).to eq user
     end
 
@@ -31,16 +31,16 @@ describe SignInForm do
       end
 
       it 'should return nil when password is incorrect' do
-        User.create(email: 'example@email.net', password: 'password')
-        result = form.submit(email: 'example@email.net', password: 'invalid')
+        user = FactoryGirl.create(:user, password: 'password')
+        result = form.submit(email: user.email, password: 'invalid')
         expect(result).to be_nil
       end
     end
 
     it 'should return nil when existing user password is nil and sent password is nil' do
-      user = User.create(email: 'example@email.net', encrypted_password: 'bad')
+      user = FactoryGirl.create(:corrupt_password_user)
       expect(user.password).to be_nil
-      result = form.submit(email: 'example@email.net')
+      result = form.submit(email: user.email)
       expect(result).to be_nil
     end
   end
