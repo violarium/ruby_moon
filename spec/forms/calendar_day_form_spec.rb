@@ -125,6 +125,15 @@ describe CalendarDayForm do
           expect(critical_period.to).to eq(Date.new(2015, 1, 6))
         end
 
+        it 'should delete period days and leave 1 if it is a case' do
+          form = CalendarDayForm.new(user, Date.new(2015, 1, 6), { critical_day: 0, delete_period: 'tail' })
+          expect { form.submit }.not_to change { user.critical_periods.count }
+
+          critical_period = user.critical_periods.first
+          expect(critical_period.from).to eq(Date.new(2015, 1, 5))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 5))
+        end
+
         it 'should delete period if it has length 1' do
           user.critical_periods.create!(from: Date.new(2015, 10, 1), to: Date.new(2015, 10, 1))
           form = CalendarDayForm.new(user, Date.new(2015, 10, 1), { critical_day: 0, delete_period: 'tail' })
@@ -152,6 +161,15 @@ describe CalendarDayForm do
 
           critical_period = user.critical_periods.first
           expect(critical_period.from).to eq(Date.new(2015, 1, 9))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 10))
+        end
+
+        it 'should delete period days and leave 1 if it is a case' do
+          form = CalendarDayForm.new(user, Date.new(2015, 1, 9), { critical_day: 0, delete_period: 'head' })
+          expect { form.submit }.not_to change { user.critical_periods.count }
+
+          critical_period = user.critical_periods.first
+          expect(critical_period.from).to eq(Date.new(2015, 1, 10))
           expect(critical_period.to).to eq(Date.new(2015, 1, 10))
         end
 

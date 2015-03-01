@@ -80,7 +80,7 @@ describe 'Calendar page' do
         visit '/calendar/2015/2'
         find('.month-list > li:first-child .day > a', text: 10).click
         check 'Critical day'
-        click_on('Save')
+        click_on 'Save'
 
         expect(page).to have_text('There are errors')
       end
@@ -89,21 +89,47 @@ describe 'Calendar page' do
 
 
   describe 'when we click on a day, which belongs to critical period' do
-    it 'should show us a message that this is existing period' do
+    before do
       user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
       visit '/calendar/2015/1'
       find('.month-list > li:first-child .day > a', text: 11).click
+    end
 
+    it 'should show us a message that this is existing period' do
       expect(page).to have_text('This day belongs to period 10 January, 2015 - 15 January, 2015')
     end
 
     it 'should have "critical day" checked' do
-      user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
-      visit '/calendar/2015/1'
-      find('.month-list > li:first-child .day > a', text: 11).click
-
       checkbox = find(:checkbox, 'Critical day')
       expect(checkbox).to be_checked
+    end
+
+    describe 'when we uncheck critical day' do
+      before { uncheck 'Critical day' }
+
+      it 'should delete whole period if we select this' do
+        choose 'Delete whole period'
+        click_on 'Save'
+        expect(user.critical_periods.count).to eq 0
+      end
+
+      it 'should delete the tail if we select this' do
+        choose 'Delete current and tail'
+        click_on 'Save'
+
+        period = user.reload.critical_periods.first
+        expect(period.from).to eq Date.new(2015, 1, 10)
+        expect(period.to).to eq Date.new(2015, 1, 10)
+      end
+
+      it 'should delete the head if we select this' do
+        choose 'Delete current and head'
+        click_on 'Save'
+
+        period = user.reload.critical_periods.first
+        expect(period.from).to eq Date.new(2015, 1, 12)
+        expect(period.to).to eq Date.new(2015, 1, 15)
+      end
     end
   end
 end

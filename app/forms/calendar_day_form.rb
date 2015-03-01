@@ -17,8 +17,11 @@ class CalendarDayForm
     @date = date
     super(params.slice(:critical_day, :period_length, :delete_period))
 
-    self.critical_day = 1 if (!period.new_record?) && critical_day.nil?
-    self.critical_day = critical_day.to_i
+    if critical_day.nil?
+      self.critical_day = period.new_record? ? 0 : 1
+    else
+      self.critical_day = critical_day.to_i
+    end
   end
 
 
@@ -46,7 +49,7 @@ class CalendarDayForm
       @period = @user.critical_periods.has_date(@date).first
       if @period.nil?
         @period = @user.critical_periods.new(from: @date, to: period_end_date)
-      elsif critical_day == 0 && @period.from < @period.to
+      elsif critical_day == 0
         if delete_period == 'tail'
           @period.to = @date - 1.day
         elsif delete_period == 'head'
@@ -65,7 +68,7 @@ class CalendarDayForm
   #
   # @return [Boolean]
   def save_period?
-    period.new_record? && critical_day == 1 || !period.new_record?
+    !delete_period? && (period.new_record? && critical_day == 1 || !period.new_record?)
   end
 
 
@@ -73,7 +76,7 @@ class CalendarDayForm
   #
   # @return [Boolean]
   def delete_period?
-    !period.new_record? && critical_day == 0 && (period.from == period.to || delete_period == 'all')
+    !period.new_record? && critical_day == 0 && (period.from > period.to && ['tail', 'head'].include?(delete_period) || delete_period == 'all')
   end
 
 

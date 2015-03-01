@@ -21,5 +21,22 @@
     <%= f.label :critical_day, 'Critical day' %>
     <%= f.check_box :critical_day %>
 
+    <div>
+      <label>
+        <%= f.radio_button :delete_period, 'all', checked: true %>
+        Delete whole period
+      </label>
+
+      <label>
+        <%= f.radio_button :delete_period, 'tail' %>
+        Delete current and tail
+      </label>
+
+      <label>
+        <%= f.radio_button :delete_period, 'head' %>
+        Delete current and head
+      </label>
+    </div>
+
     <%= f.submit('Save') %>
 <% end %>
