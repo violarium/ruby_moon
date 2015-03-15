@@ -63,7 +63,14 @@ class CalendarDayForm
   def build_period
     @period = @user.critical_periods.has_date(@date).first
     if @period.nil?
-      @period = @user.critical_periods.new(from: @date, to: period_end_date) if critical_day
+      if critical_day
+        @period = @user.critical_periods.near_by_date(@date).first
+        if @period.nil?
+          @period = @user.critical_periods.new(from: @date, to: period_end_date)
+        else
+          @period.append_date(@date)
+        end
+      end
     elsif !critical_day
       if delete_period == 'tail'
         @period.to = @date - 1.day

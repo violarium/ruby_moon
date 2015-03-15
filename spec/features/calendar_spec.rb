@@ -62,7 +62,7 @@ describe 'Calendar page' do
       expect(page).to have_text('You are able to add a new critical period')
     end
 
-    describe 'when we click "Save"' do
+    describe 'when we check "Critical day" and click "Save"' do
       it 'should add calendar period with 1 day by default' do
         visit '/calendar/2015/2'
         find('.month-list > li:first-child .day > a', text: 10).click
@@ -73,16 +73,6 @@ describe 'Calendar page' do
         expect(added_period.from).to eq Date.new(2015, 2, 10)
         expect(added_period.to).to eq Date.new(2015, 2, 10)
         expect(page).to have_selector('.day.critical', text: 10)
-      end
-
-      it 'should show an error message if there is errors on submit' do
-        user.critical_periods.create!(from: Date.new(2015, 2, 15), to: Date.new(2015, 2, 16))
-        visit '/calendar/2015/2'
-        find('.month-list > li:first-child .day > a', text: 10).click
-        check 'Critical day'
-        click_on 'Save'
-
-        expect(page).to have_text('There are errors')
       end
     end
   end
@@ -129,6 +119,35 @@ describe 'Calendar page' do
         period = user.reload.critical_periods.first
         expect(period.from).to eq Date.new(2015, 1, 12)
         expect(period.to).to eq Date.new(2015, 1, 15)
+      end
+    end
+  end
+
+
+  describe 'when we click on day, which is near by another period' do
+    before do
+      user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
+      visit '/calendar/2015/1'
+      find('.month-list > li:first-child .day > a', text: 17).click
+    end
+
+    it 'should show us a message that we can add this day to existing period' do
+      expect(page).to have_text('You are able to add this day to period 10 January, 2015 - 15 January, 2015')
+    end
+
+    it 'should have "critical day" unchecked' do
+      checkbox = find(:checkbox, 'Critical day')
+      expect(checkbox).not_to be_checked
+    end
+
+    describe 'when we check "Critical day" and click "Save"' do
+      it 'should add this day and all days between to critical period' do
+        check 'Critical day'
+        click_on 'Save'
+
+        period = user.reload.critical_periods.first
+        expect(period.from).to eq Date.new(2015, 1, 10)
+        expect(period.to).to eq Date.new(2015, 1, 17)
       end
     end
   end

@@ -68,7 +68,7 @@ describe CalendarDayForm do
 
       describe 'when received length makes new critical period incorrect' do
         before { form.period_length = 8 }
-        before { user.critical_periods.create(from: Date.new(2015, 1, 14), to: Date.new(2015, 1, 18)) }
+        before { user.critical_periods.create(from: Date.new(2015, 1, 15), to: Date.new(2015, 1, 18)) }
 
         it 'should not be valid' do
           expect(form).not_to be_valid
@@ -158,6 +158,48 @@ describe CalendarDayForm do
         it 'should delete period if it has length 1' do
           user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
           expect { form.submit }.to change { user.critical_periods.count }.by(-1)
+        end
+      end
+    end
+  end
+
+
+  describe 'when received date close enough to existing period' do
+
+    describe 'after period' do
+      let!(:period) { user.critical_periods.create!(from: Date.new(2015, 1, 2), to: Date.new(2015, 1, 3)) }
+
+      it 'should have parameter "critical_day" falsey' do
+        expect(form.critical_day).to be_falsey
+      end
+
+      describe 'when receive "critical_day" parameter' do
+        before { form.critical_day = true }
+
+        it 'extend existing critical period' do
+          form.submit
+          period.reload
+          expect(period.from).to eq Date.new(2015, 1, 2)
+          expect(period.to).to eq Date.new(2015, 1, 7)
+        end
+      end
+    end
+
+    describe 'before period' do
+      let!(:period) { user.critical_periods.create!(from: Date.new(2015, 1, 9), to: Date.new(2015, 1, 10)) }
+
+      it 'should have parameter "critical_day" falsey' do
+        expect(form.critical_day).to be_falsey
+      end
+
+      describe 'when receive "critical_day" parameter' do
+        before { form.critical_day = true }
+
+        it 'extend existing critical period' do
+          form.submit
+          period.reload
+          expect(period.from).to eq Date.new(2015, 1, 7)
+          expect(period.to).to eq Date.new(2015, 1, 10)
         end
       end
     end

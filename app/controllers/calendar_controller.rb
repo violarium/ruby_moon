@@ -23,6 +23,7 @@ class CalendarController < ApplicationController
     @day = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
     @day_form = CalendarDayForm.new(current_user, @day)
     @current_period = current_user.critical_periods.has_date(@day).first
+    @closest_period = current_user.critical_periods.near_by_date(@day).first
   end
 
   def update

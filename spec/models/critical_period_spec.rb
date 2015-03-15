@@ -1,20 +1,65 @@
 require 'rails_helper'
 
 describe CriticalPeriod do
+  let(:user) { FactoryGirl.create(:user) }
+
+  shared_examples 'a scope to select period which includes received date' do
+    it 'should make query to select period which includes date' do
+      date = period.from + 1.day
+      raise ArgumentError.new('Period date from and date to should be different') if date == period.to
+
+      selected_period = CriticalPeriod.near_by_date(period.from + 1.day).first
+      expect(selected_period).to eq(period)
+    end
+
+    it 'should make query to select period which from date equals to date' do
+      selected_period = CriticalPeriod.near_by_date(period.from).first
+      expect(selected_period).to eq(period)
+    end
+
+    it 'should make query to select period which to date equals to date' do
+      selected_period = CriticalPeriod.near_by_date(period.to).first
+      expect(selected_period).to eq(period)
+    end
+  end
 
   describe 'self#has_date' do
-    it 'should make query scoped to select critical period with received date' do
-      user = FactoryGirl.create(:user)
-      critical_period = user.critical_periods.create!(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10))
+    it_behaves_like 'a scope to select period which includes received date' do
+      let(:period) { user.critical_periods.create!(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }
+    end
+  end
 
-      selected_period = CriticalPeriod.has_date(Date.new(2015, 1, 6)).first
-      expect(selected_period).to eq(critical_period)
+  describe 'self#near_by_date' do
+    let!(:periods) do
+      [user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 20)),
+       user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 20))]
+    end
+
+    describe 'when date not in period' do
+      it 'should make query to select closest critical period after date' do
+        expect(CriticalPeriod.near_by_date(Date.new(2015, 1, 3)).first).to eq(periods[1])
+      end
+
+      it 'should make query not to select critical period after date which is too far' do
+        expect(CriticalPeriod.near_by_date(Date.new(2015, 1, 2)).first).to be_nil
+      end
+
+      it 'should make query to select closest critical period before date' do
+        expect(CriticalPeriod.near_by_date(Date.new(2015, 2, 27)).first).to eq(periods[0])
+      end
+
+      it 'should make query not to select critical period before date which is too far' do
+        expect(CriticalPeriod.near_by_date(Date.new(2015, 1, 28)).first).to be_nil
+      end
+    end
+
+    it_behaves_like 'a scope to select period which includes received date' do
+      let(:period) { periods[1] }
     end
   end
 
 
   describe 'validation' do
-    let(:user) { FactoryGirl.create(:user) }
     let(:critical_period) { user.critical_periods.new(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }
 
     it 'should be valid with correct data' do
@@ -120,6 +165,29 @@ describe CriticalPeriod do
         another_period.save!
         expect(critical_period).to be_valid
       end
+    end
+  end
+
+
+  describe '#append_date' do
+    let!(:period) { CriticalPeriod.new(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 12)) }
+
+    it 'should append correctly date before' do
+      period.append_date(Date.new(2015, 1, 8))
+      expect(period.from).to eq Date.new(2015, 1, 8)
+      expect(period.to).to eq Date.new(2015, 1, 12)
+    end
+
+    it 'should append correctly date after' do
+      period.append_date(Date.new(2015, 1, 14))
+      expect(period.from).to eq Date.new(2015, 1, 10)
+      expect(period.to).to eq Date.new(2015, 1, 14)
+    end
+
+    it 'should not change period if date inside of it' do
+      period.append_date(Date.new(2015, 1, 11))
+      expect(period.from).to eq Date.new(2015, 1, 10)
+      expect(period.to).to eq Date.new(2015, 1, 12)
     end
   end
 end

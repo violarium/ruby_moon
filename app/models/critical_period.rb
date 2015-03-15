@@ -21,6 +21,26 @@ class CriticalPeriod
     where(:from.lte => date, :to.gte => date)
   end
 
+  scope :near_by_date, -> (date) do
+    self.or({:from => date .. date + PERIOD_MARGIN.days},
+            {:to => date - PERIOD_MARGIN.days .. date},
+            {:from.lte => date, :to.gte => date})
+  end
+
+
+  # Append date to period and all the dates between.
+  #
+  # @param date [Date]
+  def append_date(date)
+    if date < from
+      self.from = date
+    elsif date > to
+      self.to = date
+    end
+  end
+
+
+  private
 
   # User is not nil.
   #
@@ -36,9 +56,6 @@ class CriticalPeriod
   def dates_not_nil?
     !from.nil? && !to.nil?
   end
-
-
-  private
 
 
   # Validation method to check if "to" greater of equal to "from".
@@ -64,14 +81,14 @@ class CriticalPeriod
 
   # Validation method to check if current period has enough margin with others.
   def validate_period_margin
-    before_range = (from - PERIOD_MARGIN.days) .. from
-    before_count = user.critical_periods.or({:to => before_range}, {:from => before_range}).where(:id.ne => id).count
+    periods_query = user.critical_periods.where(:id.ne => id)
+
+    before_count = periods_query.near_by_date(from).count
     if before_count > 0
       errors[:base] << 'There are period before too close'
     end
 
-    after_range = to .. (to + PERIOD_MARGIN.days)
-    after_count = user.critical_periods.or({:from => after_range}, {:to => after_range}).where(:id.ne => id).count
+    after_count = periods_query.near_by_date(to).count
     if after_count > 0
       errors[:base] << 'There are period after too close'
     end
