@@ -2,10 +2,10 @@
 
 <h1><%= full_date_title(@day) %></h1>
 
-<% if @day_form.period.new_record? %>
+<% if @current_period.nil? %>
     <div>You are able to add a new critical period</div>
 <% else %>
-    <div>This day belongs to period <%= full_date_title(@day_form.period.from_was) %> - <%= full_date_title(@day_form.period.to_was) %></div>
+    <div>This day belongs to period <%= full_date_title(@current_period.from) %> - <%= full_date_title(@current_period.to) %></div>
 <% end %>
 
 <% if @day_form.errors.count > 0 %>

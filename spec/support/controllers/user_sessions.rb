@@ -3,6 +3,6 @@
 # @param user [User]
 def controller_sign_in(user = nil)
   user = FactoryGirl.create(:user) if user.nil?
-  session[:user_id] = user.id
+  @controller.send(:sign_in_user, user)
   user
 end

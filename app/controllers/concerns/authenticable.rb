@@ -5,6 +5,7 @@ module Authenticable
 
   # Sign in user.
   def sign_in_user(user)
+    @current_user = user
     session[:user_id] = user.id.to_s
   end
 

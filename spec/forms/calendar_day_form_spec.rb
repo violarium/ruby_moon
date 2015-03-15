@@ -2,39 +2,47 @@ require 'rails_helper'
 
 describe CalendarDayForm do
   let(:user) { FactoryGirl.create(:user) }
+  let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7)) }
 
 
-  describe 'form accessors' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: 1,
-                                                                   period_length: 1,
-                                                                   delete_period: 'all' }) }
-    it 'should respond to #critical_day with received data' do
-      expect(form.critical_day).to eq 1
+  describe 'special setters and getters conversion' do
+    describe '#critical_day' do
+      it 'should make 1 string truthy' do
+        form.critical_day = '1'
+        expect(form.critical_day).to be_truthy
+      end
+
+      it 'should make 0 string falsey' do
+        form.critical_day = '0'
+        expect(form.critical_day).to be_falsey
+      end
     end
 
-    it 'should respond to #period_length with received data' do
-      expect(form.period_length).to eq 1
-    end
-
-    it 'should respond to #delete_period with received data' do
-      expect(form.delete_period).to eq 'all'
+    describe '#period_length' do
+      it 'should convert string to integer' do
+        form.period_length = '10'
+        expect(form.period_length).to eq 10
+      end
     end
   end
 
 
   describe 'when received date does not belong to any critical period' do
 
+    it 'should have parameter "critical_day" falsey' do
+      expect(form.critical_day).to be_falsey
+    end
+
     describe 'when receive "critical_day" parameter' do
+      before { form.critical_day = true }
 
       describe 'when do not receive period length' do
-        let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: 1 }) }
-
         it 'should create new critical period with length 1 on submit' do
           form.submit
 
           critical_period = user.critical_periods.first
-          expect(critical_period.from).to eq(Date.new(2015, 1, 1))
-          expect(critical_period.to).to eq(Date.new(2015, 1, 1))
+          expect(critical_period.from).to eq(Date.new(2015, 1, 7))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 7))
         end
 
         it 'should be valid' do
@@ -43,14 +51,14 @@ describe CalendarDayForm do
       end
 
       describe 'when receive specified period length' do
-        let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1), { critical_day: 1, period_length: 2 }) }
+        before { form.period_length = 2 }
 
         it 'should create new critical period with specified length on submit' do
           form.submit
 
           critical_period = user.critical_periods.first
-          expect(critical_period.from).to eq(Date.new(2015, 1, 1))
-          expect(critical_period.to).to eq(Date.new(2015, 1, 2))
+          expect(critical_period.from).to eq(Date.new(2015, 1, 7))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 8))
         end
 
         it 'should be valid' do
@@ -59,9 +67,8 @@ describe CalendarDayForm do
       end
 
       describe 'when received length makes new critical period incorrect' do
-        let(:form) { CalendarDayForm.new(user, Date.new(2015, 2, 1), { critical_day: 1, period_length: 8 }) }
-
-        before { user.critical_periods.create(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 15)) }
+        before { form.period_length = 8 }
+        before { user.critical_periods.create(from: Date.new(2015, 1, 14), to: Date.new(2015, 1, 18)) }
 
         it 'should not be valid' do
           expect(form).not_to be_valid
@@ -73,9 +80,7 @@ describe CalendarDayForm do
       end
     end
 
-    describe 'when do not receive "critical_day"' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 1)) }
-
+    describe 'when do not receive "critical_day" parameter' do
       it 'should not create critical period on submit' do
         expect { form.submit }.not_to change { user.critical_periods.count }
       end
@@ -93,31 +98,21 @@ describe CalendarDayForm do
       user.reload
     end
 
-    it 'should have parameter :critical_day to be 1' do
-      form = CalendarDayForm.new(user, Date.new(2015, 1, 6))
-      expect(form.critical_day).to eq 1
+    it 'should have parameter "critical_day" truthy' do
+      expect(form.critical_day).to be_truthy
     end
 
     describe 'when receive disabled "critical_day"' do
+      before { form.critical_day = false }
 
-      describe 'when receive delete method "all"' do
-        it 'should delete existing critical period on submit' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 6), { critical_day: 0, delete_period: 'all' })
-          expect { form.submit }.to change { user.critical_periods.count }.from(1).to(0)
-        end
-
-        describe 'when receive "critical_day"' do
-          it 'should not delete critical period' do
-            form = CalendarDayForm.new(user, Date.new(2015, 1, 6), { delete_period: 'all', critical_day: 1 })
-            expect { form.submit }.not_to change { user.critical_periods.count }
-          end
-        end
+      it 'should delete existing critical period on submit' do
+        expect { form.submit }.to change { user.critical_periods.count }.from(1).to(0)
       end
 
-
       describe 'when receive delete method "tail"' do
+        before { form.delete_period = 'tail' }
+
         it 'should delete period days from current date to end' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 7), { critical_day: 0, delete_period: 'tail' })
           expect { form.submit }.not_to change { user.critical_periods.count }
 
           critical_period = user.critical_periods.first
@@ -125,69 +120,44 @@ describe CalendarDayForm do
           expect(critical_period.to).to eq(Date.new(2015, 1, 6))
         end
 
-        it 'should delete period days and leave 1 if it is a case' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 6), { critical_day: 0, delete_period: 'tail' })
+        it 'should delete period days from current date to end and leave 1 if it is a second day' do
+          user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 6))
           expect { form.submit }.not_to change { user.critical_periods.count }
 
           critical_period = user.critical_periods.first
-          expect(critical_period.from).to eq(Date.new(2015, 1, 5))
-          expect(critical_period.to).to eq(Date.new(2015, 1, 5))
+          expect(critical_period.from).to eq(Date.new(2015, 1, 6))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 6))
         end
 
         it 'should delete period if it has length 1' do
-          user.critical_periods.create!(from: Date.new(2015, 10, 1), to: Date.new(2015, 10, 1))
-          form = CalendarDayForm.new(user, Date.new(2015, 10, 1), { critical_day: 0, delete_period: 'tail' })
+          user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
           expect { form.submit }.to change { user.critical_periods.count }.by(-1)
-        end
-
-        describe 'when receive "critical_day"' do
-          it 'should do nothing with critical period' do
-            form = CalendarDayForm.new(user, Date.new(2015, 1, 7), { delete_period: 'tail', critical_day: 1 })
-            form.submit
-
-            critical_period = user.critical_periods.first
-            expect(critical_period.from).to eq(Date.new(2015, 1, 5))
-            expect(critical_period.to).to eq(Date.new(2015, 1, 10))
-          end
         end
       end
 
-
       describe 'when receive delete method "head"' do
+        before { form.delete_period = 'head' }
 
         it 'should delete period days from head to current date' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 8), { critical_day: 0, delete_period: 'head' })
           expect { form.submit }.not_to change { user.critical_periods.count }
 
           critical_period = user.critical_periods.first
-          expect(critical_period.from).to eq(Date.new(2015, 1, 9))
+          expect(critical_period.from).to eq(Date.new(2015, 1, 8))
           expect(critical_period.to).to eq(Date.new(2015, 1, 10))
         end
 
-        it 'should delete period days and leave 1 if it is a case' do
-          form = CalendarDayForm.new(user, Date.new(2015, 1, 9), { critical_day: 0, delete_period: 'head' })
+        it 'should delete period days from head to current date and leave 1 if it is a pre last day' do
+          user.critical_periods.first.update_attributes(to: Date.new(2015, 1, 8))
           expect { form.submit }.not_to change { user.critical_periods.count }
 
           critical_period = user.critical_periods.first
-          expect(critical_period.from).to eq(Date.new(2015, 1, 10))
-          expect(critical_period.to).to eq(Date.new(2015, 1, 10))
+          expect(critical_period.from).to eq(Date.new(2015, 1, 8))
+          expect(critical_period.to).to eq(Date.new(2015, 1, 8))
         end
 
         it 'should delete period if it has length 1' do
-          user.critical_periods.create!(from: Date.new(2015, 10, 1), to: Date.new(2015, 10, 1))
-          form = CalendarDayForm.new(user, Date.new(2015, 10, 1), { critical_day: 0, delete_period: 'head' })
+          user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
           expect { form.submit }.to change { user.critical_periods.count }.by(-1)
-        end
-
-        describe 'when receive "critical_day"' do
-          it 'should do nothing with critical period' do
-            form = CalendarDayForm.new(user, Date.new(2015, 1, 8), { delete_period: 'head', critical_day: 1 })
-            form.submit
-
-            critical_period = user.critical_periods.first
-            expect(critical_period.from).to eq(Date.new(2015, 1, 5))
-            expect(critical_period.to).to eq(Date.new(2015, 1, 10))
-          end
         end
       end
     end
