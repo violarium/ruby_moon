@@ -31,7 +31,7 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, @day, params[:calendar_day_form])
      if @day_form.valid?
        @day_form.submit
-       redirect_to calendar_index_url(@day.year, @day.month)
+       redirect_to calendar_url(@day.year, @day.month)
      else
        render :show
      end

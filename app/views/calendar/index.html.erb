@@ -1,4 +1,4 @@
-<% content_for(:title, month_date_title(@month_grid_data[:month_date])) %>
+<% content_for(:title, l(@month_grid_data[:month_date], format: :full_month)) %>
 
 <%= render 'calendar/calendar_controls' %>
 
@@ -6,14 +6,15 @@
   <% @month_grid_data[:month_list].each do |month| %>
     <li>
       <div class="month-header">
-        <%= month_date_title(month[:month_date]) %>
+        <%= l(month[:month_date], format: :full_month) %>
       </div>
       <ul class="month-days-grid">
-        <% month[:week_days].each do |week_day| %>
+        <% month[:dates].first(7).each do |day| %>
           <li class="week-day">
-            <%= t('date.abbr_day_names')[week_day] %>
+            <%= l(day, format: :week_abbr) %>
           </li>
         <% end %>
+
         <% month[:dates].each_with_index do |date, date_index| %>
           <li class="day <%= calendar_day_opt_classes(date, date_index, month[:month_date], @month_grid_data[:critical_dates]) %>">
             <a class="day-content" href="<%= make_calendar_day_url(date) %>">

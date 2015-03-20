@@ -1,24 +1,4 @@
 module CalendarHelper
-  # Get title for date, including month and year.
-  #
-  # @param date [Date] date object to get title.
-  #
-  # @return [String] title.
-  def month_date_title(date)
-    t('date.month_names')[date.month] + ', ' + date.year.to_s
-  end
-
-
-  # Get title for date, including date, month and year.
-  #
-  # @param date [Date] date object to get title.
-  #
-  # @return [String] title.
-  def full_date_title(date)
-    date.day.to_s + ' ' + month_date_title(date)
-  end
-
-
   # Make calendar day url from date object.
   #
   # @param date [Date] date object to create url.

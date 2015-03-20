@@ -1,11 +1,11 @@
-<% content_for(:title, full_date_title(@day)) %>
+<% content_for(:title, l(@day, format: :full_day)) %>
 
-<h1><%= full_date_title(@day) %></h1>
+<h1><%= l(@day, format: :full_day) %></h1>
 
 <% if !@current_period.nil? %>
-    <div>This day belongs to period <%= full_date_title(@current_period.from) %> - <%= full_date_title(@current_period.to) %></div>
+    <div>This day belongs to period <%= l(@current_period.from, format: :full_day) %> - <%= l(@current_period.to, format: :full_day) %></div>
 <% elsif !@closest_period.nil? %>
-    <div>You are able to add this day to period <%= full_date_title(@closest_period.from) %> - <%= full_date_title(@closest_period.to) %></div>
+    <div>You are able to add this day to period <%= l(@closest_period.from, format: :full_day) %> - <%= l(@closest_period.to, format: :full_day) %></div>
 <% else %>
     <div>You are able to add a new critical period</div>
 <% end %>

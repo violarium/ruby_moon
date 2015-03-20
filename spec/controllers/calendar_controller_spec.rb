@@ -106,7 +106,7 @@ describe CalendarController do
         it 'should redirect to calendar url into month of current critical period' do
           allow(day_form).to receive(:submit).and_return true
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
-          expect(response).to redirect_to calendar_index_url(2015, 1)
+          expect(response).to redirect_to calendar_url(2015, 1)
         end
       end
 
