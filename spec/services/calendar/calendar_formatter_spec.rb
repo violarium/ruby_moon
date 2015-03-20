@@ -3,6 +3,23 @@ require 'rails_helper'
 describe Calendar::CalendarFormatter do
   let(:formatter) { Calendar::CalendarFormatter.new }
 
+  describe '#month' do
+    describe ':dates in array' do
+      it 'should return correct date array for received month' do
+        result = formatter.month(Date.new(2015, 1, 10))
+        expect(result[:dates]).to eq (Date.new(2014, 12, 29) .. Date.new(2015, 2, 8))
+      end
+    end
+
+    describe ':month_date in array' do
+      it 'should return correct month date - first month day' do
+        result = formatter.month(Date.new(2015, 1, 10))
+        expect(result[:month_date]).to eq Date.new(2015, 1)
+      end
+    end
+  end
+
+
   describe '#mont_list' do
     it 'should have correct length for each limit of month' do
       (1 .. 3).each do |limit|
@@ -28,17 +45,6 @@ describe Calendar::CalendarFormatter do
         expect(result[0][:dates]).to eq (Date.new(2014, 12, 29) .. Date.new(2015, 2, 8))
         expect(result[1][:dates]).to eq (Date.new(2015, 1, 26) .. Date.new(2015, 3, 8))
         expect(result[2][:dates]).to eq (Date.new(2015, 2, 23) .. Date.new(2015, 4, 5))
-      end
-    end
-
-    describe ':week_days in array' do
-      it 'should return correct week sequence for each month' do
-        result = formatter.month_list(Date.new(2015, 1), limit: 3)
-        week_sequence = [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
-
-        expect(result[0][:week_days]).to eq week_sequence
-        expect(result[1][:week_days]).to eq week_sequence
-        expect(result[2][:week_days]).to eq week_sequence
       end
     end
 
