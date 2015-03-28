@@ -19,9 +19,7 @@ describe CalendarController do
         user_calendar = double('user_calendar')
         expect(DataProvider::UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-        expect(user_calendar).to receive(:month_grid_data)
-                                     .with(Date.new(2015, 1), limit: 2, current_date: Date.new(2015, 1, 10))
-                                     .and_return('month_grid_data')
+        expect(user_calendar).to receive(:month_grid_data).with(Date.new(2015, 1)).and_return('month_grid_data')
 
         get :index, { year: 2015, month: 1 }
         expect(assigns(:month_grid_data)).to eq 'month_grid_data'
@@ -31,12 +29,16 @@ describe CalendarController do
         user_calendar = double('user_calendar')
         expect(DataProvider::UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-        expect(user_calendar).to receive(:month_grid_data)
-                                     .with(Date.new(2015, 1, 10), limit: 2, current_date: Date.new(2015, 1, 10))
-                                     .and_return('month_grid_data')
+        expect(user_calendar).to receive(:month_grid_data).with(Date.new(2015, 1, 10)).and_return('month_grid_data')
 
         get :index
         expect(assigns(:month_grid_data)).to eq 'month_grid_data'
+      end
+
+      it 'should pass to view current date' do
+        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
+        get :index
+        expect(assigns(:current_date)).to eq Date.new(2015, 1, 10)
       end
     end
 

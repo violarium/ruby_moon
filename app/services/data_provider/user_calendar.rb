@@ -12,21 +12,16 @@ module DataProvider
     # Get month grid data.
     #
     # @param month_date [Date]
-    # @param limit [Integer]
-    # @param current_date [Date]
     #
     # @return [Hash]
-    def month_grid_data(month_date, limit: 1, current_date: nil)
-      month_list = @calendar_formatter.month_list(month_date, limit: limit)
+    def month_grid_data(month_date)
+      month_data = @calendar_formatter.month(month_date)
 
-      date_from = month_list[0][:dates].first
-      date_to = month_list[-1][:dates].last
+      date_from = month_data[:dates].first
+      date_to = month_data[:dates].last
       critical_dates = Repository::CriticalPeriod.date_collection(@user, date_from, date_to)
 
-      { month_list: month_list,
-        critical_dates: critical_dates,
-        current_date: current_date,
-        month_date: month_date }
+      { month: month_data, critical_dates: critical_dates }
     end
   end
 end

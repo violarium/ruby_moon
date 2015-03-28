@@ -8,14 +8,14 @@ class CalendarController < ApplicationController
     end
 
     if params[:year].nil? || params[:month].nil?
-      current_date = date = Date.today
+      @current_date = date = Date.today
     else
       date = Date.new(params[:year].to_i, params[:month].to_i)
-      current_date = Date.today
+      @current_date = Date.today
     end
 
     calendar_data_provider = DataProvider::UserCalendar.new(current_user)
-    @month_grid_data = calendar_data_provider.month_grid_data(date, limit: 2, current_date: current_date)
+    @month_grid_data = calendar_data_provider.month_grid_data(date)
   end
 
 

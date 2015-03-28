@@ -9,7 +9,7 @@ describe 'Calendar page' do
   describe 'when we are not signed in' do
     before do
       sign_out_if_signed_in
-      visit '/calendar/2015/01'
+      visit '/calendar/2015/1'
     end
 
     it 'should show sign in page if we are not signed in with error message' do
@@ -19,17 +19,12 @@ describe 'Calendar page' do
   end
 
 
-
-  it 'should have title with received date' do
-    visit '/calendar/2015/01'
+  it 'should have title and header with received date' do
+    visit '/calendar/2015/1'
     expect(page).to have_title('January, 2015')
+    expect(page).to have_selector('h1', text: 'January, 2015')
   end
 
-  it 'should show 2 month with they days when we are signed in' do
-    visit '/calendar/2015/01'
-    expect(page).to have_content('January, 2015')
-    expect(page).to have_content('February, 2015')
-  end
 
   it 'should show critical periods for current user' do
     user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
@@ -41,11 +36,13 @@ describe 'Calendar page' do
     date_array.each do |date|
       expect(page).to have_selector('.day.critical', text: date.day)
     end
+
+    expect(page.all('.day.critical').count).to eq date_array.count
   end
 
   it 'should open day info page when we click on day' do
     visit '/calendar/2015/2'
-    find('.month-list > li:first-child .day > a', text: 10).click
+    find('.month-days-grid .day > a', text: 10).click
 
     expect(page).to have_title('10 February, 2015')
     expect(page).to have_selector('h1', '10 February, 2015')
@@ -57,7 +54,7 @@ describe 'Calendar page' do
 
     it 'should show as a message that we are going to add new period' do
       visit '/calendar/2015/2'
-      find('.month-list > li:first-child .day > a', text: 10).click
+      find('.month-days-grid .day > a', text: 10).click
 
       expect(page).to have_text('You are able to add a new critical period')
     end
@@ -65,7 +62,7 @@ describe 'Calendar page' do
     describe 'when we check "Critical day" and click "Save"' do
       it 'should add calendar period with 1 day by default' do
         visit '/calendar/2015/2'
-        find('.month-list > li:first-child .day > a', text: 10).click
+        find('.month-days-grid .day > a', text: 10).click
         check 'Critical day'
         click_on('Save')
 
@@ -82,7 +79,7 @@ describe 'Calendar page' do
     before do
       user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
       visit '/calendar/2015/1'
-      find('.month-list > li:first-child .day > a', text: 11).click
+      find('.month-days-grid .day > a', text: 11).click
     end
 
     it 'should show us a message that this is existing period' do
@@ -128,7 +125,7 @@ describe 'Calendar page' do
     before do
       user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 15))
       visit '/calendar/2015/1'
-      find('.month-list > li:first-child .day > a', text: 17).click
+      find('.month-days-grid .day > a', text: 17).click
     end
 
     it 'should show us a message that we can add this day to existing period' do
