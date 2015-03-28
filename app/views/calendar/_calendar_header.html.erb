@@ -1,0 +1,17 @@
+<header class="row calendar-header">
+  <div class="col-xs-3 prev-month">
+    <a href="<%= calendar_url year: month_date.prev_month.year, month: month_date.prev_month.month %>" class="btn btn-default">
+      <span class="glyphicon glyphicon-arrow-left"></span>
+      <span class="month-title"><%= l(month_date.prev_month, format: :full_month) %></span>
+    </a>
+  </div>
+  <div class="col-xs-6">
+    <h1 class="text-center"><%= l(month_date, format: :full_month) %></h1>
+  </div>
+  <div class="col-xs-3 next-month">
+    <a href="<%= calendar_url year: month_date.next_month.year, month: month_date.next_month.month %>" class="btn btn-default">
+      <span class="month-title"><%= l(month_date.next_month, format: :full_month) %></span>
+      <span class="glyphicon glyphicon-arrow-right"></span>
+    </a>
+  </div>
+</header>

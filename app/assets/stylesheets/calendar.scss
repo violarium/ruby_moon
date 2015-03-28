@@ -1,5 +1,7 @@
 .month-days-grid {
   @include reset-list;
+  overflow: hidden;
+
   & > li {
     float:left;
   }
@@ -7,9 +9,9 @@
   .week-day {
     width: 1/7 * 100%;
     text-align: center;
-    font-size: 2.4vw;
+    font-size: 1em;
     @media (min-width: $screen-md-min) {
-      font-size: 1.1vw;
+      font-size: 2em;
     }
   }
 
@@ -17,15 +19,29 @@
     position: relative;
     width: 1/7 * 100%;
     padding-bottom : 1/7 * 100%; // = width for a 1:1 aspect ratio
+    overflow: hidden;
 
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
 
     &.week-number-0 {
-      border-top: 1px solid black;
+      border-top: 1px solid;
     }
     &.week-day-number-0 {
-      border-left: 1px solid black;
+      border-left: 1px solid;
+    }
+
+    &.week-day-number-0.week-number-0 {
+      border-radius: 4px 0 0 0;
+    }
+    &.week-day-number-6.week-number-0 {
+      border-radius: 0 4px 0 0;
+    }
+    &.week-day-number-0.week-number-5 {
+      border-radius: 0 0 0 4px;
+    }
+    &.week-day-number-6.week-number-5 {
+      border-radius: 0 0 4px 0;
     }
 
 
@@ -36,7 +52,7 @@
       top: 0;
       left: 0;
       padding-left: 0.3em;
-      color: black;
+      color: inherit;
       text-decoration: none;
 
       font-size: 1.2em;
@@ -104,6 +120,38 @@
     .glyphicon {
       display: inline-block;
       margin-left: 0.5em;
+    }
+  }
+}
+
+
+.calendar-header {
+  margin-bottom: 1em;
+  @media (min-width: $screen-sm-min) {
+    margin-bottom: 2em;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .next-month, .prev-month {
+    vertical-align: top;
+  }
+  .next-month {
+    text-align: right;
+  }
+  .prev-month {
+    text-align: left;
+  }
+
+  .month-title {
+    display: none;
+  }
+  @media (min-width: $screen-sm-min) {
+    .month-title {
+      width: 110px;
+      display: inline-block;
     }
   }
 }

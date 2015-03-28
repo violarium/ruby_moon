@@ -8,3 +8,10 @@
     width: 50%;
   }
 }
+
+h1 {
+  font-size: 24px;
+  @media (min-width: $screen-sm-min) {
+    font-size: 32px;
+  }
+}
