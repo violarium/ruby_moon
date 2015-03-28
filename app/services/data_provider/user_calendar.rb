@@ -19,7 +19,14 @@ module DataProvider
 
       date_from = month_data[:dates].first
       date_to = month_data[:dates].last
-      critical_dates = Repository::CriticalPeriod.date_collection(@user, date_from, date_to)
+
+      critical_dates = []
+      critical_periods = @user.critical_periods.between_dates(date_from, date_to).all.to_a
+      critical_periods.each do |period|
+        (period.from .. period.to).each do |date|
+          critical_dates.push(date) if date >= date_from && date <= date_to
+        end
+      end
 
       { month: month_data, critical_dates: critical_dates }
     end

@@ -27,6 +27,13 @@ class CriticalPeriod
             {:from.lte => date, :to.gte => date})
   end
 
+  scope :between_dates, -> (date_from, date_to) do
+    self.or({:from.gte => date_from, :to.lte => date_to},
+            {:from.lte => date_from, :to.gte => date_to},
+            {:from.lte => date_from, :to.gte => date_from},
+            {:from.lte => date_to, :to.gte => date_to})
+  end
+
 
   # Append date to period and all the dates between.
   #

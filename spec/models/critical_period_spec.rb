@@ -23,13 +23,13 @@ describe CriticalPeriod do
     end
   end
 
-  describe 'self#has_date' do
+  describe '.has_date' do
     it_behaves_like 'a scope to select period which includes received date' do
       let(:period) { user.critical_periods.create!(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }
     end
   end
 
-  describe 'self#near_by_date' do
+  describe '.near_by_date' do
     let!(:periods) do
       [user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 20)),
        user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 20))]
@@ -58,6 +58,33 @@ describe CriticalPeriod do
     end
   end
 
+  describe '.between_dates' do
+    let!(:periods) do
+      [user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2)),
+       user.critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 1)),
+       user.critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 5))]
+    end
+
+    it 'should return periods overlapped by date borders' do
+      collection = CriticalPeriod.between_dates(Date.new(2015, 1, 29), Date.new(2015, 3, 5)).all.to_a
+      expect(collection). to eq [periods[0], periods[1]]
+    end
+
+    it 'should return periods which overlap date borders' do
+      collection = CriticalPeriod.between_dates(Date.new(2016, 1, 2), Date.new(2016, 1, 4)).all.to_a
+      expect(collection). to eq [periods[2]]
+    end
+
+    it 'should return periods which have from border' do
+      collection = CriticalPeriod.between_dates(Date.new(2015, 2, 1), Date.new(2015, 3, 5)).all.to_a
+      expect(collection). to eq [periods[0], periods[1]]
+    end
+
+    it 'should return periods which have to border' do
+      collection = CriticalPeriod.between_dates(Date.new(2015, 1, 29), Date.new(2015, 2, 1)).all.to_a
+      expect(collection). to eq [periods[0]]
+    end
+  end
 
   describe 'validation' do
     let(:critical_period) { user.critical_periods.new(from: Date.new(2015, 1, 5), to: Date.new(2015, 1, 10)) }
