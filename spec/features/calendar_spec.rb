@@ -101,7 +101,7 @@ describe 'Calendar page' do
       end
 
       it 'should delete the tail if we select this' do
-        choose 'Delete current and tail'
+        choose 'Remove current date and period tail'
         click_on 'Save'
 
         period = user.reload.critical_periods.first
@@ -110,7 +110,7 @@ describe 'Calendar page' do
       end
 
       it 'should delete the head if we select this' do
-        choose 'Delete current and head'
+        choose 'Remove current date and period head'
         click_on 'Save'
 
         period = user.reload.critical_periods.first

@@ -3,42 +3,84 @@
 <h1><%= l(@day, format: :full_day) %></h1>
 
 <% if !@current_period.nil? %>
-    <div>This day belongs to period <%= l(@current_period.from, format: :full_day) %> - <%= l(@current_period.to, format: :full_day) %></div>
+    <p>
+      This day belongs to period <%= l(@current_period.from, format: :full_day) %>
+      - <%= l(@current_period.to, format: :full_day) %>.
+    </p>
+    <p>
+      If you want to remove this day from period or delete whole period, uncheck "Critical day".
+    </p>
 <% elsif !@closest_period.nil? %>
-    <div>You are able to add this day to period <%= l(@closest_period.from, format: :full_day) %> - <%= l(@closest_period.to, format: :full_day) %></div>
+    <p>
+      You are able to add this day to period <%= l(@closest_period.from, format: :full_day) %>
+      - <%= l(@closest_period.to, format: :full_day) %>
+    </p>
+    <p>
+      To do it - check "Critical day".
+    </p>
 <% else %>
-    <div>You are able to add a new critical period</div>
+    <p>You are able to add a new critical period</p>
+    <p>
+      To do it - check "Critical day".
+    </p>
 <% end %>
+
+<hr />
 
 <% if @day_form.errors.count > 0 %>
     <div>There are errors</div>
     <ul>
       <% @day_form.errors.full_messages.each do |m| %>
-        <li><%= m %></li>
+          <li><%= m %></li>
       <% end %>
     </ul>
 <% end %>
 
-<%= form_for(@day_form, url: update_calendar_day_url(@day.year, @day.month, @day.day), method: :put) do |f| %>
-    <%= f.label :critical_day, 'Critical day' %>
-    <%= f.check_box :critical_day %>
-
-    <div>
-      <label>
-        <%= f.radio_button :delete_period, 'all', checked: true %>
-        Delete whole period
-      </label>
-
-      <label>
-        <%= f.radio_button :delete_period, 'tail' %>
-        Delete current and tail
-      </label>
-
-      <label>
-        <%= f.radio_button :delete_period, 'head' %>
-        Delete current and head
+<%= form_for(@day_form, url: update_calendar_day_url(@day.year, @day.month, @day.day), method: :put, html: {autocomplete: 'off'}) do |f| %>
+    <div class="form-group">
+      <label class="checkbox-inline">
+        <%= f.check_box :critical_day %>
+        Critical day
       </label>
     </div>
 
-    <%= f.submit('Save') %>
+    <% unless @current_period.nil? %>
+        <div class="form-group delete-period-block panel panel-default" id="delete-period-block">
+          <div class="panel-heading">Remove critical day from period</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <p>
+                You are going to remove this date from critical period. Please, choose the way to do it.
+              </p>
+
+              <label class="radio-inline">
+                <%= f.radio_button :delete_period, 'all', checked: true %>
+                Delete whole period
+              </label>
+
+              <br/>
+
+              <label class="radio-inline">
+                <%= f.radio_button :delete_period, 'tail' %>
+                Remove current date and period tail
+              </label>
+
+              <br/>
+
+              <label class="radio-inline">
+                <%= f.radio_button :delete_period, 'head' %>
+                Remove current date and period head
+              </label>
+            </div>
+
+            <div>
+              <span class="btn btn-default" id="delete-period-cancel">Do not remove</span>
+            </div>
+          </div>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.submit('Save', class: 'btn btn-primary') %>
+    </div>
 <% end %>
