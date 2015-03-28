@@ -72,11 +72,6 @@ describe CalendarController do
         expect(response).to render_template(:show)
       end
 
-      it 'should pass received date to template' do
-        get :show, { year: 2015, month: 1, day: 1 }
-        expect(assigns[:day]).to eq(Date.new(2015, 1, 1))
-      end
-
       it 'should pass calendar day form to view' do
         form = double('calendar_form')
         expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1)).and_return(form)
@@ -125,9 +120,8 @@ describe CalendarController do
           expect(response).to render_template(:show)
         end
 
-        it 'should pass to template current date and form' do
+        it 'should pass to template form' do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
-          expect(assigns[:day]).to eq(Date.new(2015, 1, 1))
           expect(assigns[:day_form]).to eq(day_form)
         end
       end

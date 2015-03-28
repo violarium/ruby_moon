@@ -1,5 +1,6 @@
 class CalendarController < ApplicationController
   before_filter :require_sign_in
+  before_filter :set_up_data_provider
 
 
   def index
@@ -14,26 +15,34 @@ class CalendarController < ApplicationController
       @current_date = Date.today
     end
 
-    calendar_data_provider = DataProvider::UserCalendar.new(current_user)
-    @month_grid_data = calendar_data_provider.month_grid_data(date)
+    @month_grid_data = @calendar_data_provider.month_grid_data(date)
   end
 
 
   def show
-    @day = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-    @day_form = CalendarDayForm.new(current_user, @day)
-    @current_period = current_user.critical_periods.has_date(@day).first
-    @closest_period = current_user.critical_periods.near_by_date(@day).first
+    @day_info = @calendar_data_provider.day_info(params)
+    @day_form = CalendarDayForm.new(current_user, @day_info[:date])
   end
 
+
   def update
-    @day = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-    @day_form = CalendarDayForm.new(current_user, @day, params[:calendar_day_form])
+    @day_info = @calendar_data_provider.day_info(params)
+    @day_form = CalendarDayForm.new(current_user, @day_info[:date], params[:calendar_day_form])
      if @day_form.valid?
        @day_form.submit
-       redirect_to calendar_url(@day.year, @day.month)
+       redirect_to calendar_url(@day_info[:date].year, @day_info[:date].month)
      else
        render :show
      end
+  end
+
+
+  private
+
+
+  # Set up calendar data provider for current user
+  #
+  def set_up_data_provider
+    @calendar_data_provider = DataProvider::UserCalendar.new(current_user)
   end
 end

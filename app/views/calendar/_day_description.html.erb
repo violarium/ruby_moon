@@ -1,0 +1,26 @@
+<% if !@day_info[:current_period].nil? %>
+    <p>
+      This day belongs to period
+      <%= l(@day_info[:current_period].from, format: :full_day) %>
+      -
+      <%= l(@day_info[:current_period].to, format: :full_day) %>.
+    </p>
+    <p>
+      If you want to remove this day from period or delete whole period, uncheck "Critical day".
+    </p>
+<% elsif !@day_info[:closest_period].nil? %>
+    <p>
+      You are able to add this day to period
+      <%= l(@day_info[:closest_period].from, format: :full_day) %>
+      -
+      <%= l(@day_info[:closest_period].to, format: :full_day) %>
+    </p>
+    <p>
+      To do it - check "Critical day".
+    </p>
+<% else %>
+    <p>You are able to add a new critical period</p>
+    <p>
+      To do it - check "Critical day".
+    </p>
+<% end %>

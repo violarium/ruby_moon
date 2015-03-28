@@ -23,5 +23,20 @@ module DataProvider
 
       { month: month_data, critical_dates: critical_dates }
     end
+
+
+    # Get info about the day from params.
+    #
+    # @param params [Hash
+    #
+    # @return [Hash]
+    def day_info(params)
+      date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+      {
+          date: date,
+          current_period: @user.critical_periods.has_date(date).first,
+          closest_period: @user.critical_periods.near_by_date(date).first,
+      }
+    end
   end
 end
