@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - ruby-2.2
+services:
+  - mongodb
+before_script:
+  - cp -f config/mongoid.travis.yml config/mongoid.yml
+  - cp -f config/secrets.travis.yml config/secrets.yml
+script:
+  - bundle install
+  - bundle exec rake db:mongoid:create_indexes
+  - bundle exec rspec
