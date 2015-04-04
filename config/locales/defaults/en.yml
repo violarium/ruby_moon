@@ -2,7 +2,7 @@ en:
   project_name: Ruby Moon
   date:
     formats:
-      full: "%d %B, %Y - %A"
+      full: "%-d %B, %Y - %A"
       full_month: "%B, %Y"
-      full_day: "%d %B, %Y"
+      full_day: "%-d %B, %Y"
       week_abbr: "%a"

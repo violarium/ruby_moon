@@ -15,7 +15,7 @@
     </ul>
 <% end %>
 
-<%= form_for(@day_form, url: update_calendar_day_url(@day_info[:date].year, @day_info[:date].month, @day_info[:date].day), method: :put, html: {autocomplete: 'off'}) do |f| %>
+<%= form_for(@day_form, url: update_calendar_day_url(year: @day_info[:date].year, month: @day_info[:date].month, day: @day_info[:date].day), method: :put, html: {autocomplete: 'off'}) do |f| %>
     <div class="form-group">
       <label class="checkbox-inline">
         <%= f.check_box :critical_day %>

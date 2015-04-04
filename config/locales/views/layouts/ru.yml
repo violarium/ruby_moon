@@ -1,0 +1,12 @@
+ru:
+  layouts:
+    navbar:
+      toggle_menu: Развернуть/свернуть меню
+      about: О проекте
+      documentation: Документация
+      help: Помощь
+      sign_in: Войти
+      sign_out: Выйти
+      sign_up: Регистрация
+      calendar: Календарь
+      language: Язык

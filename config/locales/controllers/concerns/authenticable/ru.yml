@@ -1,0 +1,5 @@
+ru:
+  controllers:
+    concerns:
+      authenticable:
+        require_sign_in: 'Вы должны авторизоваться!'
