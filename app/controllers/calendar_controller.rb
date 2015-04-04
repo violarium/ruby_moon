@@ -8,11 +8,11 @@ class CalendarController < ApplicationController
       redirect_to sign_in_url
     end
 
+    @current_date = Date.today
     if params[:year].nil? || params[:month].nil?
-      @current_date = date = Date.today
+      date = @current_date
     else
       date = Date.new(params[:year].to_i, params[:month].to_i)
-      @current_date = Date.today
     end
 
     @month_grid_data = @calendar_data_provider.month_grid_data(date)

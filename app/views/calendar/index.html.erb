@@ -3,10 +3,10 @@
 <%= render 'calendar/calendar_header', month_date: @month_grid_data[:month][:month_date] %>
 
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-8 calendar-grid-container">
     <%= render 'calendar/calendar_grid' %>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-4 calendar-info-container">
     <%= render 'calendar/calendar_info' %>
   </div>
 </div>

@@ -15,14 +15,16 @@ module CalendarHelper
   # @param date_index [Integer]
   # @param current_month_date [Date]
   # @param critical_dates [Array<Dates>]
+  # @param current_date [Date]
   #
   # @param [String]
-  def calendar_day_opt_classes(date, date_index, current_month_date, critical_dates)
+  def calendar_day_opt_classes(date, date_index, current_month_date, critical_dates, current_date)
     css_classes = []
     css_classes.push "week-day-number-#{date_index % 7}"
     css_classes.push "week-number-#{date_index / 7}"
     css_classes.push 'inactive' if date.month != current_month_date.month
     css_classes.push 'critical' if critical_dates.include? date
+    css_classes.push 'current-day' if current_date == date
 
     css_classes.join(' ')
   end

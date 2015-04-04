@@ -1,8 +1,18 @@
-<div class="panel panel-default">
+<div class="panel panel-default calendar-info">
   <div class="panel-body">
-    <p>Current day: <%= l(@current_date, format: :full)  %></p>
-    <p>
-      Click on any day to get more info or edit it.
-    </p>
+    <p class="current-day-title">Current day: <%= l(@current_date, format: :full) %></p>
+
+    <strong>Legend:</strong>
+    <ul>
+      <li><span class="example critical-example"></span> - critical day.</li>
+      <li><span class="example current-day-example"></span> - current day.</li>
+    </ul>
+
+    <strong>Critical periods management:</strong>
+    <ul>
+      <li>To add new critical period click on not critical day.</li>
+      <li>To add day to existing period click on day near by it.</li>
+      <li>To delete whole period or part of it click on day in period.</li>
+    </ul>
   </div>
 </div>
