@@ -1,0 +1,28 @@
+en:
+  calendar:
+    calendar_info:
+      current_day: "Current day: %{date}"
+      critical_day_example: current day
+      current_day_example: critical day
+      legend: "Legend:"
+      critical_management: "Critical periods management:"
+      critical_create: To add new critical period click on not critical day.
+      critical_append: To add day to existing period click on day near by it.
+      critical_delete: To delete whole period or part of it click on day in period.
+    day_description:
+      belongs_to: This day belongs to period
+      to_remove: If you want to remove this day from period or delete whole period, uncheck "Critical day".
+      able_to_append: You are able to add this day to period
+      to_append: To do it - check "Critical day".
+      able_to_create: You are able to add a new critical period
+      to_create: To do it - check "Critical day".
+    show:
+      errors: "There are errors:"
+      critical_day: Critical day
+      save: Save
+      delete_title: Remove critical day from period
+      delete_description: You are going to remove this date from critical period. Please, choose the way to do it.
+      delete_whole: Delete whole period
+      delete_head: Remove current date and period head
+      delete_tail: Remove current date and period tail
+      delete_cancel: Do not remove

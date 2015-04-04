@@ -7,9 +7,9 @@
 <hr />
 
 <% if @day_form.errors.count > 0 %>
-    <div>There are errors:</div>
+    <div><%= t '.errors' %></div>
     <ul>
-      <% @day_info_form.errors.full_messages.each do |m| %>
+      <% @day_form.errors.full_messages.each do |m| %>
           <li><%= m %></li>
       <% end %>
     </ul>
@@ -19,47 +19,45 @@
     <div class="form-group">
       <label class="checkbox-inline">
         <%= f.check_box :critical_day %>
-        Critical day
+        <%= t '.critical_day' %>
       </label>
     </div>
 
     <% unless @day_info[:current_period].nil? %>
         <div class="form-group delete-period-block panel panel-default" id="delete-period-block">
-          <div class="panel-heading">Remove critical day from period</div>
+          <div class="panel-heading"><%= t '.delete_title' %></div>
           <div class="panel-body">
             <div class="form-group">
-              <p>
-                You are going to remove this date from critical period. Please, choose the way to do it.
-              </p>
+              <p><%= t '.delete_description' %></p>
 
               <label class="radio-inline">
                 <%= f.radio_button :delete_period, 'all', checked: true %>
-                Delete whole period
+                <%= t '.delete_whole' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
                 <%= f.radio_button :delete_period, 'tail' %>
-                Remove current date and period tail
+                <%= t '.delete_tail' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
                 <%= f.radio_button :delete_period, 'head' %>
-                Remove current date and period head
+                <%= t '.delete_head' %>
               </label>
             </div>
 
             <div>
-              <span class="btn btn-default" id="delete-period-cancel">Do not remove</span>
+              <span class="btn btn-default" id="delete-period-cancel"><%= t '.delete_cancel' %></span>
             </div>
           </div>
         </div>
     <% end %>
 
     <div class="form-group">
-      <%= f.submit('Save', class: 'btn btn-primary') %>
+      <%= f.submit(t('.save'), class: 'btn btn-primary') %>
     </div>
 <% end %>
