@@ -2,8 +2,8 @@ ru:
   calendar:
     calendar_info:
       current_day: "Текущий день: %{date}"
-      critical_day_example: текущий день
-      current_day_example: скритический день
+      critical_day_example: критический день
+      current_day_example: текущий день
       legend: "Описание:"
       critical_management: "Управление критическими периодами:"
       critical_create: Чтобы создать новый критический период, нажмите на день, не являющийся критическим.

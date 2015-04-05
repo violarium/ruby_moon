@@ -2,8 +2,8 @@ en:
   calendar:
     calendar_info:
       current_day: "Current day: %{date}"
-      critical_day_example: current day
-      current_day_example: critical day
+      critical_day_example: critical day
+      current_day_example: current day
       legend: "Legend:"
       critical_management: "Critical periods management:"
       critical_create: To add new critical period click on not critical day.
