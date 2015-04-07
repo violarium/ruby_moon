@@ -11,6 +11,7 @@
 /config/mongoid.yml
 /config/secrets.yml
 /config/puma.rb
+/config/deploy.rb
 
 # Ignore all logfiles and tempfiles.
 /log/*

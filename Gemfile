@@ -30,12 +30,11 @@ gem 'bcrypt', '~> 3.1.7'
 # Add locales gem
 gem 'rails-i18n', '~> 4.0.0'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
+# Use Puma as the app server
 gem 'puma', group: :production
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'mina', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
