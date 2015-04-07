@@ -1,7 +1,7 @@
 language: ruby
 rvm:
   - ruby-2.2
-  - rxb-2.5
+  - rxb-2
 services:
   - mongodb
 before_script:
