@@ -6,6 +6,7 @@ class User
   field :encrypted_password, type: String
 
   has_many :critical_periods
+  has_many :future_critical_periods
 
   index({ email: 1 }, { unique: true })
 
