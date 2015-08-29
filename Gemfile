@@ -9,8 +9,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -33,7 +31,7 @@ gem 'rails-i18n', '~> 4.0.0'
 # Use Puma as the app server
 gem 'puma', group: :production
 
-# Use Capistrano for deployment
+# Use Mina for deployment
 gem 'mina', group: :development
 
 group :development, :test do
