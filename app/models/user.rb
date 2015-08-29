@@ -30,4 +30,13 @@ class User
     @password = ::BCrypt::Password.create(new_password)
     self.encrypted_password = @password
   end
+
+  # Get first upcoming future critical period.
+  #
+  # @param date [Date]
+  #
+  # @return [FutureCriticalPeriod]
+  def upcoming_critical_period(date)
+    future_critical_periods.upcoming(date).first
+  end
 end

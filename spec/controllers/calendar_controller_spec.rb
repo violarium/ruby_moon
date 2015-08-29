@@ -40,6 +40,14 @@ describe CalendarController do
         get :index
         expect(assigns(:current_date)).to eq Date.new(2015, 1, 10)
       end
+
+      it 'should pass info about upcoming critical period' do
+        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
+
+        expect(@user).to receive(:upcoming_critical_period).with(Date.new(2015, 1, 10)).and_return('upcoming_period')
+        get :index
+        expect(assigns(:upcoming_period)).to eq 'upcoming_period'
+      end
     end
 
 

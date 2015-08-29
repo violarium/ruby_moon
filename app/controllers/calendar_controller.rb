@@ -16,6 +16,7 @@ class CalendarController < ApplicationController
     end
 
     @month_grid_data = @calendar_data_provider.month_grid_data(date)
+    @upcoming_period = current_user.upcoming_critical_period(date)
   end
 
 

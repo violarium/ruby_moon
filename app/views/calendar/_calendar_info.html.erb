@@ -4,6 +4,15 @@
       <%= t '.current_day', date: l(@current_date, format: :full) %>
     </p>
 
+    <% unless @upcoming_period.nil? %>
+        <p class="upcoming-critical-period">
+          <strong><%= t('.critical_period_upcoming') %></strong><br />
+          <%= l(@upcoming_period.from, format: :full_day) %> - <%= l(@upcoming_period.to, format: :full_day) %>
+          <br />
+          <%= t('.critical_period_days_left') %> <%= (@upcoming_period.from - @current_date).to_i %>
+        </p>
+    <% end %>
+
     <strong><%= t '.legend' %></strong>
     <ul>
       <li><span class="example current-day-example"></span> - <%= t '.current_day_example' %></li>

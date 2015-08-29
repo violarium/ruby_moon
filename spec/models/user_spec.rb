@@ -24,4 +24,30 @@ describe User do
       expect(user.password).to be_nil
     end
   end
+
+
+  describe '#upcoming_critical_period' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    let!(:future_periods) do
+      [user.future_critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2)),
+       user.future_critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 1)),
+       user.future_critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 5))]
+    end
+
+    it 'should return closest critical period after received date' do
+      result = user.upcoming_critical_period(Date.new(2015, 2, 10))
+      expect(result).to eq future_periods[1]
+    end
+
+    it 'should not return critical period if it started' do
+      result = user.upcoming_critical_period(Date.new(2015, 2, 28))
+      expect(result).to eq future_periods[2]
+    end
+
+    it 'should return null if there are no incoming periods' do
+      result = user.upcoming_critical_period(Date.new(2016, 1, 6))
+      expect(result).to be_nil
+    end
+  end
 end
