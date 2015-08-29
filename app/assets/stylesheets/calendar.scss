@@ -79,6 +79,9 @@
     &.critical .day-content {
       background-color: $critical-color;
     }
+    &.future-critical .day-content {
+      background-image: url($future-critical-image);
+    }
   }
 }
 
@@ -169,6 +172,10 @@
 
   .critical-example {
     background-color: $critical-color;
+  }
+
+  .future-critical-example {
+    background-image: url($future-critical-image);
   }
 
   .current-day-example {

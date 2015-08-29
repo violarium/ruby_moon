@@ -20,21 +20,16 @@ module DataProvider
       date_from = month_data[:dates].first
       date_to = month_data[:dates].last
 
-      critical_dates = []
-      critical_periods = @user.critical_periods.between_dates(date_from, date_to).all.to_a
-      critical_periods.each do |period|
-        (period.from .. period.to).each do |date|
-          critical_dates.push(date) if date >= date_from && date <= date_to
-        end
-      end
+      critical_dates = collect_period_dates(@user.critical_periods, date_from, date_to)
+      future_critical_dates = collect_period_dates(@user.future_critical_periods, date_from, date_to)
 
-      { month: month_data, critical_dates: critical_dates }
+      { month: month_data, critical_dates: critical_dates, future_critical_dates: future_critical_dates }
     end
 
 
     # Get info about the day from params.
     #
-    # @param params [Hash
+    # @param params [Hash]
     #
     # @return [Hash]
     def day_info(params)
@@ -44,6 +39,28 @@ module DataProvider
           current_period: @user.critical_periods.has_date(date).first,
           closest_period: @user.critical_periods.near_by_date(date).first,
       }
+    end
+
+
+    private
+
+    # Collect the dates for period from query.
+    #
+    # @param query
+    # @param date_from [Date]
+    # @param date_to [Date]
+    #
+    # @return [Array]
+    def collect_period_dates(query, date_from, date_to)
+      dates = []
+      periods = query.between_dates(date_from, date_to).all.to_a
+      periods.each do |period|
+        (period.from .. period.to).each do |date|
+          dates.push(date) if date >= date_from && date <= date_to
+        end
+      end
+
+      dates
     end
   end
 end

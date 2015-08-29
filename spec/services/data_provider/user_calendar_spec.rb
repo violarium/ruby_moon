@@ -11,6 +11,9 @@ describe DataProvider::UserCalendar do
       user.critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 1))
       user.critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 5))
 
+      user.future_critical_periods.create!(from: Date.new(2015, 2, 1), to: Date.new(2015, 2, 2))
+      user.future_critical_periods.create!(from: Date.new(2016, 1, 10), to: Date.new(2016, 1, 15))
+
       @result = calendar_data_provider.month_grid_data(Date.new(2015, 1))
     end
 
@@ -24,6 +27,10 @@ describe DataProvider::UserCalendar do
 
     it 'should have critical dates in critical_dates' do
       expect(@result[:critical_dates]).to eq([Date.new(2015, 1, 31), Date.new(2015, 2, 1), Date.new(2015, 2, 2)])
+    end
+
+    it 'should have future critical dates in future_critical_dates' do
+      expect(@result[:future_critical_dates]).to eq([Date.new(2015, 2, 1), Date.new(2015, 2, 2)])
     end
   end
 end

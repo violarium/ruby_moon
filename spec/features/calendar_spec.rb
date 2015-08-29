@@ -148,4 +148,22 @@ describe 'Calendar page' do
       end
     end
   end
+
+
+
+  # probably, separate test to different files
+
+  it 'should show predicted critical periods for user' do
+    user.future_critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
+    user.future_critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 4))
+    user.future_critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 5))
+    visit '/calendar/2015/2'
+
+    date_array = (Date.new(2015, 1, 30) .. Date.new(2015, 2, 3)).to_a  + (Date.new(2015, 2, 28) .. Date.new(2015, 3, 4)).to_a
+    date_array.each do |date|
+      expect(page).to have_selector('.day.future-critical', text: date.day)
+    end
+
+    expect(page.all('.day.future-critical').count).to eq date_array.count
+  end
 end

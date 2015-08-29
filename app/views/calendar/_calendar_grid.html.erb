@@ -6,7 +6,7 @@
   <% end %>
 
   <% @month_grid_data[:month][:dates].each_with_index do |date, date_index| %>
-      <li class="day <%= calendar_day_opt_classes(date, date_index, @month_grid_data[:month][:month_date], @month_grid_data[:critical_dates], @current_date) %>">
+      <li class="day <%= calendar_day_opt_classes(date, date_index, @month_grid_data, @current_date) %>">
         <a class="day-content" href="<%= make_calendar_day_url(date) %>">
           <%= date.day %>
         </a>

@@ -13,17 +13,21 @@ module CalendarHelper
   #
   # @param date [Date]
   # @param date_index [Integer]
-  # @param current_month_date [Date]
-  # @param critical_dates [Array<Dates>]
+  # @param month_grid_data [Hash]
   # @param current_date [Date]
   #
   # @param [String]
-  def calendar_day_opt_classes(date, date_index, current_month_date, critical_dates, current_date)
+  def calendar_day_opt_classes(date, date_index, month_grid_data, current_date)
+    current_month_date = month_grid_data[:month][:month_date]
+    critical_dates = month_grid_data[:critical_dates]
+    future_critical_dates = month_grid_data[:future_critical_dates]
+
     css_classes = []
     css_classes.push "week-day-number-#{date_index % 7}"
     css_classes.push "week-number-#{date_index / 7}"
     css_classes.push 'inactive' if date.month != current_month_date.month
     css_classes.push 'critical' if critical_dates.include? date
+    css_classes.push 'future-critical' if future_critical_dates.include? date
     css_classes.push 'current-day' if current_date == date
 
     css_classes.join(' ')

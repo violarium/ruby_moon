@@ -3,6 +3,7 @@ ru:
     calendar_info:
       current_day: "Текущий день: %{date}"
       critical_day_example: критический день
+      future_critical_day_example: предсказанный критический день
       current_day_example: текущий день
       legend: "Описание:"
       critical_management: "Управление критическими периодами:"

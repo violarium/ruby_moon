@@ -3,6 +3,7 @@ en:
     calendar_info:
       current_day: "Current day: %{date}"
       critical_day_example: critical day
+      future_critical_day_example: predicted critical day
       current_day_example: current day
       legend: "Legend:"
       critical_management: "Critical periods management:"
