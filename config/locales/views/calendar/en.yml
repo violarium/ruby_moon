@@ -9,7 +9,7 @@ en:
       critical_management: "Critical periods management:"
       critical_create: To add new critical period click on not critical day.
       critical_append: To add day to existing period click on day near by it.
-      critical_delete: To delete whole period or part of it click on day in period.
+      critical_delete: To change, delete whole period or part of it click on day in period.
       critical_period_upcoming: "Upcoming critical period:"
       critical_period_days_left: "Days left:"
     day_description:
