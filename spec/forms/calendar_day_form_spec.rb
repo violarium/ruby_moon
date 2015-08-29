@@ -3,6 +3,27 @@ require 'rails_helper'
 describe CalendarDayForm do
   let(:user) { FactoryGirl.create(:user) }
   let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7)) }
+  let(:predictor) { double('predictor') }
+
+  before do
+    allow(Calendar::CriticalPeriodPredictor).to receive(:new).and_return(predictor)
+    allow(predictor).to receive(:refresh_for).with(user, 3)
+  end
+
+
+  shared_examples 'predict user critical periods' do
+    it 'should refresh the future periods for user on submit' do
+      expect(predictor).to receive(:refresh_for).with(user, 3).once
+      form.submit
+    end
+  end
+
+  shared_examples 'no predict user critical periods' do
+    it 'should not refresh the future periods for user on submit' do
+      expect(predictor).not_to receive(:refresh_for)
+      form.submit
+    end
+  end
 
 
   describe 'special setters and getters conversion' do
@@ -48,6 +69,8 @@ describe CalendarDayForm do
         it 'should be valid' do
           expect(form).to be_valid
         end
+
+        include_examples 'predict user critical periods'
       end
 
       describe 'when receive specified period length' do
@@ -64,6 +87,8 @@ describe CalendarDayForm do
         it 'should be valid' do
           expect(form).to be_valid
         end
+
+        include_examples 'predict user critical periods'
       end
 
       describe 'when received length makes new critical period incorrect' do
@@ -77,6 +102,8 @@ describe CalendarDayForm do
         it 'should not create new critical period' do
           expect { form.submit }.not_to change { user.critical_periods.count }
         end
+
+        include_examples 'no predict user critical periods'
       end
     end
 
@@ -88,6 +115,8 @@ describe CalendarDayForm do
       it 'should be valid' do
         expect(form).to be_valid
       end
+
+      include_examples 'no predict user critical periods'
     end
   end
 
@@ -105,9 +134,14 @@ describe CalendarDayForm do
     describe 'when receive disabled "critical_day"' do
       before { form.critical_day = false }
 
-      it 'should delete existing critical period on submit' do
-        expect { form.submit }.to change { user.critical_periods.count }.from(1).to(0)
+      describe 'when delete method not received' do
+        it 'should delete existing critical period on submit' do
+          expect { form.submit }.to change { user.critical_periods.count }.from(1).to(0)
+        end
+
+        include_examples 'predict user critical periods'
       end
+
 
       describe 'when receive delete method "tail"' do
         before { form.delete_period = 'tail' }
@@ -129,9 +163,18 @@ describe CalendarDayForm do
           expect(critical_period.to).to eq(Date.new(2015, 1, 6))
         end
 
-        it 'should delete period if it has length 1' do
-          user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
-          expect { form.submit }.to change { user.critical_periods.count }.by(-1)
+        include_examples 'predict user critical periods'
+
+        describe 'if period has length 1' do
+          before do
+            user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
+          end
+
+          it 'should delete period' do
+            expect { form.submit }.to change { user.critical_periods.count }.by(-1)
+          end
+
+          include_examples 'predict user critical periods'
         end
       end
 
@@ -155,10 +198,19 @@ describe CalendarDayForm do
           expect(critical_period.to).to eq(Date.new(2015, 1, 8))
         end
 
-        it 'should delete period if it has length 1' do
+        include_examples 'predict user critical periods'
+      end
+
+      describe 'if period has length 1' do
+        before do
           user.critical_periods.first.update_attributes(from: Date.new(2015, 1, 7), to: Date.new(2015, 1, 7))
+        end
+
+        it 'should delete period' do
           expect { form.submit }.to change { user.critical_periods.count }.by(-1)
         end
+
+        include_examples 'predict user critical periods'
       end
     end
   end
@@ -182,6 +234,8 @@ describe CalendarDayForm do
           expect(period.from).to eq Date.new(2015, 1, 2)
           expect(period.to).to eq Date.new(2015, 1, 7)
         end
+
+        include_examples 'predict user critical periods'
       end
     end
 
@@ -201,6 +255,8 @@ describe CalendarDayForm do
           expect(period.from).to eq Date.new(2015, 1, 7)
           expect(period.to).to eq Date.new(2015, 1, 10)
         end
+
+        include_examples 'predict user critical periods'
       end
     end
   end

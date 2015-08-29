@@ -150,9 +150,6 @@ describe 'Calendar page' do
   end
 
 
-
-  # probably, separate test to different files
-
   it 'should show predicted critical periods for user' do
     user.future_critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
     user.future_critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 4))
@@ -165,5 +162,52 @@ describe 'Calendar page' do
     end
 
     expect(page.all('.day.future-critical').count).to eq date_array.count
+  end
+
+
+  describe 'critical period prediction' do
+    it 'should create predicted critical periods when I create critical period' do
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 10).click
+      check 'Critical day'
+      expect do
+        click_on('Save')
+      end.to change { user.future_critical_periods.count }.by(3)
+
+      future_critical_period = user.future_critical_periods.first
+      expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
+      expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days)
+    end
+
+
+    it 'should remove all predicted critical periods when I delete last critical period' do
+      user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 10))
+      user.future_critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
+
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 10).click
+      uncheck 'Critical day'
+      choose 'Delete whole period'
+      click_on 'Save'
+
+      expect(user.future_critical_periods.count).to eq 0
+    end
+
+
+    it 'should update predicted critical periods when I change existing critical period' do
+      user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 10))
+      user.future_critical_periods.create!(from: Date.new(2015, 2, 10) + 28.days, to: Date.new(2015, 2, 10) + 28.days)
+
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 11).click
+      check 'Critical day'
+      click_on 'Save'
+
+      expect(user.future_critical_periods.count).to eq(3)
+
+      future_critical_period = user.future_critical_periods.first
+      expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
+      expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days + 1.day)
+    end
   end
 end
