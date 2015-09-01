@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
 
   def update
     @day_info = @calendar_data_provider.day_info(params)
-    @day_form = CalendarDayForm.new(current_user, @day_info[:date], params[:calendar_day_form])
+    @day_form = CalendarDayForm.new(current_user, @day_info[:date], calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
        redirect_to calendar_url(@day_info[:date].year, @day_info[:date].month)
@@ -45,5 +45,14 @@ class CalendarController < ApplicationController
   #
   def set_up_data_provider
     @calendar_data_provider = DataProvider::UserCalendar.new(current_user)
+  end
+
+  # Get data for calendar day form.
+  #
+  # @return [Hash]
+  def calendar_day_form_data
+    form_data = params[:calendar_day_form]
+    form_data = { } if form_data.nil?
+    form_data
   end
 end

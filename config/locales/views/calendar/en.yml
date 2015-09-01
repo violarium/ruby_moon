@@ -19,6 +19,8 @@ en:
       to_append: To do it - check "Critical day".
       able_to_create: You are able to add a new critical period
       to_create: To do it - check "Critical day".
+      to_close_intro: "This day is too close to more than one period:"
+      to_close_forbid_append: You are not able to add this day to any of them.
     show:
       errors: "There are errors:"
       critical_day: Critical day

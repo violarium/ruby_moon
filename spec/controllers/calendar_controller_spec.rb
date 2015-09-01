@@ -96,12 +96,12 @@ describe CalendarController do
       before { controller_sign_in(user) }
 
       let(:day_form) { double('calendar_day_form') }
-      before do
-        expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { params: 'foo' }).and_return(day_form)
-      end
 
       describe 'if form data is valid' do
-        before { allow(day_form).to receive(:valid?).and_return(true) }
+        before do
+          expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { params: 'foo' }).and_return(day_form)
+          allow(day_form).to receive(:valid?).and_return(true)
+        end
 
         it 'should submit the form' do
           expect(day_form).to receive(:submit).and_return true
@@ -116,7 +116,10 @@ describe CalendarController do
       end
 
       describe 'if form data is not valid' do
-        before { allow(day_form).to receive(:valid?).and_return(false) }
+        before do
+          expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { params: 'foo' }).and_return(day_form)
+          allow(day_form).to receive(:valid?).and_return(false)
+        end
 
         it 'should not submit the form' do
           expect(day_form).not_to receive(:submit)
@@ -131,6 +134,15 @@ describe CalendarController do
         it 'should pass to template form' do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
           expect(assigns[:day_form]).to eq(day_form)
+        end
+      end
+
+      describe 'where there are no form data' do
+        it 'should receive empty data to form' do
+          allow(day_form).to receive(:valid?).and_return true
+          expect(day_form).to receive(:submit).and_return true
+          expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { }).and_return(day_form)
+          put :update, { year: 2015, month: 1, day: 1 }
         end
       end
     end

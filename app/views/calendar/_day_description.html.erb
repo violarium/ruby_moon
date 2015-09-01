@@ -6,14 +6,26 @@
       <%= l(@day_info[:current_period].to, format: :full_day) %>.
     </p>
     <p><%= t '.to_remove' %></p>
-<% elsif !@day_info[:closest_period].nil? %>
+<% elsif @day_info[:close_periods].length == 1 %>
     <p>
       <%= t '.able_to_append' %>
-      <%= l(@day_info[:closest_period].from, format: :full_day) %>
+      <%= l(@day_info[:close_periods][0].from, format: :full_day) %>
       -
-      <%= l(@day_info[:closest_period].to, format: :full_day) %>
+      <%= l(@day_info[:close_periods][0].to, format: :full_day) %>
     </p>
     <p><%= t '.to_append' %></p>
+<% elsif @day_info[:close_periods].length > 1 %>
+    <p><%= t '.to_close_intro' %></p>
+    <ul>
+      <% @day_info[:close_periods].each do |p| %>
+        <li>
+          <%= l(p.from, format: :full_day) %>
+          -
+          <%= l(p.to, format: :full_day) %>
+        </li>
+      <% end %>
+    </ul>
+    <p><%= t '.to_close_forbid_append' %></p>
 <% else %>
     <p><%= t '.able_to_create' %></p>
     <p><%= t '.to_create' %></p>

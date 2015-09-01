@@ -150,6 +150,38 @@ describe 'Calendar page' do
   end
 
 
+  describe 'when we click on day, which is near by 2 periods' do
+    before do
+      user.critical_periods.create!(from: Date.new(2015, 8, 2), to: Date.new(2015, 8, 3))
+      user.critical_periods.create!(from: Date.new(2015, 8, 16), to: Date.new(2015, 8, 19))
+      visit '/calendar/2015/8'
+      find('.month-days-grid .day > a', text: /^9$/).click
+    end
+
+    it 'should show us a message, that we can not add this day to any of 2 periods' do
+      expect(page).to have_text('This day is too close to more than one period: ' +
+                                    '2 August, 2015 - 3 August, 2015 16 August, 2015 - 19 August, 2015')
+      expect(page).to have_text('You are not able to add this day to any of them')
+    end
+
+    it 'should have "critical day" uncheked and disabled' do
+      checkbox = find(:checkbox, 'Critical day', disabled: true)
+      expect(checkbox).not_to be_checked
+      expect(checkbox).to be_disabled
+    end
+
+    it 'should do nothing when we submit form' do
+      click_on 'Save'
+
+      periods = user.critical_periods.all.to_a
+      expect(periods[0].from).to eq(Date.new(2015, 8, 2))
+      expect(periods[0].to).to eq(Date.new(2015, 8, 3))
+      expect(periods[1].from).to eq(Date.new(2015, 8, 16))
+      expect(periods[1].to).to eq(Date.new(2015, 8, 19))
+    end
+  end
+
+
   it 'should show predicted critical periods for user' do
     user.future_critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
     user.future_critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 4))

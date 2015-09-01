@@ -33,4 +33,45 @@ describe DataProvider::UserCalendar do
       expect(@result[:future_critical_dates]).to eq([Date.new(2015, 2, 1), Date.new(2015, 2, 2)])
     end
   end
+
+
+  describe '#day_info' do
+    it 'should return correct date by params' do
+      result = calendar_data_provider.day_info({year: 2015, month: 2, day: 2})
+      expect(result[:date]).to eq(Date.new(2015, 2, 2))
+    end
+
+    describe 'current period' do
+      it 'should return period, if date inside of it' do
+        period = user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2))
+        result = calendar_data_provider.day_info({year: 2015, month: 2, day: 2})
+        expect(result[:current_period]).to eq(period)
+      end
+
+      it 'should return nil if it not inside of period' do
+        result = calendar_data_provider.day_info({year: 2015, month: 2, day: 2})
+        expect(result[:current_period]).to be_nil
+      end
+    end
+
+    describe 'close_periods' do
+      it 'should return empty array, if there are no close periods' do
+        result = calendar_data_provider.day_info({year: 2015, month: 2, day: 2})
+        expect(result[:close_periods]).to eq []
+      end
+
+      it 'should return array with close period if there are one' do
+        period = user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 1))
+        result = calendar_data_provider.day_info({year: 2015, month: 2, day: 2})
+        expect(result[:close_periods]).to eq [period]
+      end
+
+      it 'should return all close periods' do
+        period1 = user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 1))
+        period2 = user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 11))
+        result = calendar_data_provider.day_info({year: 2015, month: 2, day: 5})
+        expect(result[:close_periods]).to eq [period1, period2]
+      end
+    end
+  end
 end

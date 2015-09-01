@@ -37,7 +37,7 @@ module DataProvider
       {
           date: date,
           current_period: @user.critical_periods.has_date(date).first,
-          closest_period: @user.critical_periods.near_by_date(date).first,
+          close_periods: @user.critical_periods.near_by_date(date).all.to_a,
       }
     end
 

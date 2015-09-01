@@ -18,7 +18,7 @@
 <%= form_for(@day_form, url: update_calendar_day_url(year: @day_info[:date].year, month: @day_info[:date].month, day: @day_info[:date].day), method: :put, html: {autocomplete: 'off'}) do |f| %>
     <div class="form-group">
       <label class="checkbox-inline">
-        <%= f.check_box :critical_day %>
+        <%= f.check_box :critical_day, { disabled: @day_info[:close_periods].length > 1 } %>
         <%= t '.critical_day' %>
       </label>
     </div>
