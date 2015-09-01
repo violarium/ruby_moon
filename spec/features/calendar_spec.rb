@@ -175,6 +175,17 @@ describe 'Calendar page' do
   end
 
 
+  it 'should tell us about upcoming critical period even when we view another date at all' do
+    future = user.future_critical_periods.create!(from: Date.today + 4.days, to: Date.today + 4.days + 2.days)
+    visit '/calendar/2200/2'
+
+    expect(page).to have_content('Upcoming critical period: ' +
+                                     I18n.l(future.from, format: :full_day) + ' - ' +
+                                     I18n.l(future.to, format: :full_day))
+    expect(page).to have_content('Days left: 4')
+  end
+
+
   describe 'critical period prediction' do
     it 'should create predicted critical periods when I create critical period' do
       visit '/calendar/2015/2'
