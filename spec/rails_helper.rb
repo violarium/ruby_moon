@@ -36,9 +36,6 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
-  # Set js driver to webkit.
-  Capybara.javascript_driver = :webkit
-
   # Clean Mongoid DB prior to running each test.
   config.before(:each) do
     Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}

@@ -52,6 +52,7 @@ end
 gem 'rspec-rails', '~> 3.1.0', group: [:development, :test]
 group :test do
   gem 'capybara', '~> 2.5.0'
+  gem 'selenium-webdriver'
   gem 'factory_girl_rails', '~> 4.5.0'
 end
 
