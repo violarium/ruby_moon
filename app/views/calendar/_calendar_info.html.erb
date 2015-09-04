@@ -7,7 +7,7 @@
     <% unless @upcoming_period.nil? %>
         <p class="upcoming-critical-period">
           <strong><%= t('.critical_period_upcoming') %></strong><br />
-          <%= l(@upcoming_period.from, format: :full_day) %> - <%= l(@upcoming_period.to, format: :full_day) %>
+          <%= localized_period(@upcoming_period) %>
           <br />
           <%= t('.critical_period_days_left') %> <%= (@upcoming_period.from - @current_date).to_i %>
         </p>

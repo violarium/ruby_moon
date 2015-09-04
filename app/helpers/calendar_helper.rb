@@ -16,7 +16,7 @@ module CalendarHelper
   # @param month_grid_data [Hash]
   # @param current_date [Date]
   #
-  # @param [String]
+  # @return [String]
   def calendar_day_opt_classes(date, date_index, month_grid_data, current_date)
     current_month_date = month_grid_data[:month][:month_date]
     critical_dates = month_grid_data[:critical_dates]
@@ -31,5 +31,17 @@ module CalendarHelper
     css_classes.push 'current-day' if current_date == date
 
     css_classes.join(' ')
+  end
+
+
+  # Get localized period string.
+  #
+  # @param period
+  #
+  # @return [String] localized period string.
+  def localized_period(period)
+    from_day = l(period.from, format: :full_day)
+    to_day = l(period.to, format: :full_day)
+    "#{from_day} - #{to_day}"
   end
 end
