@@ -9,6 +9,7 @@ def sign_in_with(email, password)
   click_button 'Sign in'
 end
 
+
 # Create user, sign in with it and return it.
 #
 # @param email [String]
@@ -20,6 +21,7 @@ def we_are_signed_in_user(email: 'example@email.net', password: 'password')
   sign_in_with(email, password)
   user
 end
+
 
 # Sign out if we are signed in.
 def sign_out_if_signed_in
