@@ -29,11 +29,10 @@ module DataProvider
 
     # Get info about the day from params.
     #
-    # @param params [Hash]
+    # @param date [Date]
     #
     # @return [Hash]
-    def day_info(params)
-      date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+    def day_info(date)
       {
           date: date,
           current_period: @user.critical_periods.has_date(date).first,

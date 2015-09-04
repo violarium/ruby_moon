@@ -21,17 +21,16 @@ class CalendarController < ApplicationController
 
 
   def show
-    @day_info = @calendar_data_provider.day_info(params)
-    @day_form = CalendarDayForm.new(current_user, @day_info[:date])
+    @day_info = @calendar_data_provider.day_info(received_date)
+    @day_form = CalendarDayForm.new(current_user, received_date)
   end
 
 
   def update
-    @day_info = @calendar_data_provider.day_info(params)
-    @day_form = CalendarDayForm.new(current_user, @day_info[:date], calendar_day_form_data)
+    @day_form = CalendarDayForm.new(current_user, received_date, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
-       redirect_to calendar_url(@day_info[:date].year, @day_info[:date].month)
+       redirect_to calendar_url(received_date.year, received_date.month)
      else
        render :show
      end
@@ -54,5 +53,12 @@ class CalendarController < ApplicationController
     form_data = params[:calendar_day_form]
     form_data = { } if form_data.nil?
     form_data
+  end
+
+  # Get received from params date.
+  #
+  # @return [Date]
+  def received_date
+    @date_from_params ||= Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
   end
 end

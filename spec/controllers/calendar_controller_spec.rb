@@ -86,6 +86,15 @@ describe CalendarController do
         get :show, { year: 2015, month: 1, day: 1 }
         expect(assigns[:day_form]).to eq(form)
       end
+
+      it 'should pass day info to view' do
+        data_provider = double('data_provider')
+        expect(DataProvider::UserCalendar).to receive(:new).with(user).and_return(data_provider)
+        expect(data_provider).to receive(:day_info).with(Date.new(2015, 1, 1)).and_return('day info')
+
+        get :show, { year: 2015, month: 1, day: 1 }
+        expect(assigns[:day_info]).to eq('day info')
+      end
     end
   end
 
