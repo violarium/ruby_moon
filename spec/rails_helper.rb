@@ -3,7 +3,10 @@ ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'capybara/poltergeist'
+
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -19,6 +22,13 @@ require 'rspec/rails'
 # require only the support files necessary.
 #
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+
+
+# Use poltergeist as js driver. Need to install phantomjs.
+# Use it as default driver it quite fast.
+Capybara.default_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
+
 
 RSpec.configure do |config|
   # RSpec Rails can automatically mix in different behaviours to your tests
