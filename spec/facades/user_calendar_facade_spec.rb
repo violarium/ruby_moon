@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe UserCalendar do
+describe UserCalendarFacade do
 
   let(:user) { FactoryGirl.create(:user) }
-  let(:calendar_data_provider) { UserCalendar.new(user) }
+  let(:calendar_data_provider) { UserCalendarFacade.new(user) }
 
   describe '#month_info' do
     before do

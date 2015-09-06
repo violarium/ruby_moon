@@ -15,22 +15,22 @@ class CalendarController < ApplicationController
       date = Date.new(params[:year].to_i, params[:month].to_i)
     end
 
-    @month_info = user_calendar.month_info(date, current_date)
+    @month_info = user_calendar_facade.month_info(date, current_date)
   end
 
 
   def show
-    @day_info = user_calendar.day_info(received_date)
-    @day_form = CalendarDayForm.new(current_user, received_date)
+    @day_info = user_calendar_facade.day_info(received_day)
+    @day_form = CalendarDayForm.new(current_user, received_day)
   end
 
 
   def update
-    @day_form = CalendarDayForm.new(current_user, received_date, calendar_day_form_data)
+    @day_form = CalendarDayForm.new(current_user, received_day, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
        predictor.refresh_for(current_user, PERIODS_TO_PREDICT)
-       redirect_to calendar_url(received_date.year, received_date.month)
+       redirect_to calendar_url(received_day.year, received_day.month)
      else
        render :show
      end
@@ -48,16 +48,16 @@ class CalendarController < ApplicationController
     form_data
   end
 
-  # Get user calendar model for current user.
+  # Get user calendar facade for current user.
   #
-  def user_calendar
-    @user_calendar ||= UserCalendar.new(current_user)
+  def user_calendar_facade
+    @user_calendar ||= UserCalendarFacade.new(current_user)
   end
 
-  # Get received from params date.
+  # Get received from params day.
   #
   # @return [Date]
-  def received_date
+  def received_day
     @date_from_params ||= Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
   end
 
