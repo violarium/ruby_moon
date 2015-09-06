@@ -1,7 +1,5 @@
 class CalendarController < ApplicationController
   before_filter :require_sign_in
-  before_filter :set_up_data_provider
-
 
   def index
     unless user_signed_in?
@@ -15,13 +13,13 @@ class CalendarController < ApplicationController
       date = Date.new(params[:year].to_i, params[:month].to_i)
     end
 
-    @month_grid_data = @calendar_data_provider.month_grid_data(date)
+    @month_grid_data = user_calendar.month_grid_data(date)
     @upcoming_period = current_user.upcoming_critical_period(@current_date)
   end
 
 
   def show
-    @day_info = @calendar_data_provider.day_info(received_date)
+    @day_info = user_calendar.day_info(received_date)
     @day_form = CalendarDayForm.new(current_user, received_date)
   end
 
@@ -39,13 +37,6 @@ class CalendarController < ApplicationController
 
   private
 
-
-  # Set up calendar data provider for current user
-  #
-  def set_up_data_provider
-    @calendar_data_provider = DataProvider::UserCalendar.new(current_user)
-  end
-
   # Get data for calendar day form.
   #
   # @return [Hash]
@@ -53,6 +44,12 @@ class CalendarController < ApplicationController
     form_data = params[:calendar_day_form]
     form_data = { } if form_data.nil?
     form_data
+  end
+
+  # Get user calendar model for current user.
+  #
+  def user_calendar
+    @user_calendar ||= UserCalendar.new(current_user)
   end
 
   # Get received from params date.

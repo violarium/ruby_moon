@@ -128,6 +128,6 @@ class CalendarDayForm
 
   # Refresh future periods for current user.
   def refresh_future_periods
-    Calendar::CriticalPeriodPredictor.new.refresh_for(@user, 3)
+    CriticalPeriodPredictor.new.refresh_for(@user, 3)
   end
 end

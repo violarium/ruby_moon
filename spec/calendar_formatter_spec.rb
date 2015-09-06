@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe Calendar::CalendarFormatter do
-  let(:formatter) { Calendar::CalendarFormatter.new }
+describe CalendarFormatter do
+  let(:formatter) { CalendarFormatter.new }
 
   describe '#month' do
     describe ':dates in array' do

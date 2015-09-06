@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Calendar::CriticalPeriodPredictor do
+describe CriticalPeriodPredictor do
   let(:user) { FactoryGirl.create(:user) }
   let(:predictor) { described_class.new }
 

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe DataProvider::UserCalendar do
+describe UserCalendar do
 
   let(:user) { FactoryGirl.create(:user) }
-  let(:calendar_data_provider) { DataProvider::UserCalendar.new(user) }
+  let(:calendar_data_provider) { UserCalendar.new(user) }
 
   describe '#month_grid_data' do
     before do

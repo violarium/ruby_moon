@@ -6,7 +6,7 @@ describe CalendarDayForm do
   let(:predictor) { double('predictor') }
 
   before do
-    allow(Calendar::CriticalPeriodPredictor).to receive(:new).and_return(predictor)
+    allow(CriticalPeriodPredictor).to receive(:new).and_return(predictor)
     allow(predictor).to receive(:refresh_for).with(user, 3)
   end
 
