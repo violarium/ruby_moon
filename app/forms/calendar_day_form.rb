@@ -48,19 +48,8 @@ class CalendarDayForm
   # @return [Boolean]
   def submit
     if valid?
-      modified = false
-
-      if save_period?
-        @period.save!
-        modified = true
-      end
-
-      if delete_period?
-        @period.delete
-        modified = true
-      end
-
-      refresh_future_periods if modified
+      @period.save! if save_period?
+      @period.delete if delete_period?
       true
     else
       false
@@ -123,11 +112,5 @@ class CalendarDayForm
   def period_end_date
     day_offset = period_length - 1
     @date + day_offset.days
-  end
-
-
-  # Refresh future periods for current user.
-  def refresh_future_periods
-    CriticalPeriodPredictor.new.refresh_for(@user, 3)
   end
 end

@@ -28,6 +28,7 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, received_date, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
+       predictor.refresh_for(current_user, 3)
        redirect_to calendar_url(received_date.year, received_date.month)
      else
        render :show
@@ -57,5 +58,9 @@ class CalendarController < ApplicationController
   # @return [Date]
   def received_date
     @date_from_params ||= Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+  end
+
+  def predictor
+    @predictor ||= CriticalPeriodPredictor.new
   end
 end

@@ -102,14 +102,21 @@ describe CalendarController do
   describe 'PUT #update' do
     describe 'when we are signed in' do
       let(:user) { FactoryGirl.create(:user) }
-      before { controller_sign_in(user) }
-
+      let(:predictor) { double(CriticalPeriodPredictor) }
       let(:day_form) { double('calendar_day_form') }
+
+      before { controller_sign_in(user) }
+      before do
+        allow(CriticalPeriodPredictor).to receive(:new).and_return(predictor)
+        allow(predictor).to receive(:refresh_for)
+      end
+
 
       describe 'if form data is valid' do
         before do
           expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { params: 'foo' }).and_return(day_form)
-          allow(day_form).to receive(:valid?).and_return(true)
+          allow(day_form).to receive(:valid?).and_return true
+          allow(day_form).to receive(:submit).and_return true
         end
 
         it 'should submit the form' do
@@ -118,11 +125,16 @@ describe CalendarController do
         end
 
         it 'should redirect to calendar url into month of current critical period' do
-          allow(day_form).to receive(:submit).and_return true
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
           expect(response).to redirect_to calendar_url(2015, 1)
         end
+
+        it 'should call prediction of new periods' do
+          expect(predictor).to receive(:refresh_for).with(user, 3)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
       end
+
 
       describe 'if form data is not valid' do
         before do
@@ -144,14 +156,29 @@ describe CalendarController do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
           expect(assigns[:day_form]).to eq(day_form)
         end
+
+        it 'should not call prediction of new periods' do
+          expect(predictor).not_to receive(:refresh_for)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
       end
 
+
       describe 'where there are no form data' do
-        it 'should receive empty data to form' do
+        before do
           allow(day_form).to receive(:valid?).and_return true
+          allow(day_form).to receive(:submit).and_return true
+        end
+
+        it 'should receive empty data to form' do
           expect(day_form).to receive(:submit).and_return true
           expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1), { }).and_return(day_form)
           put :update, { year: 2015, month: 1, day: 1 }
+        end
+
+        it 'should call prediction of new periods' do
+          expect(predictor).to receive(:refresh_for).with(user, 3)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end
     end
