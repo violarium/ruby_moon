@@ -8,12 +8,12 @@ class UserCalendar
   end
 
 
-  # Get month grid data.
+  # Get info about month.
   #
   # @param month_date [Date]
   #
   # @return [Hash]
-  def month_grid_data(month_date)
+  def month_info(month_date, current_date)
     month_data = @calendar_formatter.month(month_date)
 
     date_from = month_data[:dates].first
@@ -22,7 +22,9 @@ class UserCalendar
     critical_dates = collect_period_dates(@user.critical_periods, date_from, date_to)
     future_critical_dates = collect_period_dates(@user.future_critical_periods, date_from, date_to)
 
-    { month: month_data, critical_dates: critical_dates, future_critical_dates: future_critical_dates }
+    { month: month_data, critical_dates: critical_dates,
+      future_critical_dates: future_critical_dates, current_date: current_date,
+      upcoming_period: @user.upcoming_critical_period(current_date) }
   end
 
 

@@ -19,34 +19,22 @@ describe CalendarController do
         user_calendar = double('user_calendar')
         expect(UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-        expect(user_calendar).to receive(:month_grid_data).with(Date.new(2015, 1)).and_return('month_grid_data')
+        expect(user_calendar).to receive(:month_info)
+                                     .with(Date.new(2015, 1), Date.new(2015, 1, 10)).and_return('month_info')
 
         get :index, { year: 2015, month: 1 }
-        expect(assigns(:month_grid_data)).to eq 'month_grid_data'
+        expect(assigns(:month_info)).to eq 'month_info'
       end
 
-      it 'should call calendar data provider with today date if date is not received' do
+      it 'should get month info with today date if date is not received' do
         user_calendar = double('user_calendar')
         expect(UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-        expect(user_calendar).to receive(:month_grid_data).with(Date.new(2015, 1, 10)).and_return('month_grid_data')
+        expect(user_calendar).to receive(:month_info)
+                                     .with(Date.new(2015, 1, 10), Date.new(2015, 1, 10)).and_return('month_info')
 
         get :index
-        expect(assigns(:month_grid_data)).to eq 'month_grid_data'
-      end
-
-      it 'should pass to view current date' do
-        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-        get :index
-        expect(assigns(:current_date)).to eq Date.new(2015, 1, 10)
-      end
-
-      it 'should pass info about upcoming critical period' do
-        expect(Date).to receive(:today).and_return(Date.new(2015, 1, 10))
-
-        expect(@user).to receive(:upcoming_critical_period).with(Date.new(2015, 1, 10)).and_return('upcoming_period')
-        get :index
-        expect(assigns(:upcoming_period)).to eq 'upcoming_period'
+        expect(assigns(:month_info)).to eq 'month_info'
       end
     end
 

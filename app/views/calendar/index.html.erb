@@ -1,6 +1,6 @@
-<% content_for(:title, l(@month_grid_data[:month][:month_date], format: :full_month)) %>
+<% content_for(:title, l(@month_info[:month][:month_date], format: :full_month)) %>
 
-<%= render 'calendar/calendar_header', month_date: @month_grid_data[:month][:month_date] %>
+<%= render 'calendar/calendar_header', month_date: @month_info[:month][:month_date] %>
 
 <div class="row">
   <div class="col-sm-8 calendar-grid-container">

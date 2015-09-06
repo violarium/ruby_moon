@@ -5,7 +5,7 @@ describe UserCalendar do
   let(:user) { FactoryGirl.create(:user) }
   let(:calendar_data_provider) { UserCalendar.new(user) }
 
-  describe '#month_grid_data' do
+  describe '#month_info' do
     before do
       user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2))
       user.critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 1))
@@ -13,24 +13,37 @@ describe UserCalendar do
 
       user.future_critical_periods.create!(from: Date.new(2015, 2, 1), to: Date.new(2015, 2, 2))
       user.future_critical_periods.create!(from: Date.new(2016, 1, 10), to: Date.new(2016, 1, 15))
-
-      @result = calendar_data_provider.month_grid_data(Date.new(2015, 1))
     end
 
     it 'should have correct dates in month_data' do
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
       expect(@result[:month][:dates]).to eq (Date.new(2014, 12, 29) .. Date.new(2015, 2, 8))
     end
 
     it 'should have correct month date in month_data' do
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
       expect(@result[:month][:month_date]).to eq(Date.new(2015, 1))
     end
 
     it 'should have critical dates in critical_dates' do
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
       expect(@result[:critical_dates]).to eq([Date.new(2015, 1, 31), Date.new(2015, 2, 1), Date.new(2015, 2, 2)])
     end
 
     it 'should have future critical dates in future_critical_dates' do
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
       expect(@result[:future_critical_dates]).to eq([Date.new(2015, 2, 1), Date.new(2015, 2, 2)])
+    end
+
+    it 'should have received current date' do
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
+      expect(@result[:current_date]).to eq Date.new(2015, 2, 3)
+    end
+
+    it 'should have upcoming critical period' do
+      expect(user).to receive(:upcoming_critical_period).with(Date.new(2015, 2, 3)).and_return('upcoming period')
+      @result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
+      expect(@result[:upcoming_period]).to eq 'upcoming period'
     end
   end
 

@@ -1,15 +1,15 @@
 <div class="panel panel-default calendar-info">
   <div class="panel-body">
     <p class="current-day-title">
-      <%= t '.current_day', date: l(@current_date, format: :full) %>
+      <%= t '.current_day', date: l(@month_info[:current_date], format: :full) %>
     </p>
 
-    <% unless @upcoming_period.nil? %>
+    <% unless @month_info[:upcoming_period].nil? %>
         <p class="upcoming-critical-period">
           <strong><%= t('.critical_period_upcoming') %></strong><br />
-          <%= localized_period(@upcoming_period) %>
+          <%= localized_period(@month_info[:upcoming_period]) %>
           <br />
-          <%= t('.critical_period_days_left') %> <%= (@upcoming_period.from - @current_date).to_i %>
+          <%= t('.critical_period_days_left') %> <%= (@month_info[:upcoming_period].from - @month_info[:current_date]).to_i %>
         </p>
     <% end %>
 

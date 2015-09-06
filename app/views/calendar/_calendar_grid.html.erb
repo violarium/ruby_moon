@@ -1,12 +1,12 @@
 <ul class="month-days-grid">
-  <% @month_grid_data[:month][:dates].first(7).each do |day| %>
+  <% @month_info[:month][:dates].first(7).each do |day| %>
       <li class="week-day">
         <%= l(day, format: :week_abbr) %>
       </li>
   <% end %>
 
-  <% @month_grid_data[:month][:dates].each_with_index do |date, date_index| %>
-      <li class="day <%= calendar_day_opt_classes(date, date_index, @month_grid_data, @current_date) %>">
+  <% @month_info[:month][:dates].each_with_index do |date, date_index| %>
+      <li class="day <%= calendar_day_opt_classes(date, date_index, @month_info) %>">
         <a class="day-content" href="<%= make_calendar_day_url(date) %>">
           <%= date.day %>
         </a>
