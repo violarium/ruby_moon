@@ -1,4 +1,6 @@
 class CalendarController < ApplicationController
+  PERIODS_TO_PREDICT = 3
+
   before_filter :require_sign_in
 
   def index
@@ -28,7 +30,7 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, received_date, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
-       predictor.refresh_for(current_user, 3)
+       predictor.refresh_for(current_user, PERIODS_TO_PREDICT)
        redirect_to calendar_url(received_date.year, received_date.month)
      else
        render :show
@@ -60,6 +62,9 @@ class CalendarController < ApplicationController
     @date_from_params ||= Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
   end
 
+  # Get predictor.
+  #
+  # @return [PeriodPredictor]
   def predictor
     @predictor ||= PeriodPredictor.new
   end
