@@ -61,6 +61,6 @@ class CalendarController < ApplicationController
   end
 
   def predictor
-    @predictor ||= CriticalPeriodPredictor.new
+    @predictor ||= PeriodPredictor.new
   end
 end

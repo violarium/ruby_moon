@@ -1,5 +1,5 @@
 # Predictor for critical days.
-class CriticalPeriodPredictor
+class PeriodPredictor
   # Default period cycle.
   AVERAGE_PERIOD_CYCLE = 28
 

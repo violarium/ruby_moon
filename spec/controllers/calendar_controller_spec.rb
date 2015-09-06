@@ -102,12 +102,12 @@ describe CalendarController do
   describe 'PUT #update' do
     describe 'when we are signed in' do
       let(:user) { FactoryGirl.create(:user) }
-      let(:predictor) { double(CriticalPeriodPredictor) }
+      let(:predictor) { double(PeriodPredictor) }
       let(:day_form) { double('calendar_day_form') }
 
       before { controller_sign_in(user) }
       before do
-        allow(CriticalPeriodPredictor).to receive(:new).and_return(predictor)
+        allow(PeriodPredictor).to receive(:new).and_return(predictor)
         allow(predictor).to receive(:refresh_for)
       end
 
