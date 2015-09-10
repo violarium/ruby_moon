@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  scope '(:locale)', locale: /|ru/ do
+  scope '(:locale)', locale: /en|ru|he/ do
     root 'home#show', as: 'home_page'
 
     get '/sign_in' => 'user_sessions#new', as: 'sign_in'
