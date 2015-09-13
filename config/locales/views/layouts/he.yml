@@ -1,0 +1,12 @@
+he:
+  layouts:
+    navbar:
+      toggle_menu: לעבור תפריט
+      about: אודות
+      documentation: תיעוד
+      help: עזרה
+      sign_in: התחבר
+      sign_out: התנתק
+      sign_up: הירשם
+      calendar: לוח שנה
+      language: שפה
