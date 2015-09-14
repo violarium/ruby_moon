@@ -34,7 +34,7 @@
             <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
         <% else %>
             <li class="<%= params[:controller] == 'user_sessions' ? 'active' : '' %>"><%= link_to t('.sign_in'), sign_in_url %></li>
-            <li><a href="#"><%= t('.sign_up') %></a></li>
+            <li class="<%= params[:controller] == 'users' ? 'active' : '' %>"><%= link_to t('.sign_up'), sign_up_url %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

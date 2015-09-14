@@ -1,7 +1,7 @@
 <% content_for(:title, t('.sign_in')) %>
 
-<div class="sign-in-container">
-  <h1 class="sign-in-title"><%= t('.sign_in') %></h1>
+<div class="user-form-container">
+  <h1 class="user-form-header"><%= t('.sign_in') %></h1>
 
   <%= form_for(@sign_in_form, url: sign_in_url, method: :post, html: { class: 'form-horizontal' }) do |f| %>
     <% if @sign_in_form.errors.any? %>

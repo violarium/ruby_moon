@@ -38,7 +38,8 @@ describe SignInForm do
     end
 
     it 'should return nil when existing user password is nil and sent password is nil' do
-      user = FactoryGirl.create(:corrupt_password_user)
+      user = FactoryGirl.build(:corrupt_password_user)
+      user.save!(validate: false)
       expect(user.password).to be_nil
       result = form.submit(email: user.email)
       expect(result).to be_nil
