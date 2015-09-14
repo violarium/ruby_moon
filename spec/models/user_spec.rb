@@ -1,11 +1,6 @@
 require 'rails_helper'
 
 describe User do
-  it 'should have unique email' do
-    User.create(email: 'example@email.org')
-    expect { User.create(email: 'example@email.org') }.to raise_error(Moped::Errors::OperationFailure)
-  end
-
   describe 'password hashing' do
 
     it 'should encrypt the password' do
@@ -48,6 +43,55 @@ describe User do
     it 'should return null if there are no incoming periods' do
       result = user.upcoming_critical_period(Date.new(2016, 1, 6))
       expect(result).to be_nil
+    end
+  end
+
+
+  describe 'validation' do
+    let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456') }
+
+    it 'should be valid with correct data' do
+      expect(user).to be_valid
+    end
+
+    describe 'email' do
+      it 'should be required' do
+        user.email = ''
+        expect(user).not_to be_valid
+      end
+
+      it 'should have correct format' do
+        user.email = 'test'
+        expect(user).not_to be_valid
+      end
+
+      it 'should be unique' do
+        another_user = user.dup
+        another_user.save!
+        expect(user).not_to be_valid
+      end
+
+      it 'should be unique in any case' do
+        another_user = user.dup
+        another_user.email.upcase
+        another_user.save!
+        expect(user).not_to be_valid
+      end
+    end
+
+    describe 'password' do
+      it 'should be required' do
+        user.password = ''
+        user.password_confirmation = ''
+        expect(user).not_to be_valid
+      end
+    end
+
+    describe 'password confirmation' do
+      it 'should match password' do
+        user.password_confirmation = '123'
+        expect(user).not_to be_valid
+      end
     end
   end
 end

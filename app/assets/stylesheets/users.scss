@@ -1,0 +1,12 @@
+.user-form-header {
+  text-align: center;
+}
+.user-form-container {
+  margin: 0 auto;
+}
+
+@media (min-width: $screen-sm-min) {
+  .user-form-container {
+    width: 600px;
+  }
+}
