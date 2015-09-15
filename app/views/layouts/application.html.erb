@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="lang-<%= I18n.locale %>">
+<html>
 <head>
   <title><%= full_title(yield(:title)) %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -7,7 +7,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="lang-<%= I18n.locale %>">
 
 <%= render 'layouts/navbar' %>
 
