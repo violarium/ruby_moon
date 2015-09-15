@@ -7,7 +7,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body class="lang-<%= I18n.locale %>">
+<body class="<%= text_direction_css %>">
 
 <%= render 'layouts/navbar' %>
 

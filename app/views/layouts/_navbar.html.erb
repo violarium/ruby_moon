@@ -24,7 +24,7 @@
           <ul class="dropdown-menu" role="menu">
 		  <% [{ name: 'English', param: '', locale: :en }, { name: 'Русский', param: 'ru', locale: :ru },{name:"עברית", param:'he', locale: :he}].each do |lang| %>
                 <li class="<%= I18n.locale == lang[:locale] ? 'active' : '' %>">
-                  <%= link_to lang[:name], params.merge({:locale => lang[:param]}), data: { no_turbolink: true } %>
+                  <%= link_to lang[:name], params.merge({:locale => lang[:param]}) %>
                 </li>
             <% end %>
           </ul>

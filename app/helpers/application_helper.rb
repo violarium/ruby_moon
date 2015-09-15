@@ -12,4 +12,16 @@ module ApplicationHelper
       "#{title} | #{postfix}"
     end
   end
+
+  # Get text direction CSS-selector for current language.
+  #
+  # @return [String]
+  def text_direction_css
+    rtl_languages = [:he]
+    if rtl_languages.include?(I18n.locale.to_sym)
+      'direction-rtl'
+    else
+      'direction-ltr'
+    end
+  end
 end

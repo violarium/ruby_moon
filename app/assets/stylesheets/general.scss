@@ -9,20 +9,19 @@
   }
 }
 
-.lang-he {
-  direction: rtl;
-}
 
-.lang-en {
-  direction: ltr;
-}
-
-.lang-ru {
-  direction: ltr;
-}
 h1 {
   font-size: 24px;
   @media (min-width: $screen-sm-min) {
     font-size: 32px;
   }
+}
+
+
+.direction-rtl {
+  direction: rtl;
+}
+
+.direction-ltr {
+  direction: ltr;
 }
