@@ -1,0 +1,5 @@
+en:
+  users:
+    new:
+      sign_up: Sign up
+      errors: Please, fill the form correctly

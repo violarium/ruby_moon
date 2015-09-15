@@ -22,7 +22,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t '.language' %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <% [{ name: 'English', param: '', locale: :en }, { name: 'Русский', param: 'ru', locale: :ru }].each do |lang| %>
+		  <% [{ name: 'English', param: '', locale: :en }, { name: 'Русский', param: 'ru', locale: :ru },{name:"עברית", param:'he', locale: :he}].each do |lang| %>
                 <li class="<%= I18n.locale == lang[:locale] ? 'active' : '' %>">
                   <%= link_to lang[:name], params.merge({:locale => lang[:param]}) %>
                 </li>
@@ -34,7 +34,7 @@
             <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
         <% else %>
             <li class="<%= params[:controller] == 'user_sessions' ? 'active' : '' %>"><%= link_to t('.sign_in'), sign_in_url %></li>
-            <li><a href="#"><%= t('.sign_up') %></a></li>
+            <li class="<%= params[:controller] == 'users' ? 'active' : '' %>"><%= link_to t('.sign_up'), sign_up_url %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

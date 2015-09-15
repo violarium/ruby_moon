@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :user do
     email 'example@email.com'
     password 'password'
+    password_confirmation 'password'
   end
 
   # User with corrupted password (somehow).

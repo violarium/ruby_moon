@@ -1,0 +1,6 @@
+he:
+  user_sessions:
+    new:
+      email: אימייל
+      password:  סיסמא
+      sign_in: כניסה
