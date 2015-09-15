@@ -3,41 +3,37 @@
 <div class="user-form-container">
   <h1 class="user-form-header"><%= t('.sign_up') %></h1>
 
-  <%= form_for(@user, url: sign_up_url, method: :post, html: { class: 'form-horizontal' }) do |f| %>
+  <%= form_for(@user, builder: BootstrapFormBuilder, url: sign_up_url, method: :post, html: { class: 'form-horizontal' }) do |f| %>
 
-      <% if @user.errors.count > 0 %>
-          <div class="row">
-            <div class="text-danger col-sm-8 col-sm-offset-4">
-              <div><%= t '.errors' %></div>
-              <ul>
-                <% @user.errors.full_messages.each do |m| %>
-                    <li><%= m %></li>
-                <% end %>
-              </ul>
-            </div>
+      <% if f.object.errors.count > 0 %>
+          <div class="form-group">
+            <div class="text-danger col-sm-8 col-sm-offset-4"><%= t '.errors' %></div>
           </div>
       <% end %>
 
-      <div class="form-group">
+      <%= f.form_group(:email) do %>
         <%= f.label(:email, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
           <%= f.email_field(:email, placeholder: t('mongoid.attributes.user.email'), class: 'form-control', autofocus: '') %>
+          <%= f.full_errors_for(:email) %>
         </div>
-      </div>
+      <% end %>
 
-      <div class="form-group">
+      <%= f.form_group(:password) do %>
         <%= f.label(:password, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
           <%= f.password_field(:password, placeholder: t('mongoid.attributes.user.password'), class: 'form-control') %>
+          <%= f.full_errors_for(:password) %>
         </div>
-      </div>
+      <% end %>
 
-      <div class="form-group">
+      <%= f.form_group(:password_confirmation) do %>
         <%= f.label(:password_confirmation, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
           <%= f.password_field(:password_confirmation, placeholder: t('mongoid.attributes.user.password_confirmation'), class: 'form-control') %>
+          <%= f.full_errors_for(:password_confirmation) %>
         </div>
-      </div>
+      <% end %>
 
       <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
