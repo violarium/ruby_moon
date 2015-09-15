@@ -1,7 +1,7 @@
 {
     :he=> {
         :date => {
-            # In russian month name with day and standalone day are different ### I copied this for hebrew for testing
+		# hebrew adds a letter when a month's name is expressed with a day.
             :month_names => lambda { |key, options|
               if options[:format] && options[:format] =~ /%-?d %B/
                 :'date.month_names_with_day'
