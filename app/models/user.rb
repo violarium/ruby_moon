@@ -29,4 +29,14 @@ class User
   def upcoming_critical_period(date)
     future_critical_periods.upcoming(date).first
   end
+
+
+  # Return time object in user's timezone.
+  #
+  # @param time [Time]
+  #
+  # @param [ActiveSupport::TimeWithZone]
+  def in_time_zone(time)
+    time.in_time_zone(time_zone)
+  end
 end

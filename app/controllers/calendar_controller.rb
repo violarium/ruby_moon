@@ -8,7 +8,7 @@ class CalendarController < ApplicationController
       redirect_to sign_in_url
     end
 
-    current_date = Date.today
+    current_date = current_user.in_time_zone(Time.now).to_date
     if params[:year].nil? || params[:month].nil?
       date = current_date
     else
