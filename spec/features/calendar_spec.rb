@@ -204,7 +204,8 @@ describe 'Calendar page' do
     end
 
     it 'should tell us about upcoming critical period' do
-      future = user.future_critical_periods.create!(from: Date.today + 4.days, to: Date.today + 4.days + 2.days)
+      today = user.in_time_zone(Time.now).to_date
+      future = user.future_critical_periods.create!(from: today + 4.days, to: today + 4.days + 2.days)
       visit '/calendar/2015/2'
 
       expect(page).to have_content('Upcoming critical period: ' +
@@ -214,7 +215,8 @@ describe 'Calendar page' do
     end
 
     it 'should tell us about upcoming critical period even when we view another date at all' do
-      future = user.future_critical_periods.create!(from: Date.today + 4.days, to: Date.today + 4.days + 2.days)
+      today = user.in_time_zone(Time.now).to_date
+      future = user.future_critical_periods.create!(from: today + 4.days, to: today + 4.days + 2.days)
       visit '/calendar/2200/2'
 
       expect(page).to have_content('Upcoming critical period: ' +
