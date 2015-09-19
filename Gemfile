@@ -25,8 +25,9 @@ gem 'mongoid', '~> 4.0.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-# Add locales gem
+# Add locales gems
 gem 'rails-i18n', '~> 4.0.0'
+gem 'i18n-timezones', '~> 1.3.5'
 
 # Use Puma as the app server
 gem 'puma', group: :production

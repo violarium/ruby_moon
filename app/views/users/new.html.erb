@@ -35,6 +35,14 @@
         </div>
       <% end %>
 
+      <%= f.form_group(:time_zone) do %>
+          <%= f.label(:time_zone, nil, class: 'col-sm-4 control-label') %>
+          <div class="col-sm-8">
+            <%= f.time_zone_select(:time_zone, nil, {}, class: 'form-control') %>
+            <%= f.full_errors_for(:time_zone) %>
+          </div>
+      <% end %>
+
       <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
           <%= f.button(t('.sign_up'), class: 'btn btn-default') %>

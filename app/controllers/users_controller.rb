@@ -21,6 +21,6 @@ class UsersController < ApplicationController
   #
   # @return [Hash]
   def sign_up_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :time_zone)
   end
 end

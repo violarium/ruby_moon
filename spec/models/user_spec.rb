@@ -48,7 +48,7 @@ describe User do
 
 
   describe 'validation' do
-    let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456') }
+    let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456', time_zone: 'Moscow') }
 
     it 'should be valid with correct data' do
       expect(user).to be_valid
@@ -90,6 +90,18 @@ describe User do
     describe 'password confirmation' do
       it 'should match password' do
         user.password_confirmation = '123'
+        expect(user).not_to be_valid
+      end
+    end
+
+    describe 'timezone' do
+      it 'should be valid with correct timezone' do
+        user.time_zone = 'Moscow'
+        expect(user).to be_valid
+      end
+
+      it 'should not be valid with incorrect timezone' do
+        user.time_zone = 'hello'
         expect(user).not_to be_valid
       end
     end

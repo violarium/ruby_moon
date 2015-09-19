@@ -4,6 +4,7 @@ FactoryGirl.define do
     email 'example@email.com'
     password 'password'
     password_confirmation 'password'
+    time_zone 'Moscow'
   end
 
   # User with corrupted password (somehow).

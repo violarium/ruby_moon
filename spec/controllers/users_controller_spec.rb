@@ -30,16 +30,30 @@ describe UsersController do
     context 'as not signed in user' do
       let(:user) { double(User, id: '100') }
 
+      describe 'filter parameters' do
+        it 'should pass to user exact parameters' do
+          expect(User).to receive(:new).with(email: 'example@email.com',
+                                             password: 'password',
+                                             password_confirmation: 'password',
+                                             time_zone: 'Moscow').and_return(user)
+          allow(user).to receive(:valid?)
+          allow(user).to receive(:save!)
+          post :create, user: { email: 'example@email.com', password: 'password',
+                                password_confirmation: 'password', time_zone: 'Moscow', hello: 'Hello' }
+        end
+      end
+
       describe 'valida data' do
         before do
           expect(User).to receive(:new).with(email: 'example@email.com',
                                              password: 'password',
-                                             password_confirmation: 'password').and_return(user)
+                                             password_confirmation: 'password',
+                                             time_zone: 'Moscow').and_return(user)
           expect(user).to receive(:valid?).and_return(true)
           expect(user).to receive(:save!)
 
           post :create, user: { email: 'example@email.com', password: 'password',
-                                password_confirmation: 'password' }
+                                password_confirmation: 'password', time_zone: 'Moscow' }
         end
 
         it 'should call new user creation and redirect to home page with correct data' do
