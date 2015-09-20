@@ -1,0 +1,6 @@
+en:
+  user_settings:
+    edit_profile:
+      profile_settings: Profile settings
+      errors: Please, fill the form correctly
+      update: Update

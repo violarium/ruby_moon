@@ -1,0 +1,6 @@
+ru:
+  user_settings:
+    edit_profile:
+      profile_settings: Настройки профиля
+      errors: Пожалуйста, заполните форму корректными данными
+      update: Обновить

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     get '/sign_up' => 'users#new', as: 'sign_up'
     post '/sign_up' => 'users#create'
 
+    get '/settings/profile' => 'user_settings#edit_profile', as: 'edit_profile_settings'
+    put '/settings/profile' => 'user_settings#update_profile', as: 'update_profile_settings'
+
     get '/calendar/(:year/:month)' => 'calendar#index', as: 'calendar'
     get '/calendar/day/:year/:month/:day' => 'calendar#show', as: 'calendar_day'
     put '/calendar/day/:year/:month/:day' => 'calendar#update', as: 'update_calendar_day'

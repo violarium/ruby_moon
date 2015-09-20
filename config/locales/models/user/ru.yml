@@ -5,4 +5,5 @@ ru:
         email: E-mail
         password: Пароль
         password_confirmation: Подтверждение пароля
+        time_zone: Часовой пояс
   
