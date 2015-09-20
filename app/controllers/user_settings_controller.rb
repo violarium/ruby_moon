@@ -8,6 +8,7 @@ class UserSettingsController < ApplicationController
   def update_profile
     @user = current_user
     if @user.update_attributes(profile_params)
+      flash[:success] = t('controllers.user_settings.profile_updated')
       redirect_to edit_profile_settings_url
     else
       render :edit_profile

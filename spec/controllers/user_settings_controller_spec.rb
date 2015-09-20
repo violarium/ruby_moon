@@ -38,10 +38,11 @@ describe UserSettingsController do
       before { @user = controller_sign_in }
 
       describe 'when data is valid' do
-        it 'should redirect to #edit_profile' do
+        it 'should redirect to #edit_profile with success flash message' do
           expect(@user).to receive(:update_attributes).and_return true
           put :update_profile, user: { email: 'example@email.com' }
           expect(response).to redirect_to(edit_profile_settings_url)
+          expect(flash[:success]).not_to be_nil
         end
 
         it 'should update user with received arguments' do

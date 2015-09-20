@@ -1,0 +1,4 @@
+en:
+  controllers:
+    user_settings:
+      profile_updated: Profile settings updated

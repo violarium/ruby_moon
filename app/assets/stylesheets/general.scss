@@ -1,12 +1,5 @@
 .page-alert {
-  margin: {
-    left: auto;
-    right: auto;
-  }
   text-align: center;
-  @media (min-width: $screen-sm-min) {
-    width: 50%;
-  }
 }
 
 
