@@ -1,22 +1,20 @@
 development:
-  sessions:
+  clients:
     default:
       database: ruby_moon_development
       hosts:
         - localhost:27017
 test:
-  sessions:
+  clients:
     default:
       database: ruby_moon_test
       hosts:
         - localhost:27017
       options:
-        read: primary
-        max_retries: 1
-        retry_interval: 0
+        max_pool_size: 1
 
 production:
-  sessions:
+  clients:
     default:
       database: ruby_moon_production
       hosts:

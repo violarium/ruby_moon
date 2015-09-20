@@ -8,5 +8,4 @@ before_script:
   - cp -f config/secrets.travis.yml config/secrets.yml
 script:
   - bundle install
-  - bundle exec rake db:mongoid:create_indexes
   - bundle exec rspec

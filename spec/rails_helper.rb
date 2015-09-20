@@ -47,7 +47,11 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Clean Mongoid DB prior to running each test.
+  config.before(:all) do
+    ::Mongoid.default_client.database.drop
+    ::Mongoid::Tasks::Database.create_indexes
+  end
   config.before(:each) do
-    Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
+    ::Mongoid.default_client.database.collections.each { |c| c.delete_many }
   end
 end
