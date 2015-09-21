@@ -2,3 +2,4 @@ ru:
   controllers:
     user_settings:
       profile_updated: Настройки профиля обновлены
+      password_updated: Пароль обновлён

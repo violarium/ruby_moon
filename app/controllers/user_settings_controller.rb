@@ -1,5 +1,5 @@
 class UserSettingsController < ApplicationController
-  before_filter :require_sign_in, only: [:edit_profile, :update_profile]
+  before_filter :require_sign_in, only: [:edit_profile, :update_profile, :edit_password, :update_password]
 
   def edit_profile
     @user = current_user
@@ -16,15 +16,17 @@ class UserSettingsController < ApplicationController
   end
 
   def edit_password
-
+    @password_form = PasswordForm.new(current_user)
   end
 
-  def edit_notifications
-
-  end
-
-  def show_delete
-
+  def update_password
+    @password_form = PasswordForm.new(current_user, password_params)
+    if @password_form.submit
+      flash[:success] = t('controllers.user_settings.password_updated')
+      redirect_to edit_password_settings_url
+    else
+      render :edit_password
+    end
   end
 
 
@@ -32,5 +34,9 @@ class UserSettingsController < ApplicationController
 
   def profile_params
     params.require(:user).permit(:email, :time_zone)
+  end
+
+  def password_params
+    params.require(:password_form).permit(:current_password, :new_password, :new_password_confirmation)
   end
 end

@@ -1,0 +1,13 @@
+ru:
+  form_object:
+    attributes:
+      password_form:
+        current_password: Текущий пароль
+        new_password: Новый пароль
+        new_password_confirmation: Подтверждение пароля
+    errors:
+      models:
+        password_form:
+          attributes:
+            current_password:
+              wrong: введён некорректно

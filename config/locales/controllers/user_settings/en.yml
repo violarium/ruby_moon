@@ -2,3 +2,4 @@ en:
   controllers:
     user_settings:
       profile_updated: Profile settings updated
+      password_updated: Password updated

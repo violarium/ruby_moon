@@ -4,3 +4,7 @@ en:
       profile_settings: Profile settings
       errors: Please, fill the form correctly
       update: Update
+    edit_password:
+      password_settings: Password settings
+      errors: Please, fill the form correctly
+      update: Update password

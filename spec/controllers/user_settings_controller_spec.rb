@@ -62,4 +62,83 @@ describe UserSettingsController do
       end
     end
   end
+
+
+  describe 'GET #edit_password' do
+    describe 'when user not signed in' do
+      it 'should redirect to sign in action with error flash' do
+        get :edit_password
+        expect(response).to redirect_to(sign_in_url)
+        expect(flash[:error]).not_to be_nil
+      end
+    end
+
+    describe 'when user signed in' do
+      before { @user = controller_sign_in }
+
+      it 'should render "edit_password" template' do
+        get :edit_password
+        expect(response).to render_template(:edit_password)
+      end
+
+      it 'should pass to view password form for current' do
+        password_form = double('password_form')
+        expect(PasswordForm).to receive(:new).with(@user).and_return(password_form)
+        get :edit_password
+        expect(assigns[:password_form]).to eq password_form
+      end
+    end
+  end
+
+  describe 'PUT #update_password' do
+    describe 'when user not signed in' do
+      it 'should redirect to sign in action with error flash' do
+        put :update_password
+        expect(response).to redirect_to(sign_in_url)
+        expect(flash[:error]).not_to be_nil
+      end
+    end
+
+    describe 'when user signed in' do
+      before { @user = controller_sign_in }
+
+      it 'should submit the password form with received data' do
+        password_form_data = { current_password: '1', new_password: '1', new_password_confirmation: '1' }
+        password_form = double('password_form')
+
+        expect(PasswordForm).to receive(:new).with(@user, password_form_data).and_return(password_form)
+        expect(password_form).to receive(:submit)
+
+        put :update_password, password_form: password_form_data
+      end
+
+      describe 'when data is valid' do
+        it 'should redirect to #edit_password' do
+          password_form = double('password_form')
+          expect(PasswordForm).to receive(:new).and_return(password_form)
+          expect(password_form).to receive(:submit).and_return(true)
+          put :update_password, password_form: { data: 'test' }
+          expect(response).to redirect_to(edit_password_settings_url)
+        end
+      end
+
+      describe 'when data is not valid' do
+        let(:password_form) { double('password_form') }
+
+        before do
+          expect(PasswordForm).to receive(:new).and_return(password_form)
+          expect(password_form).to receive(:submit).and_return(false)
+          put :update_password, password_form: { data: 'test' }
+        end
+
+        it 'should render "edit_password" template' do
+          expect(response).to render_template(:edit_password)
+        end
+
+        it 'should pass to template password form object' do
+          expect(assigns[:password_form]).to eq password_form
+        end
+      end
+    end
+  end
 end
