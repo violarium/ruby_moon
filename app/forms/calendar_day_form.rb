@@ -4,7 +4,7 @@
 # This form object creates, changes or deletes critical periods and related data.
 # This is, actually, facade.
 class CalendarDayForm
-  include ActiveModel::Model
+  include FormObject
   include ActiveModel::Validations::Callbacks
 
   attr_accessor :critical_day, :period_length, :delete_period
