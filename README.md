@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/violarium/ruby_moon.svg?branch=master)](https://travis-ci.org/violarium/ruby_moon)
 [![Code Climate](https://codeclimate.com/github/violarium/ruby_moon/badges/gpa.svg)](https://codeclimate.com/github/violarium/ruby_moon)
+[![Test Coverage](https://codeclimate.com/github/violarium/ruby_moon/badges/coverage.svg)](https://codeclimate.com/github/violarium/ruby_moon/coverage)
 
 ## Project description
 
