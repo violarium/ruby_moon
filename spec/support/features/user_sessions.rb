@@ -26,5 +26,6 @@ end
 # Sign out if we are signed in.
 def sign_out_if_signed_in
   visit '/'
-  click_link('Sign out') if page.has_link?('Sign out')
+  click_on('Profile') if page.has_link?('Profile')
+  click_on('Sign out') if page.has_link?('Sign out')
 end

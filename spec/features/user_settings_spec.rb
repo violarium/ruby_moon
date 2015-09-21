@@ -17,6 +17,13 @@ describe 'User settings' do
       end
     end
 
+    it 'should open profile settings page on click in menu' do
+      visit '/'
+      click_on 'Profile'
+      click_on 'Edit profile'
+      expect(page).to have_title('Profile settings')
+    end
+
     it 'should show profile settings page' do
       visit '/settings/profile'
       expect(page).to have_title('Profile settings')
@@ -77,6 +84,13 @@ describe 'User settings' do
 
     it 'should show password settings page' do
       visit '/settings/password'
+      expect(page).to have_title('Password settings')
+    end
+
+    it 'should open password settings page on click in menu' do
+      visit '/'
+      click_on 'Profile'
+      click_on 'Change password'
       expect(page).to have_title('Password settings')
     end
 

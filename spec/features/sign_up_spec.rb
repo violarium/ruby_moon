@@ -35,7 +35,7 @@ describe 'Sign up' do
 
     it 'should sign up us' do
       click_button 'Sign up'
-      expect(page).to have_link('Sign out')
+      expect(page).to have_link('Profile')
     end
   end
 
