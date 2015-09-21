@@ -15,16 +15,16 @@
     <% end %>
 
     <div class="form-group">
-      <%= f.label(:email, t('.email'), class: 'col-sm-4 control-label') %>
+      <%= f.label(:email, nil, class: 'col-sm-4 control-label') %>
       <div class="col-sm-8">
-        <%= f.email_field(:email, placeholder: t('.email'), class: 'form-control', autofocus: '') %>
+        <%= f.email_field(:email, placeholder: human_attribute(f.object, :email), class: 'form-control', autofocus: '') %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label(:password, t('.password'), class: 'col-sm-4 control-label') %>
+      <%= f.label(:password, nil, class: 'col-sm-4 control-label') %>
       <div class="col-sm-8">
-        <%= f.password_field(:password, placeholder: t('.password'), class: 'form-control') %>
+        <%= f.password_field(:password, placeholder: human_attribute(f.object, :password), class: 'form-control') %>
       </div>
     </div>
 

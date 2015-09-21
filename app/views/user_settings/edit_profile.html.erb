@@ -14,7 +14,7 @@
       <%= f.form_group(:email) do %>
           <%= f.label(:email, nil, class: 'col-sm-4 control-label') %>
           <div class="col-sm-8">
-            <%= f.email_field(:email, placeholder: t('mongoid.attributes.user.email'), class: 'form-control', autofocus: '') %>
+            <%= f.email_field(:email, placeholder: human_attribute(f.object, :email), class: 'form-control', autofocus: '') %>
             <%= f.full_errors_for(:email) %>
           </div>
       <% end %>

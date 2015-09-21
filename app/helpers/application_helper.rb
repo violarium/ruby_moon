@@ -24,4 +24,14 @@ module ApplicationHelper
       'direction-ltr'
     end
   end
+
+  # Get human attribute name for active model object.
+  #
+  # @param object [ActiveModel::Model]
+  # @param attribute [Symbol]
+  #
+  # @return [String]
+  def human_attribute(object, attribute)
+    object.class.human_attribute_name(attribute)
+  end
 end

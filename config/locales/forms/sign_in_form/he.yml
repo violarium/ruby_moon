@@ -1,5 +1,9 @@
 he:
   form_object:
+    attributes:
+      sign_in_form:
+        email: אימייל
+        password:  סיסמא
     errors:
       models:
         sign_in_form:

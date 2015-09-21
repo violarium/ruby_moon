@@ -14,7 +14,7 @@
       <%= f.form_group(:email) do %>
         <%= f.label(:email, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
-          <%= f.email_field(:email, placeholder: t('mongoid.attributes.user.email'), class: 'form-control', autofocus: '') %>
+          <%= f.email_field(:email, placeholder: human_attribute(f.object, :email), class: 'form-control', autofocus: '') %>
           <%= f.full_errors_for(:email) %>
         </div>
       <% end %>
@@ -22,7 +22,7 @@
       <%= f.form_group(:password) do %>
         <%= f.label(:password, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
-          <%= f.password_field(:password, placeholder: t('mongoid.attributes.user.password'), class: 'form-control') %>
+          <%= f.password_field(:password, placeholder: human_attribute(f.object, :password), class: 'form-control') %>
           <%= f.full_errors_for(:password) %>
         </div>
       <% end %>
@@ -30,7 +30,7 @@
       <%= f.form_group(:password_confirmation) do %>
         <%= f.label(:password_confirmation, nil, class: 'col-sm-4 control-label') %>
         <div class="col-sm-8">
-          <%= f.password_field(:password_confirmation, placeholder: t('mongoid.attributes.user.password_confirmation'), class: 'form-control') %>
+          <%= f.password_field(:password_confirmation, placeholder: human_attribute(f.object, :password_confirmation), class: 'form-control') %>
           <%= f.full_errors_for(:password_confirmation) %>
         </div>
       <% end %>

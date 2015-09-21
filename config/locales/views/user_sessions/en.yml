@@ -1,6 +1,4 @@
 en:
   user_sessions:
     new:
-      email: E-mail
-      password: Password
       sign_in: Sign in
