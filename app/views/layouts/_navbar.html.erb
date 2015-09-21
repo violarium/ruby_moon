@@ -31,7 +31,15 @@
         </li>
         <% if user_signed_in? %>
             <li class="<%= params[:controller] == 'calendar' ? 'active' : '' %>"><%= link_to t('.calendar'), calendar_url %></li>
-            <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
+            <li class="dropdown <%= params[:controller] == 'user_settings' ? 'active' : '' %>">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= t('.profile') %> <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to t('.edit_profile'), edit_profile_settings_url %></li>
+                <li><%= link_to t('.edit_password'), edit_password_settings_url %></li>
+                <li class="divider"></li>
+                <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
+              </ul>
+            </li>
         <% else %>
             <li class="<%= params[:controller] == 'user_sessions' ? 'active' : '' %>"><%= link_to t('.sign_in'), sign_in_url %></li>
             <li class="<%= params[:controller] == 'users' ? 'active' : '' %>"><%= link_to t('.sign_up'), sign_up_url %></li>
