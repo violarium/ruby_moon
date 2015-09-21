@@ -1,5 +1,5 @@
 class PasswordForm
-  include ActiveModel::Model
+  include FormObject
 
   attr_reader :user
   attr_accessor :current_password, :new_password, :new_password_confirmation
@@ -21,10 +21,6 @@ class PasswordForm
     else
       false
     end
-  end
-
-  def self.i18n_scope
-    :form_object
   end
 
   private

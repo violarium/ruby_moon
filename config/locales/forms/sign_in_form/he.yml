@@ -1,0 +1,8 @@
+he:
+  form_object:
+    errors:
+      models:
+        sign_in_form:
+          attributes:
+            base:
+              invalid_credentials: משתמש וסיסמא לא נכונים!
