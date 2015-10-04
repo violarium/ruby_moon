@@ -11,10 +11,7 @@ describe 'Profile' do
         visit '/profile'
       end
 
-      it 'should show sign in page with error message' do
-        expect(page).to have_title('Sign in')
-        expect(page).to have_content('You are to sign in!')
-      end
+      include_examples 'sign in required'
     end
 
     it 'should open profile page on click in menu' do
@@ -76,10 +73,7 @@ describe 'Profile' do
         visit '/profile/password'
       end
 
-      it 'should show sign in page with error message' do
-        expect(page).to have_title('Sign in')
-        expect(page).to have_content('You are to sign in!')
-      end
+      include_examples 'sign in required'
     end
 
     it 'should show password change page' do

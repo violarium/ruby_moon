@@ -12,10 +12,7 @@ describe 'Calendar page' do
         visit '/calendar/2015/1'
       end
 
-      it 'should show sign in page with error message' do
-        expect(page).to have_title('Sign in')
-        expect(page).to have_content('You are to sign in!')
-      end
+      include_examples 'sign in required'
     end
 
 

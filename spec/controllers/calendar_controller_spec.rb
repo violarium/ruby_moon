@@ -4,6 +4,10 @@ describe CalendarController do
 
   describe 'GET #index' do
 
+    include_examples 'controller sign in required' do
+      before { get :index }
+    end
+
     describe 'when we are signed in' do
 
       before do
@@ -41,25 +45,13 @@ describe CalendarController do
         expect(assigns(:month_info)).to eq 'month_info'
       end
     end
-
-
-    describe 'when we are not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        get :index
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
-    end
   end
 
 
   describe 'GET #edit' do
-    describe 'when we are not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        get :edit, { year: 2015, month: 1, day: 1 }
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
+
+    include_examples 'controller sign in required' do
+      before { get :edit, { year: 2015, month: 1, day: 1 } }
     end
 
 
@@ -92,6 +84,10 @@ describe CalendarController do
 
 
   describe 'PUT #update' do
+    include_examples 'controller sign in required' do
+      before { put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } } }
+    end
+
     describe 'when we are signed in' do
       let(:user) { FactoryGirl.create(:user) }
       let(:predictor) { double(PeriodPredictor) }

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Language' do
-  
+
   it 'should be able to show english under /en' do
     visit '/en'
 
@@ -19,7 +19,7 @@ describe 'Language' do
 
     expect(page).to have_content 'Язык'
   end
-  
+
   it 'should be able to choose english by link' do
     visit ''
     click_link 'Language'

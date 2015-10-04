@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ProfilesController do
   describe 'GET #new' do
-    context 'not signed in user' do
+    context 'when user is not signed in' do
       it 'should render "new" template' do
         get :new
         expect(response).to render_template(:new)
@@ -15,7 +15,7 @@ describe ProfilesController do
       end
     end
 
-    context 'sign in user' do
+    context 'signed in user' do
       before { controller_sign_in }
 
       it 'should redirect to home page' do
@@ -27,7 +27,7 @@ describe ProfilesController do
 
 
   describe 'POST #create' do
-    context 'as not signed in user' do
+    context 'when user is not signed in' do
       let(:user) { double(User, id: '100') }
 
       describe 'filter parameters' do
@@ -89,12 +89,8 @@ describe ProfilesController do
 
 
   describe 'GET #edit' do
-    describe 'when user not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        get :edit
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
+    include_examples 'controller sign in required' do
+      before { get :edit }
     end
 
     describe 'when user signed in' do
@@ -113,12 +109,8 @@ describe ProfilesController do
   end
 
   describe 'PUT #update' do
-    describe 'when user not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        put :update
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
+    include_examples 'controller sign in required' do
+      before { put :update }
     end
 
     describe 'when user signed in' do

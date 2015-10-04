@@ -2,12 +2,8 @@ require 'rails_helper'
 
 describe Profiles::PasswordsController do
   describe 'GET #edit' do
-    describe 'when user not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        get :edit
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
+    include_examples 'controller sign in required' do
+      before { get :edit }
     end
 
     describe 'when user signed in' do
@@ -28,12 +24,8 @@ describe Profiles::PasswordsController do
   end
 
   describe 'PUT #update' do
-    describe 'when user not signed in' do
-      it 'should redirect to sign in action with error flash' do
-        put :update
-        expect(response).to redirect_to(sign_in_url)
-        expect(flash[:error]).not_to be_nil
-      end
+    include_examples 'controller sign in required' do
+      before { put :update }
     end
 
     describe 'when user signed in' do

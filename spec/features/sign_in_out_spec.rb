@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'User sessions' do
+describe 'Sign in and sign out' do
 
   let!(:existing_user) { FactoryGirl.create(:user,
                                             email: 'example@email.net',
