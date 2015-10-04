@@ -7,8 +7,8 @@ Rails.application.routes.draw do
     post '/sign_in' => 'user_sessions#create'
     delete '/sign_out' => 'user_sessions#destroy', as: 'sign_out'
 
-    get '/sign_up' => 'users#new', as: 'sign_up'
-    post '/sign_up' => 'users#create'
+    get '/sign_up' => 'profiles#new', as: 'sign_up'
+    post '/sign_up' => 'profiles#create'
 
     get '/profile' => 'profiles#edit', as: 'profile'
     put '/profile' => 'profiles#update'

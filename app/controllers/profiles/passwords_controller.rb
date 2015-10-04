@@ -18,6 +18,9 @@ module Profiles
 
     private
 
+    # Params to update password for current user.
+    #
+    # @return [Hash]
     def password_params
       params.require(:password_form).permit(:current_password, :new_password, :new_password_confirmation)
     end
