@@ -1,0 +1,6 @@
+en:
+  profiles:
+    edit:
+      profile: Your profile
+      errors: Please, fill the form correctly
+      update: Update

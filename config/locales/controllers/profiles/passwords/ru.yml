@@ -1,0 +1,5 @@
+ru:
+  controllers:
+    profiles:
+      passwords:
+        updated: Ваш пароль обновлён

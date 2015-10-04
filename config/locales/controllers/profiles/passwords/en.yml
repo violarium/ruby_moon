@@ -1,0 +1,5 @@
+en:
+  controllers:
+    profiles:
+      passwords:
+        updated: Your password updated

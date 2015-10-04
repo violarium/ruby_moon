@@ -34,8 +34,8 @@
             <li class="dropdown <%= params[:controller] == 'user_settings' ? 'active' : '' %>">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= t('.profile') %> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><%= link_to t('.edit_profile'), edit_profile_settings_url %></li>
-                <li><%= link_to t('.edit_password'), edit_password_settings_url %></li>
+                <li><%= link_to t('.edit_profile'), profile_url %></li>
+                <li><%= link_to t('.edit_password'), profile_password_url %></li>
                 <li class="divider"></li>
                 <li><%= link_to t('.sign_out'), sign_out_url, method: :delete %></li>
               </ul>
