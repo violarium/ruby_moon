@@ -53,10 +53,10 @@ describe CalendarController do
   end
 
 
-  describe 'GET #show' do
+  describe 'GET #edit' do
     describe 'when we are not signed in' do
       it 'should redirect to sign in action with error flash' do
-        get :show, { year: 2015, month: 1, day: 1 }
+        get :edit, { year: 2015, month: 1, day: 1 }
         expect(response).to redirect_to(sign_in_url)
         expect(flash[:error]).not_to be_nil
       end
@@ -67,15 +67,15 @@ describe CalendarController do
       let(:user) { FactoryGirl.create(:user) }
       before { controller_sign_in(user) }
 
-      it 'should render "show template"' do
-        get :show, { year: 2015, month: 1, day: 1 }
-        expect(response).to render_template(:show)
+      it 'should render "edit template"' do
+        get :edit, { year: 2015, month: 1, day: 1 }
+        expect(response).to render_template(:edit)
       end
 
       it 'should pass calendar day form to view' do
         form = double('calendar_form')
         expect(CalendarDayForm).to receive(:new).with(user, Date.new(2015, 1, 1)).and_return(form)
-        get :show, { year: 2015, month: 1, day: 1 }
+        get :edit, { year: 2015, month: 1, day: 1 }
         expect(assigns[:day_form]).to eq(form)
       end
 
@@ -84,7 +84,7 @@ describe CalendarController do
         expect(UserCalendarFacade).to receive(:new).with(user).and_return(data_provider)
         expect(data_provider).to receive(:day_info).with(Date.new(2015, 1, 1)).and_return('day info')
 
-        get :show, { year: 2015, month: 1, day: 1 }
+        get :edit, { year: 2015, month: 1, day: 1 }
         expect(assigns[:day_info]).to eq('day info')
       end
     end
@@ -139,9 +139,9 @@ describe CalendarController do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
 
-        it 'should render "show template"' do
+        it 'should render "edit template"' do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
-          expect(response).to render_template(:show)
+          expect(response).to render_template(:edit)
         end
 
         it 'should pass to template form' do

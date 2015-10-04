@@ -9,16 +9,6 @@ module CalendarHelper
   end
 
 
-  # Make update calendar day url from date object.
-  #
-  # @param date [Date] date object to create url.
-  #
-  # @return [String] url string.
-  def make_update_calendar_day_url(date)
-    update_calendar_day_url(date.year, date.month, date.day)
-  end
-
-
   # Get additional classes for day in calendar.
   #
   # @param date [Date]

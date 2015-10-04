@@ -21,7 +21,7 @@ he:
       to_create: כדי לעשות זאת - סמן "יום קריטי".
       to_close_intro: "היום הזה קרוב מידי ליותר ממחזור אחד:" 
       to_close_forbid_append: אין באפשרותך להוסיף יום זה לאף אחד מהם. 
-    show:
+    edit:
       errors: "יש שגיאות:"
       critical_day: יום קריטי
       save: שמור

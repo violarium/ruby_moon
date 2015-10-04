@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UserSessionsController do
+describe SessionsController do
 
   describe 'GET #new' do
     context 'not signed in user' do

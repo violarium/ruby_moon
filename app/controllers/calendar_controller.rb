@@ -19,7 +19,7 @@ class CalendarController < ApplicationController
   end
 
 
-  def show
+  def edit
     @day_info = user_calendar_facade.day_info(received_day)
     @day_form = CalendarDayForm.new(current_user, received_day)
   end
@@ -32,7 +32,7 @@ class CalendarController < ApplicationController
        predictor.refresh_for(current_user, PERIODS_TO_PREDICT)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
-       render :show
+       render :edit
      end
   end
 
