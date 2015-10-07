@@ -6,4 +6,11 @@ en:
         password: Password
         password_confirmation: Password confirmation
         time_zone: Time zone
-  
+        notification_days: Notification days
+        notification_time: Notification time
+    errors:
+      models:
+        user:
+          attributes:
+            notification_days:
+              not_allowed_values: have not allowed values

@@ -115,5 +115,51 @@ describe User do
         expect(user).not_to be_valid
       end
     end
+
+    describe 'notification_time' do
+      it 'should be required' do
+        user.notification_time = nil
+        expect(user).not_to be_valid
+      end
+
+      it 'should be integer' do
+        user.notification_time = 'test'
+        expect(user).not_to be_valid
+      end
+
+      it 'should be value between 0 and 23' do
+        [0, 14, 23].each do |val|
+          user.notification_time = val
+          expect(user).to be_valid
+        end
+
+        [-1, 24].each do |val|
+          user.notification_time = val
+          expect(user).not_to be_valid
+        end
+      end
+    end
+
+    describe 'notification_days' do
+      it 'should be valid when it is empty array' do
+        user.notification_days = []
+        expect(user).to be_valid
+      end
+
+      it 'should be valid with 0, 1, 2' do
+        user.notification_days = [0, 1, 2]
+        expect(user).to be_valid
+
+        [0, 1, 2].each do |val|
+          user.notification_days = [val]
+          expect(user).to be_valid
+        end
+      end
+
+      it 'should not be valid with incorrect cariant' do
+        user.notification_days = [0, 1, 7]
+        expect(user).not_to be_valid
+      end
+    end
   end
 end

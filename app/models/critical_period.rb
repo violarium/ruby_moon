@@ -1,4 +1,6 @@
 # Critical period model.
+#
+# Belongs to user, have from and to field - Date types.
 class CriticalPeriod
   include UserPeriodConcern
 
