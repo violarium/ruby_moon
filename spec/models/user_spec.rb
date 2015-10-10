@@ -116,48 +116,48 @@ describe User do
       end
     end
 
-    describe 'notification_time' do
+    describe 'notify_at' do
       it 'should be required' do
-        user.notification_time = nil
+        user.notify_at = nil
         expect(user).not_to be_valid
       end
 
       it 'should be integer' do
-        user.notification_time = 'test'
+        user.notify_at = 'test'
         expect(user).not_to be_valid
       end
 
       it 'should be value between 0 and 23' do
         [0, 14, 23].each do |val|
-          user.notification_time = val
+          user.notify_at = val
           expect(user).to be_valid
         end
 
         [-1, 24].each do |val|
-          user.notification_time = val
+          user.notify_at = val
           expect(user).not_to be_valid
         end
       end
     end
 
-    describe 'notification_days' do
+    describe 'notify_before' do
       it 'should be valid when it is empty array' do
-        user.notification_days = []
+        user.notify_before = []
         expect(user).to be_valid
       end
 
       it 'should be valid with 0, 1, 2' do
-        user.notification_days = [0, 1, 2]
+        user.notify_before = [0, 1, 2]
         expect(user).to be_valid
 
         [0, 1, 2].each do |val|
-          user.notification_days = [val]
+          user.notify_before = [val]
           expect(user).to be_valid
         end
       end
 
       it 'should not be valid with incorrect cariant' do
-        user.notification_days = [0, 1, 7]
+        user.notify_before = [0, 1, 7]
         expect(user).not_to be_valid
       end
     end

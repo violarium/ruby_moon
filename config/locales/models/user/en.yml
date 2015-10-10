@@ -12,5 +12,5 @@ en:
       models:
         user:
           attributes:
-            notification_days:
+            notify_before:
               not_allowed_values: have not allowed values

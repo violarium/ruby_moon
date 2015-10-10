@@ -12,5 +12,5 @@ ru:
       models:
         user:
           attributes:
-            notification_days:
+            notify_before:
               not_allowed_values: имеет неверные значения
