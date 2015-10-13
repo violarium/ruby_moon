@@ -1,0 +1,5 @@
+ru:
+  controllers:
+    profiles:
+      notifications:
+        updated: Уведомления обновлены

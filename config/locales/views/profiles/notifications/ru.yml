@@ -1,0 +1,7 @@
+ru:
+  profiles:
+    notifications:
+      edit:
+        title: Уведомления
+        errors: Пожалуйста, заполните форму корректными данными
+        update: Сохранить уведомления

@@ -6,11 +6,18 @@ ru:
         password: Пароль
         password_confirmation: Подтверждение пароля
         time_zone: Часовой пояс
-        notification_days: Дни уведомлений
-        notification_time: Время уведомления
+        notify_before: Уведомлять
+        notify_at: Час уведомления
+    attribute_values:
+      user:
+        notify_before:
+          - В день
+          - За 1 день
+          - За 2 дня
     errors:
       models:
         user:
           attributes:
             notify_before:
               not_allowed_values: имеет неверные значения
+              not_unique_values: имеет дублирующиеся значения

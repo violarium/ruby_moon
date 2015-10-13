@@ -1,0 +1,7 @@
+en:
+  profiles:
+    notifications:
+      edit:
+        title: Notifications
+        errors: Please, fill the form correctly
+        update: Update notifications

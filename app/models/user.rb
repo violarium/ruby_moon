@@ -65,6 +65,8 @@ class User
 
   # Validate #notify_before to have correct values.
   def validate_notify_before
+    errors.add(:notify_before, :not_unique_values) if notify_before != notify_before.uniq
+
     notify_before.each do |val|
       unless ALLOWED_NOTIFY_BEFORE.include?(val)
         errors.add(:notify_before, :not_allowed_values)

@@ -1,0 +1,5 @@
+en:
+  controllers:
+    profiles:
+      notifications:
+        updated: Notifications updated

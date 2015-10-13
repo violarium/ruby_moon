@@ -156,4 +156,76 @@ describe 'Profile' do
       end
     end
   end
+
+
+  describe 'notifications page' do
+    describe 'when I am not signed in' do
+      before do
+        sign_out_if_signed_in
+        visit '/profile/notifications'
+      end
+
+      include_examples 'sign in required'
+    end
+
+    it 'should open notifications page by direct link' do
+      visit '/profile/notifications'
+      expect(page).to have_title('Notifications')
+    end
+
+    it 'should open notifications page on click in menu' do
+      visit '/'
+      click_on 'Profile'
+      click_on 'Notifications'
+      expect(page).to have_title('Notifications')
+    end
+
+    it 'should show current notification settings' do
+      user.notify_before = [0, 2]
+      user.notify_at = 10
+      user.save!
+      visit '/profile/notifications'
+
+      expect(page).to have_checked_field('In day')
+      expect(page).to have_unchecked_field('Before 1 day')
+      expect(page).to have_checked_field('Before 2 days')
+
+      expect(page).to have_field('Notify at', with: 10)
+    end
+
+    describe 'when form filled in correctly' do
+      before do
+        visit '/profile/notifications'
+        uncheck 'In day'
+        uncheck 'Before 1 day'
+        check 'Before 2 days'
+        fill_in 'Notify at', with: '3'
+        click_button 'Update notifications'
+      end
+
+      it 'should show notifications page with success message' do
+        expect(page).to have_title('Notifications')
+        expect(page).to have_content('Notifications updated')
+      end
+
+      it 'should update notification settings' do
+        user.reload
+        expect(user.notify_before).to eq [2]
+        expect(user.notify_at).to eq 3
+      end
+    end
+
+    describe 'when form not filled in correctly' do
+      before do
+        visit '/profile/notifications'
+        fill_in 'Notify at', with: '33'
+        click_button 'Update notifications'
+      end
+
+      it 'should show profile form with error message' do
+        expect(page).to have_title('Notifications')
+        expect(page).to have_content('Please, fill the form correctly')
+      end
+    end
+  end
 end

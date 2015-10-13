@@ -6,11 +6,18 @@ en:
         password: Password
         password_confirmation: Password confirmation
         time_zone: Time zone
-        notification_days: Notification days
-        notification_time: Notification time
+        notify_before: Notify
+        notify_at: Notify at
+    attribute_values:
+      user:
+        notify_before:
+          - In day
+          - Before 1 day
+          - Before 2 days
     errors:
       models:
         user:
           attributes:
             notify_before:
               not_allowed_values: have not allowed values
+              not_unique_values: have not unique values

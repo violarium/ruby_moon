@@ -1,0 +1,43 @@
+<% content_for(:title, t('.title')) %>
+
+<div class="user-form-container">
+  <h1 class="user-form-header"><%= t('.title') %></h1>
+
+  <%= form_for(@user, builder: BootstrapFormBuilder, url: profile_notifications_url, method: :put, html: { class: 'form-horizontal' }) do |f| %>
+
+      <% if f.object.errors.count > 0 %>
+          <div class="form-group">
+            <div class="text-danger col-sm-8 col-sm-offset-4"><%= t '.errors' %></div>
+          </div>
+      <% end %>
+
+      <%= f.form_group(:notify_before) do %>
+          <%= f.label(:notify_before, nil, class: 'col-sm-4 control-label') %>
+          <div class="col-sm-8">
+            <div>
+                <% User::ALLOWED_NOTIFY_BEFORE.each do |n| %>
+                    <label class="checkbox-inline">
+                      <%= f.check_box(:notify_before, { multiple: true, include_hidden: false }, n) %>
+                      <%= t('mongoid.attribute_values.user.notify_before')[n] %>
+                    </label>
+                <% end %>
+            </div>
+            <%= f.full_errors_for(:notify_before) %>
+          </div>
+      <% end %>
+
+      <%= f.form_group(:notify_at) do %>
+          <%= f.label(:notify_at, nil, class: 'col-sm-4 control-label') %>
+          <div class="col-sm-8">
+            <%= f.text_field(:notify_at, placeholder: human_attribute(f.object, :notify_at), class: 'form-control') %>
+            <%= f.full_errors_for(:notify_at) %>
+          </div>
+      <% end %>
+
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <%= f.button(t('.update'), class: 'btn btn-default') %>
+        </div>
+      </div>
+  <% end %>
+</div>

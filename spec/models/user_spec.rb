@@ -160,6 +160,11 @@ describe User do
         user.notify_before = [0, 1, 7]
         expect(user).not_to be_valid
       end
+
+      it 'should not be valid with not unique values' do
+        user.notify_before = [0, 0, 1]
+        expect(user).not_to be_valid
+      end
     end
   end
 end

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     put '/profile' => 'profiles#update'
     get '/profile/password' => 'profiles/passwords#edit', as: 'profile_password'
     put '/profile/password' => 'profiles/passwords#update'
+    get '/profile/notifications' => 'profiles/notifications#edit', as: 'profile_notifications'
+    put '/profile/notifications' => 'profiles/notifications#update'
 
     get '/calendar/(:year/:month)' => 'calendar#index', as: 'calendar'
     get '/calendar/day/:year/:month/:day' => 'calendar#edit', as: 'calendar_day'
