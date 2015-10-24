@@ -31,18 +31,24 @@ describe 'Profile' do
         visit '/profile'
         fill_in 'E-mail', with: 'example@email.com'
         select 'Sydney', from: 'Time zone'
-        click_button 'Update'
       end
 
       it 'should show profile form with success message' do
+        click_button 'Update'
         expect(page).to have_title('Your profile')
         expect(page).to have_content('Your profile updated')
       end
 
       it 'should update email and timezone' do
+        click_button 'Update'
         user.reload
         expect(user.email).to eq 'example@email.com'
         expect(user.time_zone).to eq 'Sydney'
+      end
+
+      it 'should rebuild user future critical periods' do
+        user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
+        expect{ click_button 'Update' }.to change { user.future_critical_periods.count }.by(3)
       end
     end
 
@@ -200,18 +206,24 @@ describe 'Profile' do
         uncheck 'Before 1 day'
         check 'Before 2 days'
         fill_in 'Notify at', with: '3'
-        click_button 'Update notifications'
       end
 
       it 'should show notifications page with success message' do
+        click_button 'Update notifications'
         expect(page).to have_title('Notifications')
         expect(page).to have_content('Notifications updated')
       end
 
       it 'should update notification settings' do
+        click_button 'Update notifications'
         user.reload
         expect(user.notify_before).to eq [2]
         expect(user.notify_at).to eq 3
+      end
+
+      it 'should rebuild user future critical periods' do
+        user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
+        expect{ click_button 'Update notifications' }.to change { user.future_critical_periods.count }.by(3)
       end
     end
 

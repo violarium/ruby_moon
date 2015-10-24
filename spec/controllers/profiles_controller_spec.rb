@@ -128,7 +128,14 @@ describe ProfilesController do
           expect(@user).to receive(:update_attributes).with(email: 'example@email.com',
                                                             time_zone: 'Sydney').and_return true
           put :update, user: { email: 'example@email.com', time_zone: 'Sydney' }
-          expect(response).to redirect_to(profile_url)
+        end
+
+        it 'should call period prediction' do
+          predictor = double(PeriodPredictor)
+          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
+          expect(predictor).to receive(:refresh_for).with(@user)
+
+          put :update, user: { email: 'example@email.com', time_zone: 'Sydney' }
         end
       end
 

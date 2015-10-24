@@ -42,6 +42,15 @@ describe Profiles::NotificationsController do
           expect(@user).to receive(:update_attributes).with({ notify_before: [0], notify_at: 0 }).and_return true
           put :update, user: { notify_before: [0], notify_at: 0 }
         end
+
+
+        it 'should call period prediction' do
+          predictor = double(PeriodPredictor)
+          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
+          expect(predictor).to receive(:refresh_for).with(@user)
+
+          put :update, user: { notify_before: [0], notify_at: 0 }
+        end
       end
 
       describe 'when data is not valid' do
