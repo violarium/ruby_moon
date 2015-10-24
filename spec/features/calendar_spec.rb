@@ -234,6 +234,7 @@ describe 'Calendar page' do
         future_critical_period = user.future_critical_periods.first
         expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
         expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days)
+        expect(future_critical_period.notifications.count).to eq 3
       end
 
 
@@ -265,6 +266,7 @@ describe 'Calendar page' do
         future_critical_period = user.future_critical_periods.first
         expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
         expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days + 1.day)
+        expect(future_critical_period.notifications.count).to eq 3
       end
     end
   end

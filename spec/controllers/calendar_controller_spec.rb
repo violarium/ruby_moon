@@ -95,7 +95,7 @@ describe CalendarController do
 
       before { controller_sign_in(user) }
       before do
-        allow(PeriodPredictor).to receive(:new).and_return(predictor)
+        allow(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
         allow(predictor).to receive(:refresh_for)
       end
 
@@ -118,7 +118,7 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
-          expect(predictor).to receive(:refresh_for).with(user, 3)
+          expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end
@@ -165,7 +165,7 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
-          expect(predictor).to receive(:refresh_for).with(user, 3)
+          expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end

@@ -29,7 +29,7 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, received_day, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
-       predictor.refresh_for(current_user, PERIODS_TO_PREDICT)
+       predictor.refresh_for(current_user)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
        render :edit
@@ -65,6 +65,6 @@ class CalendarController < ApplicationController
   #
   # @return [PeriodPredictor]
   def predictor
-    @predictor ||= PeriodPredictor.new
+    @predictor ||= PeriodPredictor.default_predictor
   end
 end

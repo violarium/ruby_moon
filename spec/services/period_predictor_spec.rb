@@ -2,9 +2,21 @@ require 'rails_helper'
 
 describe PeriodPredictor do
   let(:user) { FactoryGirl.create(:user) }
-  let(:predictor) { described_class.new }
+  let(:notification_builder) { NotificationBuilder.new }
+  let(:predictor) { PeriodPredictor.new(notification_builder, 28, 4, 1) }
+
+  describe 'self.default_predictor' do
+    it 'should create period predictor' do
+      expect(PeriodPredictor.default_predictor).to be_a PeriodPredictor
+    end
+  end
 
   describe '#refresh_for' do
+    before do
+      allow(notification_builder).to receive(:rebuild_for)
+    end
+
+
     describe 'when there are no critical periods' do
       it 'should not predict any periods' do
         expect { predictor.refresh_for(user) }.not_to change { user.future_critical_periods.count }
@@ -92,13 +104,15 @@ describe PeriodPredictor do
 
 
     describe 'when we want to predict 3 periods' do
+      let(:predictor) { PeriodPredictor.new(notification_builder, 28, 4, 3) }
+
       before do
         user.critical_periods.create!(from: Date.new(2015, 8, 2), to: Date.new(2015, 8, 3))
         user.critical_periods.create!(from: Date.new(2015, 8, 16), to: Date.new(2015, 8, 19))
       end
 
       it 'should predict one period with average data from last 3 periods' do
-        expect { predictor.refresh_for(user, 3) }.to change { user.future_critical_periods.count }.by(3)
+        expect { predictor.refresh_for(user) }.to change { user.future_critical_periods.count }.by(3)
         predicted_periods = user.future_critical_periods.all.to_a
 
         expect(predicted_periods[0].from).to eq(Date.new(2015, 8, 30))
@@ -109,6 +123,27 @@ describe PeriodPredictor do
 
         expect(predicted_periods[2].from).to eq(Date.new(2015, 9, 27))
         expect(predicted_periods[2].to).to eq(Date.new(2015, 9, 29))
+      end
+    end
+
+
+    describe 'creating notifications' do
+      describe 'when there are to predict something' do
+        before do
+          user.critical_periods.create!(from: Date.new(2015, 1, 1), to: Date.new(2015, 1, 4))
+        end
+
+        it 'should call rebuilding notifications for user' do
+          expect(notification_builder).to receive(:rebuild_for).with(user).once
+          predictor.refresh_for(user)
+        end
+      end
+
+      describe 'when there are nothing to predict' do
+        it 'should not even call rebuilding notifications' do
+          expect(notification_builder).not_to receive(:rebuild_for)
+          predictor.refresh_for(user)
+        end
       end
     end
   end

@@ -1,36 +1,47 @@
 # Predictor for critical days.
 class PeriodPredictor
   # Default period cycle.
-  AVERAGE_PERIOD_CYCLE = 28
+  DEFAULT_CYCLE = 28
 
-  # Number of periods which will be looked for average data.
-  PERIODS_TO_CONSIDER = 4
+  def initialize(notification_builder, default_cycle, to_consider, to_predict)
+    @notification_builder = notification_builder
+    @default_cycle = default_cycle
+    @to_consider = to_consider
+    @to_predict = to_predict
+  end
+
 
   # Refresh predicted periods for user. Remove old, create new.
   #
   # @param user [User]
-  # @param to_predict [Integer] - number of periods to predict in future.
   #
   # @return [Boolean] - was predicted anything or not.
-  def refresh_for(user, to_predict = 1)
+  def refresh_for(user)
     user.future_critical_periods.delete_all
 
-    periods = user.critical_periods.order_by(:from => 'desc').limit(PERIODS_TO_CONSIDER).all.to_a
+    periods = user.critical_periods.order_by(:from => 'desc').limit(@to_consider).all.to_a
     if periods.length > 0
       average_period_values = average_period_values(periods)
       average_cycle = average_period_values[:average_cycle]
       average_length = average_period_values[:average_length]
 
       future_period_from = periods[0].from
-      to_predict.times do ||
+      @to_predict.times do ||
         future_period_from = future_period_from + average_cycle.days
         future_period_to = future_period_from + average_length.days
         user.future_critical_periods.create!(from: future_period_from, to: future_period_to)
       end
+      @notification_builder.rebuild_for(user)
       true
     else
       false
     end
+  end
+
+
+  # Get default predictor.
+  def self.default_predictor
+    self.new(NotificationBuilder.new, DEFAULT_CYCLE, 4, 3)
   end
 
 
@@ -57,7 +68,7 @@ class PeriodPredictor
     if period_cycles.length > 0
       average_cycle = (period_cycles.sum / period_cycles.length.to_f).round
     else
-      average_cycle = AVERAGE_PERIOD_CYCLE
+      average_cycle = @default_cycle
     end
     average_length = (period_lengths.sum / period_lengths.length.to_f).round
 
