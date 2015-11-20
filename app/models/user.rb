@@ -18,11 +18,15 @@ class User
   # Allowed values for #notify_before.
   ALLOWED_NOTIFY_BEFORE = [0, 1, 2]
 
+  # Allowed locales for #locale and system ar all
+  ALLOWED_LOCALES = { en: 'English', ru: 'Русский', he: "עברית" }
+
   field :email, type: String
   field :encrypted_password, type: String
   field :time_zone, type: String, default: 'UTC'
   field :notify_before, type: Array, default: ALLOWED_NOTIFY_BEFORE
   field :notify_at, type: Integer, default: 8
+  field :locale, type: Symbol, default: :en
 
   has_many :critical_periods
   has_many :future_critical_periods
@@ -39,6 +43,7 @@ class User
   validate :validate_notify_before
   validates :notify_at, presence: true, numericality: { only_integer: true,
                                                 greater_than_or_equal_to: 0, less_than_or_equal_to: 23 }
+  validates :locale, inclusion: { in: ALLOWED_LOCALES.keys }
 
 
   # Get first upcoming future critical period.

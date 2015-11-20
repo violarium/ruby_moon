@@ -166,5 +166,24 @@ describe User do
         expect(user).not_to be_valid
       end
     end
+
+    describe 'locale' do
+      it 'should be valid for allowed locales' do
+        User::ALLOWED_LOCALES.keys.each do |locale|
+          user.locale = locale
+          expect(user).to be_valid
+        end
+      end
+
+      it 'should not be valid without locale' do
+        user.locale = nil
+        expect(user).not_to be_valid
+      end
+
+      it 'should not be valid with wrong locale' do
+        user.locale = :pirate
+        expect(user).not_to be_valid
+      end
+    end
   end
 end

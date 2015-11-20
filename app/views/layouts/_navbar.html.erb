@@ -22,9 +22,9 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t '.language' %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-		  <% [{ name: 'English', param: '', locale: :en }, { name: 'Русский', param: 'ru', locale: :ru },{name:"עברית", param:'he', locale: :he}].each do |lang| %>
-                <li class="<%= I18n.locale == lang[:locale] ? 'active' : '' %>">
-                  <%= link_to lang[:name], params.merge({:locale => lang[:param]}) %>
+            <% lang_variants(params).each do |variant| %>
+                <li class="<%= variant[:active] ? 'active' : '' %>">
+                  <%= link_to variant[:name], variant[:params] %>
                 </li>
             <% end %>
           </ul>

@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
 
-  scope '(:locale)', locale: /en|ru|he/ do
+  # List of available locale values for route.
+  # Default locale will be excluded - it means, that without prefix it will be default.
+  locales = Rails.application.config.i18n.available_locales.reject do |locale|
+    locale == Rails.application.config.i18n.default_locale
+  end
+
+  scope '(:locale)', locale: /#{locales.join('|')}/ do
     root 'home#show', as: 'home_page'
 
     get '/sign_in' => 'sessions#new', as: 'sign_in'

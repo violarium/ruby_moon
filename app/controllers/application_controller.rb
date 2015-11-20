@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   private
 
   # Set locale according to params.
+  # Also save selected locale to current user if it signed in.
   def set_locale
     locale = params[:locale]
     if locale.nil? || locale == ''
@@ -18,5 +19,9 @@ class ApplicationController < ActionController::Base
       I18n.locale = locale
     end
     self.default_url_options[:locale] = locale
+
+    if current_user && current_user.locale != I18n.locale
+      current_user.update(locale: I18n.locale)
+    end
   end
 end

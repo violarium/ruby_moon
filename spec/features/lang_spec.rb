@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Language' do
 
-  it 'should be able to show english under /en' do
-    visit '/en'
+  it 'should be able to show english under /' do
+    visit '/'
 
     expect(page).to have_content 'Language'
   end
@@ -42,5 +42,15 @@ describe 'Language' do
     click_link 'Русский'
 
     expect(page).to have_content 'Язык'
+  end
+
+
+  describe 'user locale saving' do
+    let(:user) { FactoryGirl.create(:user, password: 'password') }
+    before { sign_in_with(user.email, 'password') }
+
+    it 'should save selected language to user note' do
+      expect { visit '/ru' }.to change { user.reload.locale }.from(:en).to(:ru)
+    end
   end
 end
