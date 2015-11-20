@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -50,10 +50,10 @@ group :development, :test do
 end
 
 # Gems for testing
-gem 'rspec-rails', '~> 3.3.3', group: [:development, :test]
+gem 'rspec-rails', '~> 3.4.0', group: [:development, :test]
 group :test do
   gem 'capybara', '~> 2.5.0'
-  gem 'poltergeist', '~> 1.6.0'
+  gem 'poltergeist', '~> 1.8.0'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'codeclimate-test-reporter', group: :test, require: nil
 end
