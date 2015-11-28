@@ -130,11 +130,10 @@ describe ProfilesController do
           put :update, user: { email: 'example@email.com', time_zone: 'Sydney' }
         end
 
-        it 'should call period prediction' do
-          predictor = double(PeriodPredictor)
-          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
-          expect(predictor).to receive(:refresh_for).with(@user)
-
+        it 'should call rebuilding notifications' do
+          notify_builder = double(NotificationBuilder)
+          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+          expect(notify_builder).to receive(:rebuild_for).with(@user)
           put :update, user: { email: 'example@email.com', time_zone: 'Sydney' }
         end
       end

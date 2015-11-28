@@ -9,7 +9,7 @@ module Profiles
     def update
       @user = current_user
       if @user.update_attributes(notifications_params)
-        PeriodPredictor.default_predictor.refresh_for(@user)
+        NotificationBuilder.new.rebuild_for(current_user)
         flash[:success] = t('controllers.profiles.notifications.updated')
         redirect_to profile_notifications_url
       else

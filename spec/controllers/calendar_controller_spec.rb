@@ -90,15 +90,9 @@ describe CalendarController do
 
     describe 'when we are signed in' do
       let(:user) { FactoryGirl.create(:user) }
-      let(:predictor) { double(PeriodPredictor) }
       let(:day_form) { double('calendar_day_form') }
 
       before { controller_sign_in(user) }
-      before do
-        allow(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
-        allow(predictor).to receive(:refresh_for)
-      end
-
 
       describe 'if form data is valid' do
         before do
@@ -118,7 +112,16 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
+          predictor = double(PeriodPredictor)
+          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
           expect(predictor).to receive(:refresh_for).with(user)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
+
+        it 'should call rebuilding notifications' do
+          notify_builder = double(NotificationBuilder)
+          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+          expect(notify_builder).to receive(:rebuild_for).with(user)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end
@@ -146,7 +149,12 @@ describe CalendarController do
         end
 
         it 'should not call prediction of new periods' do
-          expect(predictor).not_to receive(:refresh_for)
+          expect(PeriodPredictor).not_to receive(:default_predictor)
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+        end
+
+        it 'should not call rebuilding notifications' do
+          expect(NotificationBuilder).not_to receive(:new)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end
@@ -165,8 +173,17 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
+          predictor = double(PeriodPredictor)
+          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
           expect(predictor).to receive(:refresh_for).with(user)
-          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+          put :update, { year: 2015, month: 1, day: 1}
+        end
+
+        it 'should call rebuilding notifications' do
+          notify_builder = double(NotificationBuilder)
+          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+          expect(notify_builder).to receive(:rebuild_for).with(user)
+          put :update, { year: 2015, month: 1, day: 1 }
         end
       end
     end

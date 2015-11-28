@@ -43,11 +43,10 @@ describe Profiles::NotificationsController do
           put :update, user: { notify_before: [0], notify_at: 0 }
         end
 
-
-        it 'should call period prediction' do
-          predictor = double(PeriodPredictor)
-          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
-          expect(predictor).to receive(:refresh_for).with(@user)
+        it 'should call rebuilding notifications' do
+          notify_builder = double(NotificationBuilder)
+          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+          expect(notify_builder).to receive(:rebuild_for).with(@user)
 
           put :update, user: { notify_before: [0], notify_at: 0 }
         end

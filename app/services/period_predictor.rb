@@ -1,10 +1,6 @@
 # Predictor for critical days.
 class PeriodPredictor
-  # Default period cycle.
-  DEFAULT_CYCLE = 28
-
-  def initialize(notification_builder, default_cycle, to_consider, to_predict)
-    @notification_builder = notification_builder
+  def initialize(default_cycle, to_consider, to_predict)
     @default_cycle = default_cycle
     @to_consider = to_consider
     @to_predict = to_predict
@@ -17,8 +13,48 @@ class PeriodPredictor
   #
   # @return [Boolean] - was predicted anything or not.
   def refresh_for(user)
-    user.future_critical_periods.delete_all
+    future_intervals = future_intervals_for_user(user)
 
+    if future_intervals.length > 0
+      intervals_to_keep = []
+      period_to_remove = []
+      existing_periods = user.future_critical_periods.all.to_a
+      existing_periods.each do |existing|
+        existing_interval = { from: existing.from, to: existing.to }
+        if future_intervals.include?(existing_interval)
+          intervals_to_keep.push(existing_interval)
+        else
+          period_to_remove.push(existing)
+        end
+      end
+      intervals_to_create = future_intervals - intervals_to_keep
+
+      period_to_remove.each { |existing_period| existing_period.delete }
+      intervals_to_create.each { |data| user.future_critical_periods.create!(data) }
+      true
+    else
+      user.future_critical_periods.delete_all
+      false
+    end
+  end
+
+
+  # Get default predictor.
+  def self.default_predictor
+    self.new(28, 4, 3)
+  end
+
+
+  private
+
+
+  # Get future intervals for user.
+  #
+  # @param user [User]
+  #
+  # @return [Array]
+  def future_intervals_for_user(user)
+    future_intervals = []
     periods = user.critical_periods.order_by(:from => 'desc').limit(@to_consider).all.to_a
     if periods.length > 0
       average_period_values = average_period_values(periods)
@@ -29,23 +65,12 @@ class PeriodPredictor
       @to_predict.times do ||
         future_period_from = future_period_from + average_cycle.days
         future_period_to = future_period_from + average_length.days
-        user.future_critical_periods.create!(from: future_period_from, to: future_period_to)
+        future_intervals.push(from: future_period_from, to: future_period_to)
       end
-      @notification_builder.rebuild_for(user)
-      true
-    else
-      false
     end
+    future_intervals
   end
 
-
-  # Get default predictor.
-  def self.default_predictor
-    self.new(NotificationBuilder.new, DEFAULT_CYCLE, 4, 3)
-  end
-
-
-  private
 
   # Get average values for list of periods.
   #

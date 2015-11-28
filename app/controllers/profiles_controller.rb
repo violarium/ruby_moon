@@ -24,7 +24,7 @@ class ProfilesController < ApplicationController
   def update
     @user = current_user
     if @user.update_attributes(update_profile_params)
-      PeriodPredictor.default_predictor.refresh_for(@user)
+      NotificationBuilder.new.rebuild_for(current_user)
       flash[:success] = t('controllers.profiles.updated')
       redirect_to profile_url
     else

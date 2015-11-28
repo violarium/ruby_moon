@@ -45,11 +45,6 @@ describe 'Profile' do
         expect(user.email).to eq 'example@email.com'
         expect(user.time_zone).to eq 'Sydney'
       end
-
-      it 'should rebuild user future critical periods' do
-        user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
-        expect{ click_button 'Update' }.to change { user.future_critical_periods.count }.by(3)
-      end
     end
 
     describe 'when form not filled in correctly' do
@@ -219,11 +214,6 @@ describe 'Profile' do
         user.reload
         expect(user.notify_before).to eq [2]
         expect(user.notify_at).to eq 3
-      end
-
-      it 'should rebuild user future critical periods' do
-        user.critical_periods.create!(from: Date.new(2015, 1, 30), to: Date.new(2015, 2, 3))
-        expect{ click_button 'Update notifications' }.to change { user.future_critical_periods.count }.by(3)
       end
     end
 

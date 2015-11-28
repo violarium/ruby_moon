@@ -223,20 +223,22 @@ describe 'Calendar page' do
     end
 
     describe 'prediction' do
-      it 'should create predicted critical periods when I create critical period' do
-        visit '/calendar/2015/2'
-        find('.month-days-grid .day > a', text: 10).click
-        check 'Critical day'
-        expect do
-          click_on('Save')
-        end.to change { user.future_critical_periods.count }.by(3)
+      describe 'when I create critical period' do
+        before do
+          visit '/calendar/2015/2'
+          find('.month-days-grid .day > a', text: 10).click
+          check 'Critical day'
+          click_on 'Save'
+        end
 
-        future_critical_period = user.future_critical_periods.first
-        expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
-        expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days)
-        expect(future_critical_period.notifications.count).to eq 3
+        it 'should create predicted critical periods' do
+          expect(user.future_critical_periods.count).to eq 3
+
+          future_critical_period = user.future_critical_periods.first
+          expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
+          expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days)
+        end
       end
-
 
       it 'should remove all predicted critical periods when I delete last critical period' do
         user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 10))
@@ -252,21 +254,24 @@ describe 'Calendar page' do
       end
 
 
-      it 'should update predicted critical periods when I change existing critical period' do
-        user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 10))
-        user.future_critical_periods.create!(from: Date.new(2015, 2, 10) + 28.days, to: Date.new(2015, 2, 10) + 28.days)
+      describe 'when I change existing critical period' do
+        before do
+          user.critical_periods.create!(from: Date.new(2015, 2, 10), to: Date.new(2015, 2, 10))
+          user.future_critical_periods.create!(from: Date.new(2015, 2, 10) + 28.days, to: Date.new(2015, 2, 10) + 28.days)
 
-        visit '/calendar/2015/2'
-        find('.month-days-grid .day > a', text: 11).click
-        check 'Critical day'
-        click_on 'Save'
+          visit '/calendar/2015/2'
+          find('.month-days-grid .day > a', text: 11).click
+          check 'Critical day'
+          click_on 'Save'
+        end
 
-        expect(user.future_critical_periods.count).to eq(3)
+        it 'should update predicted critical periods' do
+          expect(user.future_critical_periods.count).to eq(3)
 
-        future_critical_period = user.future_critical_periods.first
-        expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
-        expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days + 1.day)
-        expect(future_critical_period.notifications.count).to eq 3
+          future_critical_period = user.future_critical_periods.first
+          expect(future_critical_period.from).to eq(Date.new(2015, 2, 10) + 28.days)
+          expect(future_critical_period.to).to eq(Date.new(2015, 2, 10) + 28.days + 1.day)
+        end
       end
     end
   end

@@ -1,5 +1,4 @@
 class CalendarController < ApplicationController
-  PERIODS_TO_PREDICT = 3
 
   before_filter :require_sign_in
 
@@ -29,7 +28,8 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, received_day, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
-       predictor.refresh_for(current_user)
+       PeriodPredictor.default_predictor.refresh_for(current_user)
+       NotificationBuilder.new.rebuild_for(current_user)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
        render :edit
@@ -59,12 +59,5 @@ class CalendarController < ApplicationController
   # @return [Date]
   def received_day
     @date_from_params ||= Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-  end
-
-  # Get predictor.
-  #
-  # @return [PeriodPredictor]
-  def predictor
-    @predictor ||= PeriodPredictor.default_predictor
   end
 end
