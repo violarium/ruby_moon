@@ -29,7 +29,6 @@ class CalendarController < ApplicationController
      if @day_form.valid?
        @day_form.submit
        PeriodPredictor.default_predictor.refresh_for(current_user)
-       NotificationBuilder.new.rebuild_for(current_user)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
        render :edit

@@ -31,6 +31,8 @@ class PeriodPredictor
 
       period_to_remove.each { |existing_period| existing_period.delete }
       intervals_to_create.each { |data| user.future_critical_periods.create!(data) }
+
+      NotificationBuilder.new.rebuild_for(user)
       true
     else
       user.future_critical_periods.delete_all

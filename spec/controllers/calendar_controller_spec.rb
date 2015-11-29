@@ -117,13 +117,6 @@ describe CalendarController do
           expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
-
-        it 'should call rebuilding notifications' do
-          notify_builder = double(NotificationBuilder)
-          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
-          expect(notify_builder).to receive(:rebuild_for).with(user)
-          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
-        end
       end
 
 
@@ -177,13 +170,6 @@ describe CalendarController do
           expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
           expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1}
-        end
-
-        it 'should call rebuilding notifications' do
-          notify_builder = double(NotificationBuilder)
-          expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
-          expect(notify_builder).to receive(:rebuild_for).with(user)
-          put :update, { year: 2015, month: 1, day: 1 }
         end
       end
     end

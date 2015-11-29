@@ -44,6 +44,14 @@ describe PeriodPredictor do
       it 'returns true' do
         expect(predictor.refresh_for(user)).to eq true
       end
+
+      it 'calls notification builder' do
+        notify_builder = double(NotificationBuilder)
+        expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+        expect(notify_builder).to receive(:rebuild_for).with(user)
+
+        predictor.refresh_for(user)
+      end
     end
 
 
