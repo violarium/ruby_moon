@@ -14,3 +14,5 @@ en:
       edit_profile: Edit profile
       edit_password: Change password
       edit_notifications: Notifications
+    mailer:
+      visit_site: Visit the site

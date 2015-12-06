@@ -1,0 +1,10 @@
+<html>
+  <body style="color: #333;">
+    <h1 style="font-size: large;"><%= yield(:header) %></h1>
+    <%= yield %>
+    <div style="font-size: small; color: #666;">
+      <div>&mdash;</div>
+      <%= t('.visit_site')%>: <a href="<%= home_page_url %>" style="color: #337AB7;">Ruby Moon</a>
+    </div>
+  </body>
+</html>

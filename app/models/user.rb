@@ -60,9 +60,16 @@ class User
   #
   # @param time [Time]
   #
-  # @param [ActiveSupport::TimeWithZone]
+  # @return [ActiveSupport::TimeWithZone]
   def in_time_zone(time)
     time.in_time_zone(time_zone)
+  end
+
+  # Get today date for user.
+  #
+  # @return [Date]
+  def today_date
+    in_time_zone(Time.now).to_date
   end
 
 

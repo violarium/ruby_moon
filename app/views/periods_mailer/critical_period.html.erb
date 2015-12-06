@@ -1,0 +1,5 @@
+<% content_for(:header, @subject) %>
+
+<p><%= t('.start', date: l(@future_period.from, format: :full)) %></p>
+<p><%= t('.end', date: l(@future_period.to, format: :full)) %></p>
+<p><%= t('.duration', duration: @duration, count: @duration)%></p>

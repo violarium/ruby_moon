@@ -1,0 +1,5 @@
+en:
+  mailers:
+    periods:
+      critical_period:
+        subject: 'Upcoming critical period'

@@ -1,0 +1,8 @@
+en:
+  periods_mailer:
+    critical_period:
+      start: 'Start: %{date}.'
+      end: 'End: %{date}.'
+      duration:
+        one: 'Duration: %{duration} day.'
+        other: 'Duration: %{duration} days.'
