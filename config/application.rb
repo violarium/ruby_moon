@@ -33,11 +33,13 @@ module RubyMoon
     config.autoload_paths << Rails.root.join('lib')
 
     # Mailer settings
+    config.action_mailer.default_options = { from: 'username@rubymoon.org' }
+    config.action_mailer.default_url_options = { host: 'http://rubymoon.org' }
     unless Rails.application.secrets.mail.nil?
-      config.action_mailer.delivery_method = Rails.application.secrets.mail[:delivery_method]
-      config.action_mailer.smtp_settings = Rails.application.secrets.mail[:smtp_settings]
       config.action_mailer.default_options = Rails.application.secrets.mail[:default_options]
       config.action_mailer.default_url_options = Rails.application.secrets.mail[:default_url_options]
+      config.action_mailer.delivery_method = Rails.application.secrets.mail[:delivery_method]
+      config.action_mailer.smtp_settings = Rails.application.secrets.mail[:smtp_settings]
     end
   end
 end
