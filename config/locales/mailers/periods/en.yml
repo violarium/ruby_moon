@@ -2,4 +2,7 @@ en:
   mailers:
     periods:
       critical_period:
-        subject: 'Upcoming critical period'
+        subject:
+          zero: 'Today critical period will happen'
+          one: 'Tomorrow critical period will happen'
+          other: 'Critical period will happen after %{days_left} days'

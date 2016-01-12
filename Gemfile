@@ -55,6 +55,7 @@ group :test do
   gem 'capybara', '~> 2.5.0'
   gem 'poltergeist', '~> 1.8.0'
   gem 'factory_girl_rails', '~> 4.5.0'
+  gem 'timecop', '~> 0.8.0'
   gem 'codeclimate-test-reporter', group: :test, require: nil
 end
 
