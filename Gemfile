@@ -32,6 +32,9 @@ gem 'i18n-timezones', '~> 1.3.5'
 # Use Puma as the app server
 gem 'puma', group: :production
 
+# Scheduler
+gem 'rufus-scheduler', '~> 3.2.0'
+
 # Use Mina for deployment
 gem 'mina', group: :development
 
