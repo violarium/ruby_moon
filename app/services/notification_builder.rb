@@ -37,8 +37,9 @@ class NotificationBuilder
   # @param notification_times [Array<Time>]
   # @param border_time [Time] - time before which notifications should not be created.
   def create_for_period(future_period, notification_times, border_time)
+    existing_times = future_period.notifications.all.map { |n| n.time }
     notification_times.each do |time|
-      if border_time < time
+      if !existing_times.include?(time) && border_time < time
         future_period.notifications.create!(time: time)
       end
     end

@@ -104,6 +104,17 @@ describe NotificationBuilder do
         expect(p2.notifications[1].time).to eq(Time.find_zone('Moscow').local(2015, 2, 20, 10))
       end
 
+      it 'does not create copy for existing notification' do
+        p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
+        p.notifications.create!(time: Time.find_zone('Moscow').local(2015, 1, 27, 10))
+        expect(Time).to receive(:current).and_return(Time.new(2015, 1, 1))
+
+        builder.rebuild_for(user)
+        p.reload
+        
+        expect(p.notifications.count).to eq 2
+      end
+
 
       describe 'when user do not want to have notifications' do
         before do
