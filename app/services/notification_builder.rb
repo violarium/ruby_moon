@@ -60,7 +60,7 @@ class NotificationBuilder
                                                   future_period.from.day,
                                                   notify_at)
     notify_before.each do |days_before|
-      time = default_time + days_before.days
+      time = default_time - days_before.days
       notification_times.push(time.utc)
     end
 

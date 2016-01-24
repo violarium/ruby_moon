@@ -6,7 +6,7 @@
 class FutureCriticalPeriod
   include UserPeriodConcern
 
-  embeds_many :notifications, class_name: 'CriticalNotification'
+  embeds_many :notifications, class_name: 'CriticalNotification', order: :time.asc
 
   scope :upcoming, -> (date) { order_by(:from => 'asc').where(:from.gt => date) }
 end
