@@ -16,7 +16,7 @@ It's free and opensource, so you can see the source code or deploy your own site
 
 To deploy this application your server have to require some settings and packages:
 
-  * **unix-server** (ubuntu is tested variant)
+  * **unix-server** (ubuntu 14.04 is tested variant)
   * **ruby 2.3**, **rubinius** is possible but not tested yet
   * **mongodb 2.6** or higher
   * **nodejs**
