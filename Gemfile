@@ -55,7 +55,7 @@ end
 # Gems for testing
 gem 'rspec-rails', '~> 3.4.0', group: [:development, :test]
 group :test do
-  gem 'capybara', '~> 2.5.0'
+  gem 'capybara', '~> 2.6.0'
   gem 'poltergeist', '~> 1.8.0'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'timecop', '~> 0.8.0'
