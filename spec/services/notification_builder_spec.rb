@@ -10,9 +10,11 @@ describe NotificationBuilder do
       it 'creates future notifications for all the future critical periods' do
         p1 = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p2 = user.future_critical_periods.create!(from: Date.new(2015, 2, 20), to: Date.new(2015, 2, 25))
-        expect(Time).to receive(:current).and_return(Time.new(2015, 1, 1))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.new(2015, 1, 1)) do
+          builder.rebuild_for(user)
+        end
+
         p1.reload
         p2.reload
 
@@ -28,9 +30,11 @@ describe NotificationBuilder do
       it 'does not create notification which are in the past' do
         p1 = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p2 = user.future_critical_periods.create!(from: Date.new(2015, 2, 20), to: Date.new(2015, 2, 25))
-        expect(Time).to receive(:current).and_return(Time.find_zone('Moscow').local(2015, 1, 28))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.find_zone('Moscow').local(2015, 1, 28)) do
+          builder.rebuild_for(user)
+        end
+
         p1.reload
         p2.reload
 
@@ -48,9 +52,11 @@ describe NotificationBuilder do
         p1 = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p2 = user.future_critical_periods.create!(from: Date.new(2015, 2, 20), to: Date.new(2015, 2, 25))
         p1.notifications.create!(time: Time.find_zone('Moscow').local(2015, 1, 27, 10))
-        expect(Time).to receive(:current).and_return(Time.find_zone('Moscow').local(2015, 1, 28))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.find_zone('Moscow').local(2015, 1, 28)) do
+          builder.rebuild_for(user)
+        end
+
         p1.reload
         p2.reload
 
@@ -69,9 +75,11 @@ describe NotificationBuilder do
         p1 = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p2 = user.future_critical_periods.create!(from: Date.new(2015, 2, 20), to: Date.new(2015, 2, 25))
         p1.notifications.create!(time: Time.find_zone('Moscow').local(2015, 1, 27, 11))
-        expect(Time).to receive(:current).and_return(Time.find_zone('Moscow').local(2015, 1, 28))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.find_zone('Moscow').local(2015, 1, 28)) do
+          builder.rebuild_for(user)
+        end
+
         p1.reload
         p2.reload
 
@@ -89,9 +97,11 @@ describe NotificationBuilder do
         p1 = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p2 = user.future_critical_periods.create!(from: Date.new(2015, 2, 20), to: Date.new(2015, 2, 25))
         p1.notifications.create!(time: Time.find_zone('Moscow').local(2015, 1, 30, 10))
-        expect(Time).to receive(:current).and_return(Time.new(2015, 1, 1))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.new(2015, 1, 1)) do
+          builder.rebuild_for(user)
+        end
+
         p1.reload
         p2.reload
 
@@ -107,9 +117,11 @@ describe NotificationBuilder do
       it 'does not create copy for existing notification' do
         p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
         p.notifications.create!(time: Time.find_zone('Moscow').local(2015, 1, 27, 10))
-        expect(Time).to receive(:current).and_return(Time.new(2015, 1, 1))
 
-        builder.rebuild_for(user)
+        Timecop.freeze(Time.new(2015, 1, 1)) do
+          builder.rebuild_for(user)
+        end
+
         p.reload
         
         expect(p.notifications.count).to eq 2

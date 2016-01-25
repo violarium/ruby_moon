@@ -15,9 +15,7 @@ describe CalendarController do
       end
 
       before do
-        current_time = Time.new(2015, 1, 11)
-        allow(Time).to receive(:now).and_return(current_time)
-        expect(@user).to receive(:in_time_zone).and_return(Time.new(2015, 1, 10))
+        expect(@user).to receive(:today_date).and_return(Date.new(2015, 1, 10))
       end
 
       it 'should render "index" view' do
