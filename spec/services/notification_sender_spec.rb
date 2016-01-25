@@ -53,5 +53,29 @@ describe NotificationSender do
         expect(p.reload.notifications.count).to eq 2
       end
     end
+
+    describe 'for future critical period without user' do
+      before do
+        FutureCriticalPeriod.collection.insert_one({from: Time.new(2015, 1, 29), to: Time.new(2015, 1, 30)})
+        @period = FutureCriticalPeriod.first
+        @period.notifications.create!(time: Time.new(2015, 1, 27, 10, 0, 0))
+      end
+
+      it 'does not send notifications to periods without users' do
+        expect(PeriodsMailer).not_to receive(:critical_period)
+        Timecop.freeze(Time.new(2015, 1, 27, 10, 0, 0)) do
+          sender.notify_upcoming
+        end
+      end
+
+      it 'deletes it period notifications which were to send' do
+        Timecop.freeze(Time.new(2015, 1, 27, 10, 0, 0)) do
+          sender.notify_upcoming
+        end
+
+        @period.reload
+        expect(@period.notifications.count).to eq 0
+      end
+    end
   end
 end

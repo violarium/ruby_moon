@@ -4,7 +4,10 @@ class NotificationSender
     current_time = Time.now
 
     FutureCriticalPeriod.where(:'notifications.time'.lte => current_time).all.each do |period|
-      PeriodsMailer.critical_period(period).deliver_now
+      unless period.user.nil?
+        PeriodsMailer.critical_period(period).deliver_now
+      end
+
       period.notifications.all.each do |notification|
         notification.delete if notification.time <= current_time
       end

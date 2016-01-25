@@ -28,8 +28,8 @@ class User
   field :notify_at, type: Integer, default: 8
   field :locale, type: Symbol, default: :en
 
-  has_many :critical_periods
-  has_many :future_critical_periods
+  has_many :critical_periods, dependent: :delete
+  has_many :future_critical_periods, dependent: :delete
 
   index({ email: 1 }, { unique: true })
 

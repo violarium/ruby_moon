@@ -1,8 +1,9 @@
 class PeriodsMailer < ApplicationMailer
   def critical_period(future_period)
     user = future_period.user
-    days_left = (future_period.from - user.today_date).to_i
+    raise ArgumentError, 'User of period is nil' if user.nil?
 
+    days_left = (future_period.from - user.today_date).to_i
     @future_period = future_period
     @duration = (future_period.to - future_period.from).to_i
 

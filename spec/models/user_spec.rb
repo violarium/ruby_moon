@@ -186,4 +186,18 @@ describe User do
       end
     end
   end
+
+  describe 'user deletion' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'deletes critical periods for user' do
+      user.critical_periods.create!(from: Time.new(2015, 1, 1), to: Time.new(2015, 1, 2))
+      expect { user.delete }.to change { CriticalPeriod.count }.from(1).to(0)
+    end
+
+    it 'deletes future critical periods for user' do
+      user.future_critical_periods.create!(from: Time.new(2015, 1, 1), to: Time.new(2015, 1, 2))
+      expect { user.delete }.to change { FutureCriticalPeriod.count }.from(1).to(0)
+    end
+  end
 end
