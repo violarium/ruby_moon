@@ -1,16 +1,9 @@
 require 'rails_helper'
 
 describe PeriodPredictor do
-  describe '.default_predictor' do
-    it 'creates period predictor' do
-      expect(PeriodPredictor.default_predictor).to be_a PeriodPredictor
-    end
-  end
-
-
   describe '#refresh_for' do
     let(:user) { FactoryGirl.create(:user) }
-    let(:predictor) { PeriodPredictor.new(28, 4, 1) }
+    let(:predictor) { PeriodPredictor.new(NotificationBuilder.new, 28, 4, 1) }
 
     describe 'when there are no critical periods' do
       it 'does not predict any periods' do
@@ -45,9 +38,10 @@ describe PeriodPredictor do
         expect(predictor.refresh_for(user)).to eq true
       end
 
-      it 'calls notification builder' do
+      it 'calls notification builder to rebuild notifications for user' do
         notify_builder = double(NotificationBuilder)
-        expect(NotificationBuilder).to receive(:new).and_return(notify_builder)
+
+        predictor = PeriodPredictor.new(notify_builder, 28, 4, 1)
         expect(notify_builder).to receive(:rebuild_for).with(user)
 
         predictor.refresh_for(user)
@@ -121,7 +115,7 @@ describe PeriodPredictor do
 
 
     describe 'when we want to predict 3 periods' do
-      let(:predictor) { PeriodPredictor.new(28, 4, 3) }
+      let(:predictor) { PeriodPredictor.new(NotificationBuilder.new, 28, 4, 3) }
 
       before do
         user.critical_periods.create!(from: Date.new(2015, 8, 2), to: Date.new(2015, 8, 3))

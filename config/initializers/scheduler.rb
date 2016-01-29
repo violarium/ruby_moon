@@ -5,6 +5,6 @@ unless defined?(Rails::Console)
 
   # Notifications about upcoming periods
   scheduler.every '1m' do
-    NotificationSender.new.notify_upcoming
+    Registry.instance[:notification_sender].notify_upcoming
   end
 end

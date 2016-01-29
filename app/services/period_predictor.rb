@@ -1,6 +1,7 @@
 # Predictor for critical days.
 class PeriodPredictor
-  def initialize(default_cycle, to_consider, to_predict)
+  def initialize(notification_builder, default_cycle, to_consider, to_predict)
+    @notification_builder = notification_builder
     @default_cycle = default_cycle
     @to_consider = to_consider
     @to_predict = to_predict
@@ -32,18 +33,12 @@ class PeriodPredictor
       period_to_remove.each { |existing_period| existing_period.delete }
       intervals_to_create.each { |data| user.future_critical_periods.create!(data) }
 
-      NotificationBuilder.new.rebuild_for(user)
+      @notification_builder.rebuild_for(user)
       true
     else
       user.future_critical_periods.delete_all
       false
     end
-  end
-
-
-  # Get default predictor.
-  def self.default_predictor
-    self.new(28, 4, 3)
   end
 
 

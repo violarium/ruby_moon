@@ -89,6 +89,7 @@ describe CalendarController do
     describe 'when we are signed in' do
       let(:user) { FactoryGirl.create(:user) }
       let(:day_form) { double('calendar_day_form') }
+      let(:predictor) { double(PeriodPredictor) }
 
       before { controller_sign_in(user) }
 
@@ -110,8 +111,7 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
-          predictor = double(PeriodPredictor)
-          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
+          Registry.instance.define(:period_predictor, predictor)
           expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
@@ -140,7 +140,8 @@ describe CalendarController do
         end
 
         it 'should not call prediction of new periods' do
-          expect(PeriodPredictor).not_to receive(:default_predictor)
+          Registry.instance.define(:period_predictor, predictor)
+          expect(predictor).not_to receive(:refresh_for)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
 
@@ -164,8 +165,7 @@ describe CalendarController do
         end
 
         it 'should call prediction of new periods' do
-          predictor = double(PeriodPredictor)
-          expect(PeriodPredictor).to receive(:default_predictor).and_return(predictor)
+          Registry.instance.define(:period_predictor, predictor)
           expect(predictor).to receive(:refresh_for).with(user)
           put :update, { year: 2015, month: 1, day: 1}
         end

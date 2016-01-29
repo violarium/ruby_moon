@@ -54,4 +54,11 @@ RSpec.configure do |config|
   config.before(:each) do
     ::Mongoid.default_client.database.collections.each { |c| c.delete_many }
   end
+
+  # Keep registry in the initial state after each test.
+  config.around(:each) do |example|
+    registry_data = Registry.instance.export
+    example.run
+    Registry.instance.import(registry_data)
+  end
 end

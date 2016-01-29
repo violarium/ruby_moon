@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
     @day_form = CalendarDayForm.new(current_user, received_day, calendar_day_form_data)
      if @day_form.valid?
        @day_form.submit
-       PeriodPredictor.default_predictor.refresh_for(current_user)
+       Registry.instance[:period_predictor].refresh_for(current_user)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
        render :edit
