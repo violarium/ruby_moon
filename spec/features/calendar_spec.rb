@@ -182,6 +182,25 @@ describe 'Calendar page' do
         expect(periods[1].to).to eq(Date.new(2015, 8, 19))
       end
     end
+
+
+    describe 'when we try to create critical period between other ones to close' do
+      before do
+        visit '/calendar/day/2016/1/13'
+        user.critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 8))
+        user.critical_periods.create!(from: Date.new(2016, 1, 20), to: Date.new(2016, 1, 20))
+        check 'Critical day'
+        click_on 'Save'
+      end
+
+      it 'should show same day page' do
+        expect(page).to have_title('13 January, 2016')
+      end
+
+      it 'should show message about errors' do
+        expect(page).to have_content('There are errors')
+      end
+    end
   end
 
 

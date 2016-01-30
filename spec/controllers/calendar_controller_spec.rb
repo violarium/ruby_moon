@@ -134,19 +134,23 @@ describe CalendarController do
           expect(response).to render_template(:edit)
         end
 
-        it 'should pass to template form' do
+        it 'should pass form object to template' do
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
           expect(assigns[:day_form]).to eq(day_form)
+        end
+
+        it 'should pass day info to template' do
+          data_provider = double('data_provider')
+          expect(UserCalendarFacade).to receive(:new).with(user).and_return(data_provider)
+          expect(data_provider).to receive(:day_info).with(Date.new(2015, 1, 1)).and_return('day info')
+
+          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
+          expect(assigns[:day_info]).to eq('day info')
         end
 
         it 'should not call prediction of new periods' do
           Registry.instance.define(:period_predictor, predictor)
           expect(predictor).not_to receive(:refresh_for)
-          put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
-        end
-
-        it 'should not call rebuilding notifications' do
-          expect(NotificationBuilder).not_to receive(:new)
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }
         end
       end

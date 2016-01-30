@@ -66,7 +66,7 @@ module UserPeriodConcern
   # Validation method to check if "to" greater of equal to "from".
   def validate_to_gte_from
     if from > to
-      errors[:base] << 'Date from should be less or equal to date to'
+      errors.add(:base, :period_dates)
     end
   end
 
@@ -81,7 +81,7 @@ module UserPeriodConcern
                            {:from.lte => to,   :to.gte => to})
                        .count
     if period_count > 0
-      errors[:base] << 'Period intersects with other one'
+      errors.add(:base, :period_intersects)
     end
   end
 
@@ -92,12 +92,12 @@ module UserPeriodConcern
 
     before_count = periods_query.near_by_date(from).count
     if before_count > 0
-      errors[:base] << 'There are period before too close'
+      errors.add(:base, :periods_before)
     end
 
     after_count = periods_query.near_by_date(to).count
     if after_count > 0
-      errors[:base] << 'There are period after too close'
+      errors.add(:base, :periods_after)
     end
   end
 end

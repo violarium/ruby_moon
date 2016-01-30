@@ -31,6 +31,7 @@ class CalendarController < ApplicationController
        Registry.instance[:period_predictor].refresh_for(current_user)
        redirect_to calendar_url(received_day.year, received_day.month)
      else
+       @day_info = user_calendar_facade.day_info(received_day)
        render :edit
      end
   end
