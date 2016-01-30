@@ -18,6 +18,8 @@ en:
       models:
         user:
           attributes:
+            notify_at:
+              incorrect_hour: is not correct time
             notify_before:
               not_allowed_values: have not allowed values
               not_unique_values: have not unique values

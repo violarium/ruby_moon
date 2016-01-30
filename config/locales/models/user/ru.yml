@@ -7,7 +7,7 @@ ru:
         password_confirmation: Подтверждение пароля
         time_zone: Часовой пояс
         notify_before: Уведомлять
-        notify_at: Час уведомления
+        notify_at: Время уведомления
     attribute_values:
       user:
         notify_before:
@@ -18,6 +18,8 @@ ru:
       models:
         user:
           attributes:
+            notify_at:
+              incorrect_hour: не является корректным временем
             notify_before:
               not_allowed_values: имеет неверные значения
               not_unique_values: имеет дублирующиеся значения

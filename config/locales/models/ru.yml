@@ -1,8 +1,5 @@
 ru:
-  mongoid:
-    errors:
-      messages:
-        period_dates: Дата "от" должна быть меньше или равна дате "до"
-        period_intersects: Период пересекается с другим
-        periods_before: Другой период перед этим слишком близко
-        periods_after: Другой период перед этим слишком близко
+  errors:
+    messages:
+      incorrect_hour: не является часом
+      incorrect_email: не является e-mail адресом

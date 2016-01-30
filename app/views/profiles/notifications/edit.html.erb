@@ -29,7 +29,11 @@
       <%= f.form_group(:notify_at) do %>
           <%= f.label(:notify_at, nil, class: 'col-sm-4 control-label') %>
           <div class="col-sm-8">
-            <%= f.text_field(:notify_at, placeholder: human_attribute(f.object, :notify_at), class: 'form-control') %>
+            <div class="form-time-group">
+              <%= f.text_field(:notify_at, class: 'form-control hour') %>
+              :
+              <input class="form-control minute" value="00" disabled="disabled" />
+            </div>
             <%= f.full_errors_for(:notify_at) %>
           </div>
       <% end %>

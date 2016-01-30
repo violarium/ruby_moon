@@ -34,15 +34,11 @@ class User
   index({ email: 1 }, { unique: true })
 
 
-  validates :email,
-            presence: true,
-            uniqueness: true,
-            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+  validates :email, presence: true, uniqueness: true, email: true
   validates :password, presence: true, confirmation: true
   validates :time_zone, inclusion: { in: ActiveSupport::TimeZone.zones_map.keys }
   validate :validate_notify_before
-  validates :notify_at, presence: true, numericality: { only_integer: true,
-                                                greater_than_or_equal_to: 0, less_than_or_equal_to: 23 }
+  validates :notify_at, presence: true, hour: true
   validates :locale, inclusion: { in: ALLOWED_LOCALES.keys }
 
 

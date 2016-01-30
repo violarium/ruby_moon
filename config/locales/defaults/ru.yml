@@ -34,3 +34,5 @@ ru:
      - Октябрь
      - Ноябрь
      - Декабрь
+  errors:
+    format: "Значение \"%{attribute}\" %{message}"

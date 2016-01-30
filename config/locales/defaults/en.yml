@@ -6,3 +6,5 @@ en:
       full_month: "%B, %Y"
       full_day: "%-d %B, %Y"
       week_abbr: "%a"
+  errors:
+    format: "Value of the \"%{attribute}\" %{message}"

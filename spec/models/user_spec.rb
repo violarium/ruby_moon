@@ -122,11 +122,6 @@ describe User do
         expect(user).not_to be_valid
       end
 
-      it 'should be integer' do
-        user.notify_at = 'test'
-        expect(user).not_to be_valid
-      end
-
       it 'should be value between 0 and 23' do
         [0, 14, 23].each do |val|
           user.notify_at = val
