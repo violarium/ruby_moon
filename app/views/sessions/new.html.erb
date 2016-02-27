@@ -32,7 +32,7 @@
       <div class="col-sm-8 col-sm-offset-4">
         <div class="checkbox">
           <label>
-            <%= f.check_box(:remember) %>
+            <%= f.check_box(:remember, {}, 1, nil) %>
             <%= human_attribute(f.object, :remember) %>
           </label>
         </div>

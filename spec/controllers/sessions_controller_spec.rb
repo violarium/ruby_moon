@@ -35,6 +35,7 @@ describe SessionsController do
       let(:user) { double('user', id: '100').as_null_object }
       before do
         expect(SignInForm).to receive(:new).with(email: 'email', password: 'password').and_return(form)
+        expect(form).to receive(:remember).and_return(nil)
         expect(form).to receive(:submit).and_return(user)
 
         post :create, sign_in_form: { email: 'email', password: 'password' }
@@ -43,8 +44,33 @@ describe SessionsController do
       it 'redirects to calendar page' do
         expect(response).to redirect_to(home_page_url)
       end
-      it 'sets correct cookies' do
+
+      it 'stores user id into session' do
         expect(session[:user_id]).to eq '100'
+      end
+    end
+
+    describe 'valid credentials with remember' do
+      let(:user) { double('user', id: '100').as_null_object }
+      before do
+        expect(SignInForm).to receive(:new).with(email: 'email', password: 'password', remember: true).and_return(form)
+        expect(form).to receive(:remember).and_return(true)
+        expect(form).to receive(:submit).and_return(user)
+        expect(user).to receive(:create_token).and_return('token')
+
+        post :create, sign_in_form: { email: 'email', password: 'password', remember: true }
+      end
+
+      it 'redirects to calendar page' do
+        expect(response).to redirect_to(home_page_url)
+      end
+
+      it 'stores user id into session' do
+        expect(session[:user_id]).to eq '100'
+      end
+
+      it 'stores user token into cookies' do
+        expect(cookies.signed[:user_token]).to eq 'token'
       end
     end
 

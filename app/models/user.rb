@@ -28,6 +28,7 @@ class User
   field :notify_at, type: Integer, default: 8
   field :locale, type: Symbol, default: :en
 
+  has_many :user_tokens, dependent: :delete
   has_many :critical_periods, dependent: :delete
   has_many :future_critical_periods, dependent: :delete
 
@@ -66,6 +67,21 @@ class User
   # @return [Date]
   def today_date
     in_time_zone(Time.now).to_date
+  end
+
+
+  # Create token for user and return raw string for it.
+  #
+  # @return [String]
+  def create_token
+    loop do
+      token = SecureRandom.hex
+      user_token = user_tokens.build(token: token)
+      if user_token.valid?
+        user_token.save
+        break token
+      end
+    end
   end
 
 

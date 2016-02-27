@@ -57,6 +57,16 @@ describe User do
   end
 
 
+  describe '#create_token' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'generates token and return not encrypted string' do
+      token_string = user.create_token
+      expect(user.user_tokens.with_token(token_string).first).not_to be_nil
+    end
+  end
+
+
   describe 'validation' do
     let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456', time_zone: 'Moscow') }
 

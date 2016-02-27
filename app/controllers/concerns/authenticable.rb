@@ -7,17 +7,24 @@ module Authenticable
   # Sign in user.
   #
   # @param user [User]
-  def sign_in_user(user)
+  # @param remember [Boolean]
+  def sign_in_user(user, remember = false)
     clear_current_user
     set_current_user { user }
+
     session[:user_id] = user.id.to_s
+    cookies.permanent.signed[:user_token] = user.create_token if remember
   end
 
 
   # Sign out user.
   def sign_out
     clear_current_user
+
     session[:user_id] = nil
+    user_token = find_user_token
+    user_token.delete unless user_token.nil?
+    cookies.delete(:user_token)
   end
 
 
@@ -25,7 +32,32 @@ module Authenticable
   #
   # @return [User] return current user or nil
   def current_user
-    set_current_user { User.where(id: session[:user_id]).first }
+    set_current_user do
+      user = User.where(id: session[:user_id]).first
+      if user.nil?
+        user_token = find_user_token
+        unless user_token.nil?
+          user_token.prolong
+          user_token.save
+          user = user_token.user
+        end
+      end
+
+      user
+    end
+  end
+
+
+  # Find user token by cookie which is not expired.
+  #
+  # @return [UserToken]
+  def find_user_token
+    token_string = cookies.signed[:user_token]
+    if token_string.nil?
+      nil
+    else
+      UserToken.with_token(token_string).not_expired.first
+    end
   end
 
 

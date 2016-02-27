@@ -2,10 +2,12 @@
 #
 # @param email [String]
 # @param password [String]
-def sign_in_with(email, password)
+# @param remember [Boolean]
+def sign_in_with(email, password, remember = false)
   visit '/sign_in'
   fill_in 'E-mail', with: email
   fill_in 'Password', with: password
+  check 'Remember me'
   click_button 'Sign in'
 end
 

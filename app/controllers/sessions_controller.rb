@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     if user.nil?
       render :new
     else
-      sign_in_user(user)
+      sign_in_user(user, @sign_in_form.remember)
       redirect_to home_page_url
     end
   end
