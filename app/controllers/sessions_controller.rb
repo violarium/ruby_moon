@@ -8,8 +8,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @sign_in_form = SignInForm.new
-    user = @sign_in_form.submit(params[:sign_in_form])
+    @sign_in_form = SignInForm.new(params[:sign_in_form])
+    user = @sign_in_form.submit
     if user.nil?
       render :new
     else

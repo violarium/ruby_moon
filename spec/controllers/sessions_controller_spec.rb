@@ -30,14 +30,13 @@ describe SessionsController do
 
   describe 'POST #create' do
     let(:form) { double('sign_in_form') }
-    before do
-      expect(SignInForm).to receive(:new).and_return(form)
-    end
 
     describe 'valid credentials' do
       let(:user) { double('user', id: '100').as_null_object }
       before do
-        expect(form).to receive(:submit).with(email: 'email', password: 'password').and_return(user)
+        expect(SignInForm).to receive(:new).with(email: 'email', password: 'password').and_return(form)
+        expect(form).to receive(:submit).and_return(user)
+
         post :create, sign_in_form: { email: 'email', password: 'password' }
       end
 
@@ -51,7 +50,9 @@ describe SessionsController do
 
     describe 'invalid credentials' do
       before do
-        expect(form).to receive(:submit).with(email: 'email', password: 'invalid').and_return(nil)
+        expect(SignInForm).to receive(:new).with(email: 'email', password: 'invalid').and_return(form)
+        expect(form).to receive(:submit).and_return(nil)
+
         post :create, sign_in_form: { email: 'email', password: 'invalid' }
       end
 

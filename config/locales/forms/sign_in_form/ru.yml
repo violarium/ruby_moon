@@ -4,6 +4,7 @@ ru:
       sign_in_form:
         email: E-mail
         password: Пароль
+        remember: Запомнить
     errors:
       models:
         sign_in_form:

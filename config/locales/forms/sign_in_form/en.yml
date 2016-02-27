@@ -4,6 +4,7 @@ en:
       sign_in_form:
         email: E-mail
         password: Password
+        remember: Remember me
     errors:
       models:
         sign_in_form:

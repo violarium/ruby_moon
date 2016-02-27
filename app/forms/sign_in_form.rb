@@ -2,25 +2,17 @@
 class SignInForm
   include FormObject
 
-  delegate :email, :password, to: :form_params
+  attr_accessor :email, :password, :remember
+
 
   # Submit sign in credentials and return nil or User.
-  def submit(params)
-    @form_params = SignInStorage.new(params[:email], params[:password])
-    user = User.where(email: form_params.email).first
-    if user && !user.password.nil? && user.password == form_params.password
+  def submit
+    user = User.where(email: email).first
+    if user && !user.password.nil? && user.password == password
       user
     else
       errors.add(:base, :invalid_credentials)
       nil
     end
   end
-
-  protected
-
-  def form_params
-    @form_params ||= SignInStorage.new
-  end
-
-  class SignInStorage < Struct.new(:email, :password); end
 end
