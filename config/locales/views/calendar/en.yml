@@ -23,11 +23,11 @@ en:
       to_close_forbid_append: You are not able to add this day to any of them.
     edit:
       errors: "There are errors:"
-      critical_day: Critical day
+      is_critical: Critical day
       save: Save
       delete_title: Remove critical day from period
       delete_description: You are going to remove this date from critical period. Please, choose the way to do it.
-      delete_whole: Delete whole period
+      delete_entirely: Delete whole period
       delete_head: Remove current date and period head
       delete_tail: Remove current date and period tail
       delete_cancel: Do not remove

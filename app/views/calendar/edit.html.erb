@@ -20,8 +20,8 @@
 <%= form_for(@day_form, url: make_calendar_day_url(@day_info[:date]), method: :put, html: {autocomplete: 'off'}) do |f| %>
     <div class="form-group">
       <label class="checkbox-inline">
-        <%= f.check_box :critical_day, { disabled: @day_info[:close_periods].length > 1 } %>
-        <%= t '.critical_day' %>
+        <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 }, 'on', 'off' %>
+        <%= t '.is_critical' %>
       </label>
     </div>
 
@@ -33,21 +33,21 @@
               <p><%= t '.delete_description' %></p>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_period, 'all', checked: true %>
-                <%= t '.delete_whole' %>
+                <%= f.radio_button :delete_way, 'entirely', checked: true %>
+                <%= t '.delete_entirely' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_period, 'tail' %>
+                <%= f.radio_button :delete_way, 'tail' %>
                 <%= t '.delete_tail' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_period, 'head' %>
+                <%= f.radio_button :delete_way, 'head' %>
                 <%= t '.delete_head' %>
               </label>
             </div>

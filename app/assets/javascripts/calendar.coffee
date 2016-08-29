@@ -1,4 +1,4 @@
-$(document).on('change', '#calendar_day_form_critical_day', ->
+$(document).on('change', '#calendar_day_form_is_critical', ->
   if this.checked
     $('#delete-period-block').slideUp()
   else

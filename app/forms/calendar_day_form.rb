@@ -5,12 +5,13 @@
 # This is, actually, facade.
 class CalendarDayForm
   include FormObject
-  include ActiveModel::Validations::Callbacks
 
-  attr_accessor :critical_day, :period_length, :delete_period
+  attr_accessor :is_critical, :delete_way
 
-  before_validation :build_period
-  validate :validate_period, if: :save_period?
+  validates :is_critical, inclusion: { in: [true, false] }
+  validates :delete_way, inclusion: { in: %w(head tail entirely)}
+  validate :validate_critical_period
+
 
   # Create form object to handle calendar day.
   #
@@ -22,24 +23,22 @@ class CalendarDayForm
   def initialize(user, date, params = {})
     @user = user
     @date = date
+    @critical_period_commander = CriticalPeriodCommander.new(@user, @date)
 
-    super(params.slice(:critical_day, :period_length, :delete_period))
+    super(params.slice(:is_critical, :delete_way))
 
-    @critical_day = @user.critical_periods.has_date(@date).count > 0 if @critical_day.nil?
-    @period_length ||= 1
-    @delete_period ||= 'all'
+    @is_critical = !current_critical_period.nil? if @is_critical.nil?
+    @delete_way ||= 'entirely'
   end
 
 
-  def critical_day=(critical_day)
-    critical_day = false if critical_day == '0'
-    @critical_day = critical_day
-  end
-
-
-  def period_length=(period_length)
-    period_length = period_length.to_i if period_length.is_a? String
-    @period_length = period_length
+  def is_critical=(is_critical)
+    if is_critical == 'off'
+      is_critical = false
+    elsif is_critical == 'on'
+      is_critical = true
+    end
+    @is_critical = is_critical
   end
 
 
@@ -48,8 +47,8 @@ class CalendarDayForm
   # @return [Boolean]
   def submit
     if valid?
-      @period.save! if save_period?
-      @period.delete if delete_period?
+      period_command = critical_period_command(current_critical_period)
+      period_command.perform
       true
     else
       false
@@ -59,58 +58,129 @@ class CalendarDayForm
 
   private
 
-  # Build period according to input data.
-  def build_period
-    @period = @user.critical_periods.has_date(@date).first
-    if @period.nil?
-      if critical_day
-        @period = @user.critical_periods.near_by_date(@date).first
-        if @period.nil?
-          @period = @user.critical_periods.new(from: @date, to: period_end_date)
-        else
-          @period.append_date(@date)
-        end
-      end
-    elsif !critical_day
-      if delete_period == 'tail'
-        @period.to = @date - 1.day
-      elsif delete_period == 'head'
-        @period.from = @date + 1.day
-      end
-    end
-  end
-
-  # Should we save period?
-  #
-  # @return [Boolean]
-  def save_period?
-    !@period.nil? && @period.changed? && !delete_period?
-  end
-
-
-  # Should we delete period?
-  #
-  # @return [Boolean]
-  def delete_period?
-    !@period.nil? && !critical_day && (@period.from > @period.to && %w(tail head).include?(delete_period) || delete_period == 'all')
-  end
-
-
-  # Validation period method.
-  def validate_period
-    unless @period.valid?
-      @period.errors.full_messages.each do |message|
+  # Validate critical period according to current form data.
+  # If there are no critical period to validate, it's normal behaviour.
+  def validate_critical_period
+    period_command = critical_period_command(current_critical_period)
+    period = period_command.period
+    if period_command.require_period_validation? && !period.nil? && period.invalid?
+      period.errors.full_messages.each do |message|
         errors[:base] << message
       end
     end
   end
 
 
-  # End date for new period.
+  # Get current critical period.
   #
-  # @return [Date]
-  def period_end_date
-    day_offset = period_length - 1
-    @date + day_offset.days
+  # @return [CriticalPeriod]
+  def current_critical_period
+     @user.critical_periods.has_date(@date).first
+  end
+
+
+  # Get command to handle critical period according to current form data.
+  def critical_period_command(period)
+    if @is_critical
+      @critical_period_commander.command_extend(period)
+    else
+      @critical_period_commander.command_to_cut(period, @delete_way)
+    end
+  end
+
+
+  # Critical Period Commander
+  #
+  # It's a class to get command which will have period to change or delete.
+  # Command could be performed to apply changes.
+  class CriticalPeriodCommander
+    def initialize(user, date)
+      @user = user
+      @date = date
+    end
+
+
+    # Get command to extend a period.
+    def command_extend(period)
+      if period.nil?
+        period = @user.critical_periods.near_by_date(@date).first
+        if period.nil?
+          period = @user.critical_periods.new(from: @date, to: @date)
+        else
+          period.append_date(@date)
+        end
+      end
+
+      CriticalPeriodCommand::Save.new(period)
+    end
+
+
+    # Get command to cut the period.
+    def command_to_cut(period, delete_way)
+      delete = false
+      unless period.nil?
+        new_period_from = period.from
+        new_period_to = period.to
+
+        if delete_way == 'tail'
+          new_period_to = @date - 1.day
+        elsif delete_way == 'head'
+          new_period_from = @date + 1.day
+        end
+
+        if new_period_from > new_period_to || delete_way == 'entirely'
+          delete = true
+        else
+          period.from = new_period_from
+          period.to = new_period_to
+        end
+      end
+
+      if delete
+        CriticalPeriodCommand::Delete.new(period)
+      else
+        CriticalPeriodCommand::Save.new(period)
+      end
+    end
+  end
+
+
+  class CriticalPeriodCommand
+    # Save command for period.
+    # Performing means saving period.
+    class Save
+      attr_reader :period
+
+      def initialize(period)
+        @period = period
+      end
+
+      def require_period_validation?
+        true
+      end
+
+      def perform
+        @period.save! unless @period.nil?
+      end
+    end
+
+
+    # Delete command for period.
+    # Performing means deleting period.
+    class Delete
+      attr_reader :period
+
+      def initialize(period)
+        @period = period
+      end
+
+      def require_period_validation?
+        false
+      end
+
+      def perform
+        @period.delete unless @period.nil?
+      end
+    end
   end
 end
