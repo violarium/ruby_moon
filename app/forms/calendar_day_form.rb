@@ -7,9 +7,11 @@ class CalendarDayForm
   include FormObject
 
   attr_accessor :is_critical, :delete_way
+  delegate :value, :value=, to: :critical_day, prefix: true
 
   validates :is_critical, inclusion: { in: [true, false] }
   validates :delete_way, inclusion: { in: %w(head tail entirely)}
+  validates :critical_day_value, inclusion: { in: [:unknown, :small, :medium, :large]  }
   validate :validate_critical_period
 
 
@@ -25,7 +27,7 @@ class CalendarDayForm
     @date = date
     @critical_period_commander = CriticalPeriodCommander.new(@user, @date)
 
-    super(params.slice(:is_critical, :delete_way))
+    super(params.slice(:is_critical, :delete_way, :critical_day_value))
 
     @is_critical = !current_critical_period.nil? if @is_critical.nil?
     @delete_way ||= 'entirely'
@@ -49,6 +51,14 @@ class CalendarDayForm
     if valid?
       period_command = critical_period_command(current_critical_period)
       period_command.perform
+
+      unless period_command.period.nil?
+        if critical_day.critical_period.nil?
+          critical_day.critical_period = period_command.period
+        end
+        critical_day.save!
+        period_command.period.reload
+      end
       true
     else
       false
@@ -57,6 +67,7 @@ class CalendarDayForm
 
 
   private
+
 
   # Validate critical period according to current form data.
   # If there are no critical period to validate, it's normal behaviour.
@@ -71,11 +82,26 @@ class CalendarDayForm
   end
 
 
+  def critical_day
+    if @critical_day.nil?
+      period = current_critical_period
+      if period.nil?
+        @critical_day = nil
+      else
+        @critical_day = period.critical_day_by_date(@date)
+      end
+
+      @critical_day = CriticalDay.new(date: @date) if @critical_day.nil?
+    end
+    @critical_day
+  end
+
+
   # Get current critical period.
   #
   # @return [CriticalPeriod]
   def current_critical_period
-     @user.critical_periods.has_date(@date).first
+    @user.critical_periods.has_date(@date).first
   end
 
 
@@ -105,7 +131,7 @@ class CalendarDayForm
       if period.nil?
         period = @user.critical_periods.near_by_date(@date).first
         if period.nil?
-          period = @user.critical_periods.new(from: @date, to: @date)
+          period = @user.critical_periods.build(from: @date, to: @date)
         else
           period.append_date(@date)
         end
@@ -180,6 +206,7 @@ class CalendarDayForm
 
       def perform
         @period.delete unless @period.nil?
+        @period = nil
       end
     end
   end

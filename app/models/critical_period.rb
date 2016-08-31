@@ -4,6 +4,8 @@
 class CriticalPeriod
   include UserPeriodConcern
 
+  embeds_many :critical_days
+
   # Append date to period and all the dates between.
   #
   # @param date [Date]
@@ -13,5 +15,20 @@ class CriticalPeriod
     elsif date > to
       self.to = date
     end
+  end
+
+
+  # todo: test it
+  def critical_day_by_date(date)
+    critical_days.to_a.find do |day|
+      day.date == date
+    end
+  end
+
+  # todo: test it, maybe use it in callback?
+  def cleanup_critical_days
+    range = (from .. to)
+    self.critical_days = critical_days.select { |day| range.include? day.date }
+    save!
   end
 end
