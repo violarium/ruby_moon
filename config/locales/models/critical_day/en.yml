@@ -1,0 +1,8 @@
+en:
+  mongoid:
+    errors:
+      models:
+        critical_day:
+          attributes:
+            date:
+              out_of_range: is out of period's range

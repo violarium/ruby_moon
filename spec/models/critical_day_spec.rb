@@ -3,7 +3,7 @@ require 'rails_helper'
 describe CriticalDay do
   describe '#value' do
     it 'should have value :unknown by default' do
-      expect(CriticalDay.new.value).to eq :unknown
+      expect(CriticalDay.new.value).to eq 'unknown'
     end
   end
 
@@ -32,7 +32,7 @@ describe CriticalDay do
     end
 
     it 'should be valid with correct value' do
-      [:unknown, :small, :medium, :large].each do |value|
+      %w(unknown small medium large).each do |value|
         critical_day.value = value
         expect(critical_day).to be_valid
       end

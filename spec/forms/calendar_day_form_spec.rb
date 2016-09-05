@@ -47,7 +47,7 @@ describe CalendarDayForm do
   describe '#critical_day_value' do
     it 'should have value :unknown by default' do
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
-      expect(form.critical_day_value).to eq :unknown
+      expect(form.critical_day_value).to eq 'unknown'
     end
 
     it 'should be invalid with wrong values' do
@@ -60,7 +60,7 @@ describe CalendarDayForm do
 
     it 'should be valid with correct values' do
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
-      [:unknown, :small, :medium, :large].each do |value|
+      %w(unknown small medium large).each do |value|
         form.critical_day_value = value
         expect(form).to be_valid
       end
@@ -68,10 +68,10 @@ describe CalendarDayForm do
 
     it 'should have same value as the critical day on this date' do
       period = user.critical_periods.create(from: Date.new(2015, 1, 6), to: Date.new(2015, 1, 8))
-      period.critical_days.build(date: Date.new(2015, 1, 7), value: :medium)
+      period.critical_days.build(date: Date.new(2015, 1, 7), value: 'medium')
       period.save!
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
-      expect(form.critical_day_value).to eq :medium
+      expect(form.critical_day_value).to eq 'medium'
     end
   end
 
@@ -262,7 +262,7 @@ describe CalendarDayForm do
 
 
   describe 'set critical value for new period' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: :medium}) }
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: 'medium'}) }
 
     it 'should ve valid' do
       expect(form).to be_valid
@@ -275,7 +275,7 @@ describe CalendarDayForm do
       critical_day = critical_period.critical_days.to_a[0]
 
       expect(critical_day.date).to eq Date.new(2015, 1, 7)
-      expect(critical_day.value).to eq :medium
+      expect(critical_day.value).to eq 'medium'
     end
 
     it 'should return true on submit' do
@@ -284,10 +284,10 @@ describe CalendarDayForm do
   end
 
   describe 'set critical value for existing period' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: :large}) }
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: 'large'}) }
     before do
       period = user.critical_periods.create(from: Date.new(2015, 1, 6), to: Date.new(2015, 1, 8))
-      period.critical_days.create(date: Date.new(2015, 1, 7), value: :small)
+      period.critical_days.create(date: Date.new(2015, 1, 7), value: 'small')
       user.reload
     end
 
@@ -302,7 +302,7 @@ describe CalendarDayForm do
       critical_day = critical_period.critical_days[0]
 
       expect(critical_day.date).to eq Date.new(2015, 1, 7)
-      expect(critical_day.value).to eq :large
+      expect(critical_day.value).to eq 'large'
     end
 
     it 'should return true on submit' do

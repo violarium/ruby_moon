@@ -18,17 +18,21 @@ class CriticalPeriod
   end
 
 
-  # todo: test it
+  # Get critical day vy date.
+  #
+  # @param date [Date]
+  #
+  # @return [CriticalDay]
   def critical_day_by_date(date)
     critical_days.to_a.find do |day|
       day.date == date
     end
   end
 
-  # todo: test it, maybe use it in callback?
+
+  # Cleanup critical days which are out of range.
   def cleanup_critical_days
     range = (from .. to)
     self.critical_days = critical_days.select { |day| range.include? day.date }
-    save!
   end
 end

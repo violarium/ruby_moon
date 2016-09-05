@@ -1,0 +1,8 @@
+ru:
+  mongoid:
+    errors:
+      models:
+        critical_day:
+          attributes:
+            date:
+              out_of_range: не входит в границы периода
