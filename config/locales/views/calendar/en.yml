@@ -31,3 +31,7 @@ en:
       delete_head: Remove current date and period head
       delete_tail: Remove current date and period tail
       delete_cancel: Do not remove
+      value: Value
+      value_small: Small
+      value_medium: Medium
+      value_large: Large

@@ -15,16 +15,39 @@ class UserCalendarFacade
   # @return [Hash]
   def month_info(month_date, current_date)
     month_data = @calendar_formatter.month(month_date)
+    dates = []
 
+    month_data[:dates].each do |date|
+      dates.push(date: date)
+    end
     date_from = month_data[:dates].first
     date_to = month_data[:dates].last
 
-    critical_dates = collect_period_dates(@user.critical_periods, date_from, date_to)
-    future_critical_dates = collect_period_dates(@user.future_critical_periods, date_from, date_to)
+    critical_periods = @user.critical_periods.between_dates(date_from, date_to).all
+    future_critical_periods = @user.future_critical_periods.between_dates(date_from, date_to).all
 
-    { month: month_data, critical_dates: critical_dates,
-      future_critical_dates: future_critical_dates, current_date: current_date,
-      upcoming_period: @user.upcoming_critical_period(current_date) }
+    critical_dates = periods_dates(critical_periods, date_from, date_to)
+    future_critical_dates = periods_dates(future_critical_periods, date_from, date_to)
+    critical_days = periods_critical_days(critical_periods, date_from, date_to)
+
+    dates.each do |date_note|
+      date_key = date_note[:date].to_s
+      date_note[:is_critical] = critical_dates.has_key?(date_key)
+      date_note[:is_future_critical] = future_critical_dates.has_key?(date_key)
+      if critical_days.has_key?(date_key)
+        critical_day_value = critical_days[date_key].value
+      else
+        critical_day_value = nil
+      end
+      date_note[:critical_day_value] = critical_day_value
+    end
+
+    {
+      current_date: current_date,
+      month_date: month_data[:month_date],
+      dates: dates,
+      upcoming_period: @user.upcoming_critical_period(current_date),
+    }
   end
 
 
@@ -44,22 +67,41 @@ class UserCalendarFacade
 
   private
 
-  # Collect the dates for period from query.
+
+  # Get hash of critical days for periods.
   #
-  # @param query
+  # @param periods [Array]
   # @param date_from [Date]
   # @param date_to [Date]
   #
-  # @return [Array]
-  def collect_period_dates(query, date_from, date_to)
-    dates = []
-    periods = query.between_dates(date_from, date_to).all.to_a
+  # @return [Hash]
+  def periods_critical_days(periods, date_from, date_to)
+    critical_days = {}
     periods.each do |period|
-      (period.from .. period.to).each do |date|
-        dates.push(date) if date >= date_from && date <= date_to
+      period.critical_days.each do |critical_day|
+        if critical_day.date >= date_from && critical_day.date <= date_to
+          critical_days[critical_day.date.to_s] = critical_day
+        end
       end
     end
+    critical_days
+  end
 
-    dates
+
+  # Get hash of periods dates.
+  #
+  # @param periods [Array]
+  # @param date_from [Date]
+  # @param date_to [Date]
+  #
+  # @return [Hash]
+  def periods_dates(periods, date_from, date_to)
+    periods_dates = {}
+    periods.each do |period|
+      (period.from .. period.to).each do |date|
+        periods_dates[date.to_s] = true if date >= date_from && date <= date_to
+      end
+    end
+    periods_dates
   end
 end

@@ -31,3 +31,7 @@ ru:
       delete_head: Удалить данный день и дни перед ним
       delete_tail: Удалить данный день и дни после него
       delete_cancel: Ничего не удалять
+      value: Выделения
+      value_small: Скудные
+      value_medium: Умеренные
+      value_large: Обильные

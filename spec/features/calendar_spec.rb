@@ -294,4 +294,18 @@ describe 'Calendar page' do
       end
     end
   end
+
+
+  describe 'critical day value' do
+    it 'should save critical day value for critical period' do
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 10).click
+      check 'Critical day'
+      find('#calendar_day_form_critical_day_value_large').find(:xpath, '..').click
+      click_on 'Save'
+
+      critical_day = user.critical_periods.first.critical_day_by_date(Date.new(2015, 2, 10))
+      expect(critical_day.value).to eq 'large'
+    end
+  end
 end

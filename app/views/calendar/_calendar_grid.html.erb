@@ -1,15 +1,19 @@
 <ul class="month-days-grid">
-  <% @month_info[:month][:dates].first(7).each do |day| %>
+  <% @month_info[:dates].first(7).each do |date_note| %>
       <li class="week-day">
-        <%= l(day, format: :week_abbr) %>
+        <%= l(date_note[:date], format: :week_abbr) %>
       </li>
   <% end %>
 
-  <% @month_info[:month][:dates].each_with_index do |date, date_index| %>
-      <li class="day <%= calendar_day_opt_classes(date, date_index, @month_info) %>">
-        <a class="day-content" href="<%= make_calendar_day_url(date) %>">
-          <%= date.day %>
+  <% @month_info[:dates].each_with_index do |date_note, date_index| %>
+      <li class="day <%= calendar_day_opt_classes(date_note, date_index, @month_info) %>">
+        <a class="day-content" href="<%= make_calendar_day_url(date_note[:date]) %>">
+          <%= date_note[:date].day %>
         </a>
+        <% if !date_note[:critical_day_value].nil? && date_note[:critical_day_value] != 'unknown' %>
+          <img class="list-critical-day-value"
+               src="<%= image_url("critical_day_value/#{date_note[:critical_day_value]}.svg") %>" alt="" />
+        <% end %>
       </li>
   <% end %>
 </ul>
