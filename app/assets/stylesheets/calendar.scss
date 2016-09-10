@@ -176,6 +176,17 @@
 
 
 
+// Critical day values icons in list
+
+.list-critical-day-value {
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  right: 2px;
+  bottom: 2px;
+}
+
+
 // Radio buttons to switch critical periods
 
 .calendar-day-form .critical-day-value {
@@ -209,13 +220,41 @@
 }
 
 
+.checkbox-is-critical {
+  margin-right: 1em;
+  cursor: pointer;
 
-// Critical day values icons in list
+  input {
+    position: absolute;
+    left: -9999px;
+  }
 
-.list-critical-day-value {
-  position: absolute;
-  width: 30%;
-  height: 30%;
-  right: 2px;
-  bottom: 2px;
+  .is-critical-icons {
+    display: inline-block;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    &.active {
+      padding: 0;
+      border: 2px solid #bc0000;
+      display: none;
+    }
+    &.inactive {
+      border: 1px solid $input-border;
+      padding: 1px;
+      display: inline-block;
+    }
+  }
+
+  input:checked + .is-critical-icons {
+    .active {
+      display: inline-block;
+    }
+    .inactive {
+      display: none;
+    }
+  }
 }

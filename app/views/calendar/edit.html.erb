@@ -19,8 +19,13 @@
 
 <%= form_for(@day_form, url: make_calendar_day_url(@day_info[:date]), method: :put, html: {autocomplete: 'off', class: 'calendar-day-form', id: 'critical_day_form'}) do |f| %>
     <div class="form-group">
-      <label class="checkbox-inline">
-        <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 }, 'on', 'off' %>
+      <label class="checkbox-is-critical">
+        <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 },
+                        CalendarDayForm::IS_CRITICAL_ON, CalendarDayForm::IS_CRITICAL_OFF %>
+        <span class="is-critical-icons">
+          <img src="<%= image_url("is_critical/inactive.svg") %>" class="inactive" alt="" />
+          <img src="<%= image_url("is_critical/active.svg") %>" class="active" alt="" />
+        </span>
         <%= t '.is_critical' %>
       </label>
     </div>

@@ -1,5 +1,17 @@
 require 'rails_helper'
 
+# Click critical day checkbox.
+# It's hidden and can't be clicked directly.
+def click_critical_day_checkbox
+  find('#calendar_day_form_is_critical').trigger('click')
+end
+
+# Choose critical day value.
+def choose_critical_day_value(value)
+  find("#calendar_day_form_critical_day_value_#{value}").trigger('click')
+end
+
+
 describe 'Calendar page' do
   let(:user) { FactoryGirl.create(:user, password: 'password') }
   before { sign_in_with(user.email, 'password') }
@@ -61,7 +73,7 @@ describe 'Calendar page' do
 
       describe 'when we check "Critical day" and click "Save"' do
         before do
-          check 'Critical day'
+          click_critical_day_checkbox
           click_on('Save')
         end
 
@@ -92,7 +104,7 @@ describe 'Calendar page' do
       end
 
       describe 'when we uncheck critical day' do
-        before { uncheck 'Critical day' }
+        before { click_critical_day_checkbox }
 
         it 'should delete whole period if we select this' do
           choose 'Delete whole period'
@@ -139,7 +151,7 @@ describe 'Calendar page' do
 
       describe 'when we check "Critical day" and click "Save"' do
         before do
-          check 'Critical day'
+          click_critical_day_checkbox
           click_on 'Save'
         end
 
@@ -189,7 +201,7 @@ describe 'Calendar page' do
         visit '/calendar/day/2016/1/13'
         user.critical_periods.create!(from: Date.new(2016, 1, 1), to: Date.new(2016, 1, 8))
         user.critical_periods.create!(from: Date.new(2016, 1, 20), to: Date.new(2016, 1, 20))
-        check 'Critical day'
+        click_critical_day_checkbox
         click_on 'Save'
       end
 
@@ -246,7 +258,7 @@ describe 'Calendar page' do
         before do
           visit '/calendar/2015/2'
           find('.month-days-grid .day > a', text: 10).click
-          check 'Critical day'
+          click_critical_day_checkbox
           click_on 'Save'
         end
 
@@ -265,7 +277,7 @@ describe 'Calendar page' do
 
         visit '/calendar/2015/2'
         find('.month-days-grid .day > a', text: 10).click
-        uncheck 'Critical day'
+        click_critical_day_checkbox
         choose 'Delete whole period'
         click_on 'Save'
 
@@ -280,7 +292,7 @@ describe 'Calendar page' do
 
           visit '/calendar/2015/2'
           find('.month-days-grid .day > a', text: 11).click
-          check 'Critical day'
+          click_critical_day_checkbox
           click_on 'Save'
         end
 
@@ -300,8 +312,8 @@ describe 'Calendar page' do
     it 'should save critical day value for critical period' do
       visit '/calendar/2015/2'
       find('.month-days-grid .day > a', text: 10).click
-      check 'Critical day'
-      find('#calendar_day_form_critical_day_value_large').find(:xpath, '..').click
+      click_critical_day_checkbox
+      choose_critical_day_value('large')
       click_on 'Save'
 
       critical_day = user.critical_periods.first.critical_day_by_date(Date.new(2015, 2, 10))
