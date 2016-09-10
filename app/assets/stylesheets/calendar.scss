@@ -1,3 +1,5 @@
+// Month grid for calendar day
+
 .month-days-grid {
   @include reset-list;
   overflow: hidden;
@@ -76,59 +78,28 @@
     &.inactive .day-content {
       color: $gray-light;
     }
+
     &.critical .day-content {
       background-color: $critical-color;
     }
+
     &.future-critical .day-content {
       background-image: url($future-critical-image);
     }
   }
 }
 
+
+
+// Containers for calendar grid and calendar info (right legend)
+
 .calendar-grid-container, .calendar-info-container {
   margin-bottom: 10px;
 }
 
 
-.calendar-controls {
-  margin-left: 2%;
-  margin-right: 2%;
 
-  font-size: 1em;
-  @media (min-width: $screen-sm-min) {
-    font-size: 1.2em;
-  }
-  @media (min-width: $screen-md-min) {
-    font-size: 1.4em;
-  }
-  @media (min-width: $screen-lg-min) {
-    font-size: 1.6em;
-  }
-
-  & > .month-before, & > .month-after {
-    float: left;
-    width: 50%;
-  }
-
-  & > .month-before {
-    text-align: left;
-
-    .glyphicon {
-      display: inline-block;
-      margin-right: 0.5em;
-    }
-  }
-
-  & > .month-after {
-    text-align: right;
-
-    .glyphicon {
-      display: inline-block;
-      margin-left: 0.5em;
-    }
-  }
-}
-
+// Calendar header with controls
 
 .calendar-header {
   margin-bottom: 1em;
@@ -162,6 +133,9 @@
 }
 
 
+
+// Styles for calendar info (legend)
+
 .calendar-info {
   .upcoming-critical-period {
     color: #bc0000;
@@ -194,10 +168,22 @@
 }
 
 
+// Block to delete period
+
 .delete-period-block {
   display: none;
 }
 
+
+
+// Radio buttons to switch critical periods
+
+.calendar-day-form .critical-day-value {
+  display: none;
+  &.active {
+    display: block;
+  }
+}
 
 .radio-critical-day-value {
   margin-right: 1em;
@@ -223,22 +209,13 @@
 }
 
 
+
+// Critical day values icons in list
+
 .list-critical-day-value {
   position: absolute;
   width: 30%;
   height: 30%;
   right: 2px;
   bottom: 2px;
-}
-
-
-.calendar-day-form {
-  .critical-day-value {
-    display: none;
-    &.active {
-      display: block;
-    }
-  }
-
-  
 }
