@@ -12,3 +12,8 @@ script:
 addons:
   code_climate:
     repo_token: 9ebac024db0f4afdf3e7862a46ceb76f3667695e21cdc8bd8b11e2aaf1034449
+  apt:
+    sources:
+      - mongodb-upstart
+    packages:
+      - mongodb-org
