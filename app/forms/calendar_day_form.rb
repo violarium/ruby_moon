@@ -6,11 +6,19 @@
 class CalendarDayForm
   include FormObject
 
+  DELETE_WAY_HEAD = 'head'
+  DELETE_WAY_TAIL = 'tail'
+  DELETE_WAY_ENTIRELY = 'entirely'
+
+  IS_CRITICAL_ON = 'on'
+  IS_CRITICAL_OFF = 'off'
+
   attr_accessor :is_critical, :delete_way, :critical_day_value
 
   validates :is_critical, inclusion: { in: [true, false] }
-  validates :delete_way, inclusion: { in: %w(head tail entirely)}
-  validates :critical_day_value, inclusion: { in: %w(unknown small medium large) }
+  validates :delete_way, inclusion: { in: [DELETE_WAY_HEAD, DELETE_WAY_TAIL, DELETE_WAY_ENTIRELY] }
+  validates :critical_day_value, inclusion: { in: [CriticalDay::VALUE_UNKNOWN, CriticalDay::VALUE_SMALL,
+                                                   CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE] }
   validate :validate_critical_period
 
 
@@ -33,21 +41,21 @@ class CalendarDayForm
     end
 
     if @delete_way.nil?
-      @delete_way = 'entirely'
+      @delete_way = DELETE_WAY_ENTIRELY
       rebuild_critical_period
     end
 
     if @critical_day_value.nil?
       critical_day = current_critical_day
-      @critical_day_value = critical_day.nil? ? 'unknown' : critical_day.value
+      @critical_day_value = critical_day.nil? ? CriticalDay::VALUE_UNKNOWN : critical_day.value
     end
   end
 
 
   def is_critical=(is_critical)
-    if is_critical == 'off'
+    if is_critical == IS_CRITICAL_OFF
       is_critical = false
-    elsif is_critical == 'on'
+    elsif is_critical == IS_CRITICAL_ON
       is_critical = true
     end
     @is_critical = is_critical
@@ -156,13 +164,13 @@ class CalendarDayForm
       new_period_from = period.from
       new_period_to = period.to
 
-      if delete_way == 'tail'
+      if delete_way == CalendarDayForm::DELETE_WAY_TAIL
         new_period_to = date - 1.day
-      elsif delete_way == 'head'
+      elsif delete_way == CalendarDayForm::DELETE_WAY_HEAD
         new_period_from = date + 1.day
       end
 
-      if new_period_from > new_period_to || delete_way == 'entirely'
+      if new_period_from > new_period_to || delete_way == CalendarDayForm::DELETE_WAY_ENTIRELY
         delete = true
       else
         period.from = new_period_from

@@ -68,14 +68,14 @@ describe UserCalendarFacade do
         user.critical_periods.create!(from: Date.new(2015, 1, 31), to: Date.new(2015, 2, 2)),
         user.critical_periods.create!(from: Date.new(2015, 2, 28), to: Date.new(2015, 3, 1)),
       ]
-      critical_periods[0].critical_days.create!(date: Date.new(2015, 1, 31), value: 'large')
-      critical_periods[0].critical_days.create!(date: Date.new(2015, 2, 2), value: 'unknown')
+      critical_periods[0].critical_days.create!(date: Date.new(2015, 1, 31), value: CriticalDay::VALUE_LARGE)
+      critical_periods[0].critical_days.create!(date: Date.new(2015, 2, 2), value: CriticalDay::VALUE_UNKNOWN)
 
       result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
 
-      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 1, 31) }.first[:critical_day_value]).to eq 'large'
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 1, 31) }.first[:critical_day_value]).to eq CriticalDay::VALUE_LARGE
       expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 1) }.first[:critical_day_value]).to be_nil
-      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 2) }.first[:critical_day_value]).to eq 'unknown'
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 2) }.first[:critical_day_value]).to eq CriticalDay::VALUE_UNKNOWN
       expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 8) }.first[:critical_day_value]).to be_nil
     end
   end

@@ -47,7 +47,7 @@ describe CalendarDayForm do
   describe '#critical_day_value' do
     it 'should have value :unknown by default' do
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
-      expect(form.critical_day_value).to eq 'unknown'
+      expect(form.critical_day_value).to eq CriticalDay::VALUE_UNKNOWN
     end
 
     it 'should be invalid with wrong values' do
@@ -68,10 +68,10 @@ describe CalendarDayForm do
 
     it 'should have same value as the critical day on this date' do
       period = user.critical_periods.create(from: Date.new(2015, 1, 6), to: Date.new(2015, 1, 8))
-      period.critical_days.build(date: Date.new(2015, 1, 7), value: 'medium')
+      period.critical_days.build(date: Date.new(2015, 1, 7), value: CriticalDay::VALUE_MEDIUM)
       period.save!
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
-      expect(form.critical_day_value).to eq 'medium'
+      expect(form.critical_day_value).to eq CriticalDay::VALUE_MEDIUM
     end
   end
 
@@ -144,7 +144,8 @@ describe CalendarDayForm do
     end
 
     describe 'when we want to delete a tail' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: false, delete_way: 'tail'}) }
+      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7),
+                                       {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_TAIL}) }
 
       it 'should be valid' do
         expect(form).to be_valid
@@ -163,7 +164,8 @@ describe CalendarDayForm do
     end
 
     describe 'when we want to delete a tail when we point on the head' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 5), {is_critical: false, delete_way: 'tail'}) }
+      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 5),
+                                       {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_TAIL}) }
 
       it 'should be valid' do
         expect(form).to be_valid
@@ -179,7 +181,8 @@ describe CalendarDayForm do
     end
 
     describe 'when we want to delete a head' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: false, delete_way: 'head'}) }
+      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7),
+                                       {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_HEAD}) }
 
       it 'should be valid' do
         expect(form).to be_valid
@@ -198,7 +201,8 @@ describe CalendarDayForm do
     end
 
     describe 'when we want to delete a head when we point on the tail' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 10), {is_critical: false, delete_way: 'head'}) }
+      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 10),
+                                       {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_HEAD}) }
 
       it 'should be valid' do
         expect(form).to be_valid
@@ -214,7 +218,8 @@ describe CalendarDayForm do
     end
 
     describe 'when we want to delete period entirely' do
-      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 10), {is_critical: false, delete_way: 'entirely'}) }
+      let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 10),
+                                       {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_ENTIRELY}) }
 
       it 'should be valid' do
         expect(form).to be_valid
@@ -262,7 +267,8 @@ describe CalendarDayForm do
 
 
   describe 'set critical value for new period' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: 'medium'}) }
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7),
+                                     {is_critical: true, critical_day_value: CriticalDay::VALUE_MEDIUM}) }
 
     it 'should ve valid' do
       expect(form).to be_valid
@@ -275,7 +281,7 @@ describe CalendarDayForm do
       critical_day = critical_period.critical_days.to_a[0]
 
       expect(critical_day.date).to eq Date.new(2015, 1, 7)
-      expect(critical_day.value).to eq 'medium'
+      expect(critical_day.value).to eq CriticalDay::VALUE_MEDIUM
     end
 
     it 'should return true on submit' do
@@ -284,10 +290,11 @@ describe CalendarDayForm do
   end
 
   describe 'set critical value for existing period' do
-    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: true, critical_day_value: 'large'}) }
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7),
+                                     {is_critical: true, critical_day_value: CriticalDay::VALUE_LARGE}) }
     before do
       period = user.critical_periods.create(from: Date.new(2015, 1, 6), to: Date.new(2015, 1, 8))
-      period.critical_days.create(date: Date.new(2015, 1, 7), value: 'small')
+      period.critical_days.create(date: Date.new(2015, 1, 7), value: CriticalDay::VALUE_SMALL)
       user.reload
     end
 
@@ -302,7 +309,7 @@ describe CalendarDayForm do
       critical_day = critical_period.critical_days[0]
 
       expect(critical_day.date).to eq Date.new(2015, 1, 7)
-      expect(critical_day.value).to eq 'large'
+      expect(critical_day.value).to eq CriticalDay::VALUE_LARGE
     end
 
     it 'should return true on submit' do

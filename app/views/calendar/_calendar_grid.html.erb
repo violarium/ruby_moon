@@ -10,7 +10,7 @@
         <a class="day-content" href="<%= make_calendar_day_url(date_note[:date]) %>">
           <%= date_note[:date].day %>
         </a>
-        <% if !date_note[:critical_day_value].nil? && date_note[:critical_day_value] != 'unknown' %>
+        <% if !date_note[:critical_day_value].nil? && date_note[:critical_day_value] != CriticalDay::VALUE_UNKNOWN %>
           <img class="list-critical-day-value"
                src="<%= image_url("critical_day_value/#{date_note[:critical_day_value]}.svg") %>" alt="" />
         <% end %>

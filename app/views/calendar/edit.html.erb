@@ -28,7 +28,7 @@
     <div class="form-group critical-day-value <%= 'active' if @day_form.is_critical %>" id="critical_day_value_block">
       <label><%= t '.value' %></label>
       <div>
-        <% %w(small medium large).each do |value| %>
+        <% [CriticalDay::VALUE_SMALL, CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE].each do |value| %>
           <label class="radio-critical-day-value" title="<%= t ".value_#{value}" %>">
             <%= f.radio_button :critical_day_value, value %>
             <img src="<%= image_url("critical_day_value/#{value}.svg") %>" alt="<%= t ".value_#{value}" %>" />
@@ -45,21 +45,21 @@
               <p><%= t '.delete_description' %></p>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_way, 'entirely', checked: true %>
+                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_ENTIRELY, checked: true %>
                 <%= t '.delete_entirely' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_way, 'tail' %>
+                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_TAIL %>
                 <%= t '.delete_tail' %>
               </label>
 
               <br/>
 
               <label class="radio-inline">
-                <%= f.radio_button :delete_way, 'head' %>
+                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_HEAD %>
                 <%= t '.delete_head' %>
               </label>
             </div>

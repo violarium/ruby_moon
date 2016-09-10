@@ -2,13 +2,18 @@ class CriticalDay
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  VALUE_UNKNOWN = 'unknown'
+  VALUE_SMALL = 'small'
+  VALUE_MEDIUM = 'medium'
+  VALUE_LARGE = 'large'
+
   embedded_in :critical_period
 
   field :date, type: Date
-  field :value, type: String, default: 'unknown'
+  field :value, type: String, default: VALUE_UNKNOWN
 
   validates :date, presence: true
-  validates :value, inclusion: { in: %w(unknown small medium large) }
+  validates :value, inclusion: { in: [VALUE_UNKNOWN, VALUE_SMALL, VALUE_MEDIUM, VALUE_LARGE] }
   validates :critical_period, presence: true
   validate :validate_period_range
 
