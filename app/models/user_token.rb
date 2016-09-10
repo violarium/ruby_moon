@@ -10,6 +10,7 @@ class UserToken
   field :encrypted_token, type: String
   field :expires_at, type: Time
 
+  index({ user_id: 1 })
   index({ encrypted_token: 1 }, { unique: true })
 
   validates :encrypted_token, presence: true, uniqueness: true

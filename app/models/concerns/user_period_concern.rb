@@ -14,6 +14,8 @@ module UserPeriodConcern
 
     belongs_to :user
 
+    index({ from: 1, to: 1, user_id: 1 })
+
     validates :from, presence: true
     validates :to, presence: true
     validates :user, presence: true
