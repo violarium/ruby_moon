@@ -175,6 +175,7 @@ class CalendarDayForm
       else
         period.from = new_period_from
         period.to = new_period_to
+        period.cleanup_critical_days
       end
 
       [period, delete]

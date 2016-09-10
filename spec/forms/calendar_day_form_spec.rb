@@ -298,7 +298,7 @@ describe CalendarDayForm do
       user.reload
     end
 
-    it 'should ve valid' do
+    it 'should be valid' do
       expect(form).to be_valid
     end
 
@@ -314,6 +314,27 @@ describe CalendarDayForm do
 
     it 'should return true on submit' do
       expect(form.submit).to eq true
+    end
+  end
+
+  describe 'cut critical period with critical day values' do
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {is_critical: false, delete_way: CalendarDayForm::DELETE_WAY_TAIL}) }
+    before do
+      period = user.critical_periods.create(from: Date.new(2015, 1, 6), to: Date.new(2015, 1, 8))
+      period.critical_days.create(date: Date.new(2015, 1, 6), value: CriticalDay::VALUE_SMALL)
+      period.critical_days.create(date: Date.new(2015, 1, 7), value: CriticalDay::VALUE_SMALL)
+      user.reload
+    end
+
+    it 'should be valid' do
+      expect(form).to be_valid
+    end
+
+    it 'should delete critical days out of range' do
+      form.submit
+      period = user.critical_periods.first
+      expect(period.critical_days.length).to eq 1
+      expect(period.critical_days[0][:date]).to eq Date.new(2015, 1, 6)
     end
   end
 end
