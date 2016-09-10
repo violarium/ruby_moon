@@ -16,4 +16,4 @@ addons:
     sources:
       - mongodb-upstart
     packages:
-      - mongodb-org
+      - mongodb-org-server
