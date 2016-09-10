@@ -51,7 +51,7 @@ class CalendarController < ApplicationController
   # Get user calendar facade for current user.
   #
   def user_calendar_facade
-    @user_calendar ||= UserCalendarFacade.new(current_user)
+    @user_calendar ||= UserCalendar.new(current_user)
   end
 
   # Get received from params day.

@@ -25,7 +25,7 @@ describe CalendarController do
 
       it 'should pass to view result of user calendar data provider' do
         user_calendar = double('user_calendar')
-        expect(UserCalendarFacade).to receive(:new).with(@user).and_return(user_calendar)
+        expect(UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(user_calendar).to receive(:month_info)
                                      .with(Date.new(2015, 2), Date.new(2015, 1, 10)).and_return('month_info')
 
@@ -35,7 +35,7 @@ describe CalendarController do
 
       it 'should get month info with today date if date is not received' do
         user_calendar = double('user_calendar')
-        expect(UserCalendarFacade).to receive(:new).with(@user).and_return(user_calendar)
+        expect(UserCalendar).to receive(:new).with(@user).and_return(user_calendar)
         expect(user_calendar).to receive(:month_info)
                                      .with(Date.new(2015, 1, 10), Date.new(2015, 1, 10)).and_return('month_info')
 
@@ -71,7 +71,7 @@ describe CalendarController do
 
       it 'should pass day info to view' do
         data_provider = double('data_provider')
-        expect(UserCalendarFacade).to receive(:new).with(user).and_return(data_provider)
+        expect(UserCalendar).to receive(:new).with(user).and_return(data_provider)
         expect(data_provider).to receive(:day_info).with(Date.new(2015, 1, 1)).and_return('day info')
 
         get :edit, { year: 2015, month: 1, day: 1 }
@@ -141,7 +141,7 @@ describe CalendarController do
 
         it 'should pass day info to template' do
           data_provider = double('data_provider')
-          expect(UserCalendarFacade).to receive(:new).with(user).and_return(data_provider)
+          expect(UserCalendar).to receive(:new).with(user).and_return(data_provider)
           expect(data_provider).to receive(:day_info).with(Date.new(2015, 1, 1)).and_return('day info')
 
           put :update, { year: 2015, month: 1, day: 1, calendar_day_form: { params: 'foo' } }

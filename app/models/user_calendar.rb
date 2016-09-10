@@ -1,4 +1,4 @@
-class UserCalendarFacade
+class UserCalendar
   # Create calendar data provider for user.
   #
   # @param user [User]
