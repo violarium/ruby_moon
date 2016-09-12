@@ -19,10 +19,10 @@
 
 <%= form_for(@day_form, url: make_calendar_day_url(@day_info[:date]), method: :put, html: {autocomplete: 'off', class: 'calendar-day-form', id: 'critical_day_form'}) do |f| %>
     <div class="form-group">
-      <label class="checkbox-is-critical">
+      <label class="checkbox-image-switch checked-purple">
         <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 },
                         CalendarDayForm::IS_CRITICAL_ON, CalendarDayForm::IS_CRITICAL_OFF %>
-        <span class="is-critical-icons">
+        <span class="switch-icons">
           <img src="<%= image_url("is_critical/inactive.svg") %>" class="inactive" alt="" />
           <img src="<%= image_url("is_critical/active.svg") %>" class="active" alt="" />
         </span>
@@ -34,11 +34,15 @@
       <label><%= t '.value' %></label>
       <div>
         <% [CriticalDay::VALUE_SMALL, CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE].each do |value| %>
-          <label class="radio-critical-day-value" title="<%= t ".value_#{value}" %>">
+          <label class="checkbox-image-choose checked-purple" title="<%= t ".value_#{value}" %>">
             <%= f.radio_button :critical_day_value, value %>
             <img src="<%= image_url("critical_day_value/#{value}.svg") %>" alt="<%= t ".value_#{value}" %>" />
           </label>
         <% end %>
+        <label class="checkbox-image-choose dotted">
+          <%= f.radio_button :critical_day_value, CriticalDay::VALUE_UNKNOWN %>
+          <img class="radio-cancel" src="<%= image_url('cancel.svg') %>" alt="" />
+        </label>
       </div>
     </div>
 

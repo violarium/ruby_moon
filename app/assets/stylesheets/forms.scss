@@ -3,3 +3,75 @@
   width: 3em;
   display: inline-block;
 }
+
+
+// Checkbox with image
+
+.checkbox-image {
+  margin-right: 1em;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    left: -9999px;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+    padding: 1px;
+    border-radius: 4px;
+    border: 1px solid $input-border;
+  }
+}
+
+
+// Checkbox with image where active image will be bordered
+
+.checkbox-image-choose {
+  @extend .checkbox-image;
+
+  &.dotted img {
+    border: 1px dotted $input-border;
+  }
+
+  &.checked-purple input:checked + img {
+    padding: 0;
+    border-width: 2px;
+    border-color: #bc0000;
+  }
+}
+
+
+// Checkbox with image where each checkbox is toggle and have 2 images
+
+.checkbox-image-switch {
+  @extend .checkbox-image;
+
+  .switch-icons {
+    display: inline-block;
+  }
+
+  img.inactive {
+    display: inline-block;
+  }
+
+  img.active {
+    display: none;
+  }
+
+  input:checked + .switch-icons {
+    .active {
+      display: inline-block;
+    }
+    .inactive {
+      display: none;
+    }
+  }
+
+  &.checked-purple input:checked + .switch-icons img {
+    padding: 0;
+    border-width: 2px;
+    border-color: #bc0000;
+  }
+}
