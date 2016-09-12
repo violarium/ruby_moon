@@ -4,6 +4,10 @@ class SignInForm
 
   attr_accessor :email, :password, :remember
 
+  def initialize(params = {})
+    super(params.slice(:email, :password, :remember))
+  end
+
 
   # Submit sign in credentials and return nil or User.
   def submit

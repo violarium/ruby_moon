@@ -9,7 +9,7 @@ class PasswordForm
 
   def initialize(user, params = {})
     @user = user
-    super(params)
+    super(params.slice(:current_password, :new_password, :new_password_confirmation))
   end
 
   def submit

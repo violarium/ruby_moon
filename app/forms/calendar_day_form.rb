@@ -13,6 +13,7 @@ class CalendarDayForm
   IS_CRITICAL_ON = 'on'
   IS_CRITICAL_OFF = 'off'
 
+  attr_reader :user, :date
   attr_accessor :is_critical, :delete_way, :critical_day_value
 
   validates :is_critical, inclusion: { in: [true, false] }
