@@ -61,15 +61,37 @@ describe CriticalPeriod do
 
   describe '#cleanup_critical_days' do
     let(:user) { FactoryGirl.create(:user) }
-    let(:period) { user.critical_periods.build(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 12)) }
+    let(:period) { user.critical_periods.create!(from: Date.new(2015, 1, 10), to: Date.new(2015, 1, 12)) }
 
     it 'should cleanup critical days which are out of range' do
       period.critical_days.build(date: Date.new(2015, 1, 11))
       period.critical_days.build(date: Date.new(2015, 1, 13))
       period.cleanup_critical_days
+      period.save!
+      period.reload
 
       expect(period.critical_days.length).to eq 1
       expect(period.critical_days[0].date).to eq Date.new(2015, 1, 11)
+    end
+
+    it 'should leave same number of critical days if nothing has changed' do
+      period.critical_days.build(date: Date.new(2015, 1, 11))
+      period.critical_days.build(date: Date.new(2015, 1, 12))
+      period.cleanup_critical_days
+      period.save!
+      period.reload
+
+      expect(period.critical_days.length).to eq 2
+    end
+
+    it 'should leave only one critical day for each date if there are many somehow' do
+      period.critical_days.build(date: Date.new(2015, 1, 11))
+      period.critical_days.build(date: Date.new(2015, 1, 11))
+      period.cleanup_critical_days
+      period.save!
+      period.reload
+
+      expect(period.critical_days.length).to eq 1
     end
   end
 end

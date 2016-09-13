@@ -30,9 +30,9 @@ class CriticalPeriod
   end
 
 
-  # Cleanup critical days which are out of range.
+  # Cleanup critical days which are out of range and remove doubles.
   def cleanup_critical_days
     range = (from .. to)
-    self.critical_days = critical_days.select { |day| range.include? day.date }
+    self.critical_days = critical_days.select { |day| range.include? day.date }.uniq { |day| day.date }
   end
 end

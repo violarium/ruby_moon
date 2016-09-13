@@ -16,11 +16,6 @@ describe CriticalDay do
       expect(critical_day).to be_valid
     end
 
-    it 'should not be valid without period' do
-      critical_day.critical_period = nil
-      expect(critical_day).not_to be_valid
-    end
-
     it 'should not be valid without date specified' do
       critical_day.date = nil
       expect(critical_day).not_to be_valid

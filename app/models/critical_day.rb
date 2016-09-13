@@ -14,7 +14,6 @@ class CriticalDay
 
   validates :date, presence: true
   validates :value, inclusion: { in: [VALUE_UNKNOWN, VALUE_SMALL, VALUE_MEDIUM, VALUE_LARGE] }
-  validates :critical_period, presence: true
   validate :validate_period_range
 
 
