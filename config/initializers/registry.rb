@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/registry"
+
 registry = Registry.instance
 
 registry.define_lazy :period_predictor do
