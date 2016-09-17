@@ -1,0 +1,10 @@
+<% if @day_form.errors.count > 0 %>
+    <div class="text-danger">
+      <div><%= t '.errors' %></div>
+      <ul>
+        <% @day_form.errors.full_messages.each do |m| %>
+            <li><%= m %></li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>

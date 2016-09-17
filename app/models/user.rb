@@ -19,7 +19,7 @@ class User
   ALLOWED_NOTIFY_BEFORE = [0, 1, 2]
 
   # Allowed locales for #locale and system ar all
-  ALLOWED_LOCALES = { en: 'English', ru: 'Русский', he: "עברית" }
+  ALLOWED_LOCALES = { en: 'English', ru: 'Русский' }
 
   field :email, type: String
   field :encrypted_password, type: String
@@ -31,6 +31,7 @@ class User
   has_many :user_tokens, dependent: :delete
   has_many :critical_periods, dependent: :delete
   has_many :future_critical_periods, dependent: :delete
+  has_many :regular_days, dependent: :delete
 
   index({ email: 1 }, { unique: true })
 

@@ -2,83 +2,15 @@
 
 <h1><%= l(@day_info[:date], format: :full_day) %></h1>
 
-<%= render 'day_description' %>
-
+<%= render 'calendar/edit/day_description' %>
 <hr />
 
-<% if @day_form.errors.count > 0 %>
-    <div class="text-danger">
-      <div><%= t '.errors' %></div>
-      <ul>
-        <% @day_form.errors.full_messages.each do |m| %>
-            <li><%= m %></li>
-        <% end %>
-      </ul>
-    </div>
-<% end %>
-
+<%= render 'calendar/edit/errors' %>
 <%= form_for(@day_form, url: make_calendar_day_url(@day_info[:date]), method: :put, html: {autocomplete: 'off', class: 'calendar-day-form', id: 'critical_day_form'}) do |f| %>
-    <div class="form-group">
-      <label class="checkbox-image-switch checked-purple">
-        <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 },
-                        CalendarDayForm::IS_CRITICAL_ON, CalendarDayForm::IS_CRITICAL_OFF %>
-        <span class="switch-icons">
-          <img src="<%= image_url("is_critical/inactive.svg") %>" class="inactive" alt="" />
-          <img src="<%= image_url("is_critical/active.svg") %>" class="active" alt="" />
-        </span>
-        <%= t '.is_critical' %>
-      </label>
-    </div>
-
-    <div class="form-group critical-day-value <%= 'active' if @day_form.is_critical %>" id="critical_day_value_block">
-      <label><%= t '.value' %></label>
-      <div>
-        <% [CriticalDay::VALUE_SMALL, CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE].each do |value| %>
-          <label class="checkbox-image-choose checked-purple" title="<%= t ".value_#{value}" %>">
-            <%= f.radio_button :critical_day_value, value %>
-            <img src="<%= image_url("critical_day_value/#{value}.svg") %>" alt="<%= t ".value_#{value}" %>" />
-          </label>
-        <% end %>
-        <label class="checkbox-image-choose dotted">
-          <%= f.radio_button :critical_day_value, CriticalDay::VALUE_UNKNOWN %>
-          <img class="radio-cancel" src="<%= image_url('cancel.svg') %>" alt="" />
-        </label>
-      </div>
-    </div>
-
-    <% unless @day_info[:current_period].nil? %>
-        <div class="form-group delete-period-block panel panel-default" id="delete_period_block">
-          <div class="panel-heading"><%= t '.delete_title' %></div>
-          <div class="panel-body">
-            <div class="form-group">
-              <p><%= t '.delete_description' %></p>
-
-              <label class="radio-inline">
-                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_ENTIRELY, checked: true %>
-                <%= t '.delete_entirely' %>
-              </label>
-
-              <br/>
-
-              <label class="radio-inline">
-                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_TAIL %>
-                <%= t '.delete_tail' %>
-              </label>
-
-              <br/>
-
-              <label class="radio-inline">
-                <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_HEAD %>
-                <%= t '.delete_head' %>
-              </label>
-            </div>
-
-            <div>
-              <span class="btn btn-default" id="delete_period_cancel"><%= t '.delete_cancel' %></span>
-            </div>
-          </div>
-        </div>
-    <% end %>
+    <%= render 'calendar/edit/is_critical', f: f %>
+    <%= render 'calendar/edit/critical_day_value', f: f %>
+    <%= render 'calendar/edit/delete_period', f: f %>
+    <%= render 'calendar/edit/love', f: f %>
 
     <div class="form-group">
       <%= f.submit(t('.save'), class: 'btn btn-primary') %>

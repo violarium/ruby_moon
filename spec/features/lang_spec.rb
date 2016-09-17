@@ -8,12 +8,6 @@ describe 'Language' do
     expect(page).to have_content 'Language'
   end
 
-  it 'should be able to show hebrew under /he' do
-    visit '/he'
-
-    expect(page).to have_content 'שפה'
-  end
-
   it 'should be able to show russian under /ru' do
     visit '/ru'
 
@@ -26,14 +20,6 @@ describe 'Language' do
     click_link 'English'
 
     expect(page).to have_content 'About'
-  end
-
-  it 'should be able to choose hebrew by link' do
-    visit ''
-    click_link 'Language'
-    click_link 'עברית'
-
-    expect(page).to have_content 'שפה'
   end
 
   it 'should be able to choose russian by link' do

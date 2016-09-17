@@ -1,0 +1,15 @@
+<div class="form-group critical-day-value <%= 'active' if @day_form.is_critical %>" id="critical_day_value_block">
+  <label><%= human_attribute(f.object, :critical_day_value) %></label>
+  <div>
+    <% [CriticalDay::VALUE_SMALL, CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE].each do |value| %>
+        <label class="checkbox-image-choose checked-purple" title="<%= t ".value_#{value}" %>">
+          <%= f.radio_button :critical_day_value, value %>
+          <img src="<%= image_url("critical_day_value/#{value}.svg") %>" alt="<%= t ".value_#{value}" %>" />
+        </label>
+    <% end %>
+    <label class="checkbox-image-choose dotted" title="<%= t '.cancel' %>">
+      <%= f.radio_button :critical_day_value, CriticalDay::VALUE_UNKNOWN %>
+      <img class="radio-cancel" src="<%= image_url('cancel.svg') %>" alt="<%= t '.cancel' %>" />
+    </label>
+  </div>
+</div>

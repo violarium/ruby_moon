@@ -204,5 +204,17 @@ describe User do
       user.future_critical_periods.create!(from: Time.new(2015, 1, 1), to: Time.new(2015, 1, 2))
       expect { user.delete }.to change { FutureCriticalPeriod.count }.from(1).to(0)
     end
+
+    it 'deletes user token for user' do
+      user.user_tokens.create!(token: 'hello 1')
+      user.user_tokens.create!(token: 'hello 2')
+      expect { user.delete }.to change { UserToken.count }.by(-2)
+    end
+
+    it 'deletes user regular days' do
+      user.regular_days.create!(date: Date.new(2015, 1, 2))
+      user.regular_days.create!(date: Date.new(2015, 1, 3))
+      expect { user.delete }.to change { RegularDay.count }.by(-2)
+    end
   end
 end

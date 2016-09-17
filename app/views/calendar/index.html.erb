@@ -1,13 +1,13 @@
 <% content_for(:title, l(@month_info[:month_date], format: :full_month)) %>
 
-<%= render 'calendar/calendar_header', month_date: @month_info[:month_date] %>
+<%= render 'calendar/index/calendar_header', month_date: @month_info[:month_date] %>
 
 <div class="row">
   <div class="col-sm-8 calendar-grid-container">
-    <%= render 'calendar/calendar_grid' %>
+    <%= render 'calendar/index/calendar_grid' %>
   </div>
   <div class="col-sm-4 calendar-info-container">
-    <%= render 'calendar/calendar_info' %>
+    <%= render 'calendar/index/calendar_info' %>
   </div>
 </div>
 

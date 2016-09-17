@@ -1,0 +1,15 @@
+<div class="form-group">
+  <label><%= human_attribute(f.object, :love) %></label>
+  <div>
+    <% [RegularDay::LOVE_PROTECTED, RegularDay::LOVE_UNPROTECTED].each do |value| %>
+        <label class="checkbox-image-choose checked-purple" title="<%= t ".love_#{value}" %>">
+          <%= f.radio_button :love, value %>
+          <img src="<%= image_url("love/#{value}.svg") %>" alt="<%= t ".love_#{value}" %>" />
+        </label>
+    <% end %>
+    <label class="checkbox-image-choose dotted" title="<%= t '.cancel' %>">
+      <%= f.radio_button :love, RegularDay::LOVE_UNKNOWN %>
+      <img class="radio-cancel" src="<%= image_url('cancel.svg') %>" alt="<%= t '.cancel' %>" />
+    </label>
+  </div>
+</div>

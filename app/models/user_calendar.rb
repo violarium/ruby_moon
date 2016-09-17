@@ -29,6 +29,7 @@ class UserCalendar
     critical_dates = periods_dates(critical_periods, date_from, date_to)
     future_critical_dates = periods_dates(future_critical_periods, date_from, date_to)
     critical_days = periods_critical_days(critical_periods, date_from, date_to)
+    regular_days = regular_days_hash(@user.regular_days.all, date_from, date_to)
 
     dates.each do |date_note|
       date_key = date_note[:date].to_s
@@ -40,6 +41,7 @@ class UserCalendar
         critical_day_value = nil
       end
       date_note[:critical_day_value] = critical_day_value
+      date_note[:regular_day] = regular_days[date_key]
     end
 
     {
@@ -103,5 +105,21 @@ class UserCalendar
       end
     end
     periods_dates
+  end
+
+
+  # Get hash of regular days.
+  #
+  # @param regular_days [Array]
+  # @param date_from [Date]
+  # @param date_to [Date]
+  #
+  # @return [Hash]
+  def regular_days_hash(regular_days, date_from, date_to)
+    regular_days_hash = {}
+    regular_days.each do |day|
+      regular_days_hash[day.date.to_s] = day if day.date >= date_from && day.date <= date_to
+    end
+    regular_days_hash
   end
 end

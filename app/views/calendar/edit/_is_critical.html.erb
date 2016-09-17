@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label class="checkbox-image-switch checked-purple">
+    <%= f.check_box :is_critical, { disabled: @day_info[:close_periods].length > 1 },
+                    CalendarDayForm::IS_CRITICAL_ON, CalendarDayForm::IS_CRITICAL_OFF %>
+    <span class="switch-icons">
+          <img src="<%= image_url("is_critical/inactive.svg") %>" class="inactive" alt="<%= t '.is_critical' %>" />
+          <img src="<%= image_url("is_critical/active.svg") %>" class="active" alt="<%= t '.is_critical' %>" />
+        </span>
+    <%= t '.is_critical' %>
+  </label>
+</div>

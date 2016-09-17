@@ -1,0 +1,7 @@
+en:
+  form_object:
+    attributes:
+      calendar_day_form:
+        critical_day_value: Critical day value
+        love: Sex
+        delete_way: Delete critical period

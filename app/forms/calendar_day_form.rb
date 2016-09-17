@@ -15,12 +15,14 @@ class CalendarDayForm
 
   attr_reader :user, :date
   attr_accessor :is_critical, :delete_way, :critical_day_value
+  delegate :love, :love=, to: :regular_day
 
   validates :is_critical, inclusion: { in: [true, false] }
   validates :delete_way, inclusion: { in: [DELETE_WAY_HEAD, DELETE_WAY_TAIL, DELETE_WAY_ENTIRELY] }
   validates :critical_day_value, inclusion: { in: [CriticalDay::VALUE_UNKNOWN, CriticalDay::VALUE_SMALL,
                                                    CriticalDay::VALUE_MEDIUM, CriticalDay::VALUE_LARGE] }
   validate :validate_critical_period
+  validate :validate_regular_day
 
 
   # Create form object to handle calendar day.
@@ -34,7 +36,7 @@ class CalendarDayForm
     @user = user
     @date = date
 
-    super(params.slice(:is_critical, :delete_way, :critical_day_value))
+    super(params.slice(:is_critical, :delete_way, :critical_day_value, :love))
 
     if @is_critical.nil?
       @is_critical = !current_critical_period.nil?
@@ -86,6 +88,7 @@ class CalendarDayForm
           @critical_period.save!
         end
       end
+      regular_day.save!
       true
     else
       false
@@ -94,6 +97,30 @@ class CalendarDayForm
 
 
   private
+
+  # Regular day
+  #
+  # @return [RegularDay]
+  def regular_day
+    if @regular_day.nil?
+      regular_day = @user.regular_days.where(date: @date).first
+      if regular_day.nil?
+        regular_day = @user.regular_days.build(date: @date)
+      end
+      @regular_day = regular_day
+    end
+    @regular_day
+  end
+
+
+  # Validate regular day
+  def validate_regular_day
+    if regular_day.invalid?
+      regular_day.errors.each do |attribute, message|
+        errors[attribute] << message
+      end
+    end
+  end
 
 
   # Rebuild critical period to validate, save or delete later.

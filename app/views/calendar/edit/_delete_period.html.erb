@@ -1,0 +1,33 @@
+<% unless @day_info[:current_period].nil? %>
+    <div class="form-group delete-period-block panel panel-default <%= 'active' unless @day_form.is_critical %>" id="delete_period_block">
+      <div class="panel-heading"><%= t '.delete_title' %></div>
+      <div class="panel-body">
+        <div class="form-group">
+          <p><%= t '.delete_description' %></p>
+
+          <label class="radio-inline">
+            <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_ENTIRELY, checked: true %>
+            <%= t '.delete_entirely' %>
+          </label>
+
+          <br/>
+
+          <label class="radio-inline">
+            <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_TAIL %>
+            <%= t '.delete_tail' %>
+          </label>
+
+          <br/>
+
+          <label class="radio-inline">
+            <%= f.radio_button :delete_way, CalendarDayForm::DELETE_WAY_HEAD %>
+            <%= t '.delete_head' %>
+          </label>
+        </div>
+
+        <div>
+          <span class="btn btn-default" id="delete_period_cancel"><%= t '.delete_cancel' %></span>
+        </div>
+      </div>
+    </div>
+<% end %>

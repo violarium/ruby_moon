@@ -12,6 +12,12 @@ def choose_critical_day_value(value)
 end
 
 
+# Choose love for the day.
+def choose_love_value(value)
+  find("#calendar_day_form_love_#{value}").trigger('click')
+end
+
+
 describe 'Calendar page' do
   let(:user) { FactoryGirl.create(:user, password: 'password') }
   before { sign_in_with(user.email, 'password') }
@@ -313,11 +319,25 @@ describe 'Calendar page' do
       visit '/calendar/2015/2'
       find('.month-days-grid .day > a', text: 10).click
       click_critical_day_checkbox
-      choose_critical_day_value('large')
+      choose_critical_day_value(CriticalDay::VALUE_LARGE)
       click_on 'Save'
 
       critical_day = user.critical_periods.first.critical_day_by_date(Date.new(2015, 2, 10))
-      expect(critical_day.value).to eq 'large'
+      expect(critical_day.value).to eq CriticalDay::VALUE_LARGE
+    end
+  end
+
+
+  describe 'day love' do
+    it 'should save regular day with love chosen value' do
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 10).click
+      choose_love_value(RegularDay::LOVE_PROTECTED)
+      click_on 'Save'
+
+      critical_day = user.regular_days.first
+      expect(critical_day.love).to eq RegularDay::LOVE_PROTECTED
+      expect(critical_day.date).to eq Date.new(2015, 2, 10)
     end
   end
 end

@@ -1,37 +1,57 @@
 ru:
   calendar:
-    calendar_info:
-      current_day: "Текущий день: %{date}"
-      critical_day_example: критический день
-      future_critical_day_example: предсказанный критический день
-      current_day_example: текущий день
-      legend: "Описание:"
-      critical_management: "Управление критическими периодами:"
-      critical_create: Чтобы создать новый критический период, нажмите на день, не являющийся критическим.
-      critical_append: Чтобы добавить день к существующему критическому периоду, нажмите на день недалеко от него.
-      critical_delete: Чтобы изменить, удалить критический период или его часть, нажмите на день в этом периоде.
-      critical_period_upcoming: "Ближайший критический период:"
-      critical_period_days_left: "Осталось дней:"
-    day_description:
-      belongs_to: Этот день принадлежит критическому периоду
-      to_remove: Если вы хотите удалить данный день из критического периода или удалить весь период, снимите галочку "Критический день".
-      able_to_append: Вы можете добавить этот день к критическому периоду
-      to_append: Чтобы сделать это, проставьте галочку "Критический день".
-      able_to_create: Вы можете создать новый критический период.
-      to_create: Чтобы сделать это, проставьте галочку "Критический день".
-      to_close_intro: "Этот день расположен близко к следующим периодам:"
-      to_close_forbid_append: Вы не можете добавить его ни к одному из них.
-    edit:
-      errors: "Произошли ошибки:"
-      is_critical: Критический день
-      save: Сохранить
-      delete_title: Удалить день из критического периода
-      delete_description: Вы собираетесь удалить данный день из критического периода. Пожалуйста, выберите как вы хотите сделать это.
-      delete_entirely: Удалить период полностью
-      delete_head: Удалить данный день и дни перед ним
-      delete_tail: Удалить данный день и дни после него
-      delete_cancel: Ничего не удалять
-      value: Выделения
+    love_values: &love_values
+      love_protected: Защищённый
+      love_unprotected: Незащищённый
+    critical_day_values: &critical_day_values
       value_small: Скудные
       value_medium: Умеренные
       value_large: Обильные
+    index:
+      calendar_grid:
+        <<: *love_values
+        <<: *critical_day_values
+      calendar_info:
+        current_day: "Текущий день: %{date}"
+        critical_day_example: критический день
+        future_critical_day_example: предсказанный критический день
+        current_day_example: текущий день
+        legend: "Описание:"
+        critical_management: "Управление критическими периодами:"
+        critical_create: Чтобы создать новый критический период, нажмите на день, не являющийся критическим.
+        critical_append: Чтобы добавить день к существующему критическому периоду, нажмите на день недалеко от него.
+        critical_delete: Чтобы изменить, удалить критический период или его часть, нажмите на день в этом периоде.
+        critical_period_upcoming: "Ближайший критический период:"
+        critical_period_days_left: "Осталось дней:"
+        critical_day_value: "Обильность выделений:"
+        <<: *critical_day_values
+        love: "Половой акт:"
+        <<: *love_values
+    edit:
+      critical_day_value:
+        <<: *critical_day_values
+        cancel: Отменить
+      day_description:
+        belongs_to: Этот день принадлежит критическому периоду
+        to_remove: Если вы хотите удалить данный день из критического периода или удалить весь период, снимите галочку "Критический день".
+        able_to_append: Вы можете добавить этот день к критическому периоду
+        to_append: Чтобы сделать это, проставьте галочку "Критический день".
+        able_to_create: Вы можете создать новый критический период.
+        to_create: Чтобы сделать это, проставьте галочку "Критический день".
+        to_close_intro: "Этот день расположен близко к следующим периодам:"
+        to_close_forbid_append: Вы не можете добавить его ни к одному из них.
+      delete_period:
+        delete_title: Удалить день из критического периода
+        delete_description: Вы собираетесь удалить данный день из критического периода. Пожалуйста, выберите как вы хотите сделать это.
+        delete_entirely: Удалить период полностью
+        delete_head: Удалить данный день и дни перед ним
+        delete_tail: Удалить данный день и дни после него
+        delete_cancel: Ничего не удалять
+      errors:
+        errors: "Произошли ошибки:"
+      is_critical:
+        is_critical: Критический день
+      love:
+        <<: *love_values
+        cancel: Отменить
+      save: Сохранить

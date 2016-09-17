@@ -1,5 +1,0 @@
-he:
-  controllers:
-    concerns:
-      authenticable:
-        require_sign_in: 'נא להתחבר!'

@@ -1,0 +1,7 @@
+ru:
+  form_object:
+    attributes:
+      calendar_day_form:
+        critical_day_value: Обильность выделений
+        love: Половой акт
+        delete_way: Удалить критический период

@@ -1,37 +1,57 @@
 en:
   calendar:
-    calendar_info:
-      current_day: "Current day: %{date}"
-      critical_day_example: critical day
-      future_critical_day_example: predicted critical day
-      current_day_example: current day
-      legend: "Legend:"
-      critical_management: "Critical periods management:"
-      critical_create: To add new critical period click on not critical day.
-      critical_append: To add day to existing period click on day near by it.
-      critical_delete: To change, delete whole period or part of it click on day in period.
-      critical_period_upcoming: "Upcoming critical period:"
-      critical_period_days_left: "Days left:"
-    day_description:
-      belongs_to: This day belongs to period
-      to_remove: If you want to remove this day from period or delete whole period, uncheck "Critical day".
-      able_to_append: You are able to add this day to period
-      to_append: To do it - check "Critical day".
-      able_to_create: You are able to add a new critical period
-      to_create: To do it - check "Critical day".
-      to_close_intro: "This day is too close to more than one period:"
-      to_close_forbid_append: You are not able to add this day to any of them.
-    edit:
-      errors: "There are errors:"
-      is_critical: Critical day
-      save: Save
-      delete_title: Remove critical day from period
-      delete_description: You are going to remove this date from critical period. Please, choose the way to do it.
-      delete_entirely: Delete whole period
-      delete_head: Remove current date and period head
-      delete_tail: Remove current date and period tail
-      delete_cancel: Do not remove
-      value: Value
+    love_values: &love_values
+      love_protected: Protected
+      love_unprotected: Unprotected
+    critical_day_values: &critical_day_values
       value_small: Small
       value_medium: Medium
       value_large: Large
+    index:
+      calendar_grid:
+        <<: *love_values
+        <<: *critical_day_values
+      calendar_info:
+        current_day: "Current day: %{date}"
+        critical_day_example: critical day
+        future_critical_day_example: predicted critical day
+        current_day_example: current day
+        legend: "Legend:"
+        critical_management: "Critical periods management:"
+        critical_create: To add new critical period click on not critical day.
+        critical_append: To add day to existing period click on day near by it.
+        critical_delete: To change, delete whole period or part of it click on day in period.
+        critical_period_upcoming: "Upcoming critical period:"
+        critical_period_days_left: "Days left:"
+        critical_day_value: "Critical day value:"
+        <<: *critical_day_values
+        love: "Sex:"
+        <<: *love_values
+    edit:
+      critical_day_value:
+        <<: *critical_day_values
+        cancel: Cancel
+      day_description:
+        belongs_to: This day belongs to period
+        to_remove: If you want to remove this day from period or delete whole period, uncheck "Critical day".
+        able_to_append: You are able to add this day to period
+        to_append: To do it - check "Critical day".
+        able_to_create: You are able to add a new critical period
+        to_create: To do it - check "Critical day".
+        to_close_intro: "This day is too close to more than one period:"
+        to_close_forbid_append: You are not able to add this day to any of them.
+      delete_period:
+        delete_title: Remove critical day from period
+        delete_description: You are going to remove this date from critical period. Please, choose the way to do it.
+        delete_entirely: Delete whole period
+        delete_head: Remove current date and period head
+        delete_tail: Remove current date and period tail
+        delete_cancel: Do not remove
+      errors:
+        errors: "There are errors:"
+      is_critical:
+        is_critical: Critical day
+      love:
+        <<: *love_values
+        cancel: Cancel
+      save: Save

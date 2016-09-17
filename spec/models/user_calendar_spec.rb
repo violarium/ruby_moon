@@ -78,6 +78,21 @@ describe UserCalendar do
       expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 2) }.first[:critical_day_value]).to eq CriticalDay::VALUE_UNKNOWN
       expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 8) }.first[:critical_day_value]).to be_nil
     end
+
+
+    it 'should have regular days for dates' do
+      regular_days = [
+        user.regular_days.create!(date: Date.new(2015, 1, 31), love: RegularDay::LOVE_UNKNOWN),
+        user.regular_days.create!(date: Date.new(2015, 2, 2), love: RegularDay::LOVE_UNPROTECTED),
+      ]
+
+      result = calendar_data_provider.month_info(Date.new(2015, 1), Date.new(2015, 2, 3))
+
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 1, 31) }.first[:regular_day]).to eq regular_days[0]
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 1) }.first[:regular_day]).to be_nil
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 2) }.first[:regular_day]).to eq regular_days[1]
+      expect(result[:dates].select { |d| d[:date] == Date.new(2015, 2, 8) }.first[:regular_day]).to be_nil
+    end
   end
 
 

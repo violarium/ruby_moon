@@ -45,7 +45,7 @@ describe CalendarDayForm do
   end
 
   describe '#critical_day_value' do
-    it 'should have value :unknown by default' do
+    it 'should have value "unknown by" default' do
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
       expect(form.critical_day_value).to eq CriticalDay::VALUE_UNKNOWN
     end
@@ -72,6 +72,37 @@ describe CalendarDayForm do
       period.save!
       form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
       expect(form.critical_day_value).to eq CriticalDay::VALUE_MEDIUM
+    end
+  end
+
+
+  describe '#love' do
+    it 'should have value "unknown by" default' do
+      form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
+      expect(form.love).to eq RegularDay::LOVE_UNKNOWN
+    end
+
+    it 'should be valid with correct values' do
+      form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
+      [nil, 'wrong'].each do |value|
+        form.love = value
+        expect(form).not_to be_valid
+      end
+    end
+
+    it 'should not be valid with incorrect values' do
+      form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
+      [RegularDay::LOVE_UNKNOWN, RegularDay::LOVE_PROTECTED, RegularDay::LOVE_UNPROTECTED].each do |value|
+        form.love = value
+        expect(form).to be_valid
+      end
+    end
+
+    it 'should has love as the regular day love on this date' do
+      user.regular_days.create!(date: Date.new(2015, 1, 7), love: RegularDay::LOVE_UNPROTECTED)
+      user.reload
+      form = CalendarDayForm.new(user, Date.new(2015, 1, 7))
+      expect(form.love).to eq RegularDay::LOVE_UNPROTECTED
     end
   end
 
@@ -335,6 +366,26 @@ describe CalendarDayForm do
       period = user.critical_periods.first
       expect(period.critical_days.length).to eq 1
       expect(period.critical_days[0][:date]).to eq Date.new(2015, 1, 6)
+    end
+  end
+
+
+  describe 'set love' do
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {love: RegularDay::LOVE_UNPROTECTED}) }
+
+    it 'should set love value and create regular day with it' do
+      form.submit
+      regular_day = user.regular_days.first
+      expect(regular_day.date).to eq(Date.new(2015, 1, 7))
+      expect(regular_day.love).to eq(RegularDay::LOVE_UNPROTECTED)
+    end
+
+    it 'should chan\ge love value for existing regular day' do
+      regular_day = user.regular_days.create!(date: Date.new(2015, 1, 7), love: RegularDay::LOVE_PROTECTED)
+      form.submit
+      regular_day.reload
+      expect(regular_day.date).to eq(Date.new(2015, 1, 7))
+      expect(regular_day.love).to eq(RegularDay::LOVE_UNPROTECTED)
     end
   end
 end
