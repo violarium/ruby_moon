@@ -9,19 +9,25 @@
       <li class="day <%= calendar_day_opt_classes(date_note, date_index, @month_info) %>">
         <a class="day-content" href="<%= make_calendar_day_url(date_note[:date]) %>">
           <%= date_note[:date].day %>
+
+          <div class="critical-day-icons">
+            <% if !date_note[:critical_day_value].nil? && date_note[:critical_day_value] != CriticalDay::VALUE_UNKNOWN %>
+                <img class="icon" src="<%= image_url("critical_day_value/#{date_note[:critical_day_value]}.svg") %>"
+                     title="<%= t ".value_#{date_note[:critical_day_value]}" %>"
+                     alt="<%= t ".value_#{date_note[:critical_day_value]}" %>" />
+            <% end %>
+            <% if !date_note[:regular_day].nil? && date_note[:regular_day].love != RegularDay::LOVE_UNKNOWN %>
+                <img class="icon" src="<%= image_url("love/#{date_note[:regular_day].love}.svg") %>"
+                     title="<%= t ".love_#{date_note[:regular_day].love}" %>"
+                     alt="<%= t ".love_#{date_note[:regular_day].love}" %>" />
+            <% end %>
+            <% if !date_note[:regular_day].nil? && !date_note[:regular_day].notes.blank? %>
+                <img class="icon" src="<%= image_url("notes.svg") %>"
+                     title="<%= date_note[:regular_day].notes %>"
+                     alt="<%= t '.notes' %>" />
+            <% end %>
+          </div>
         </a>
-        <div class="critical-day-icons">
-          <% if !date_note[:regular_day].nil? && date_note[:regular_day].love != RegularDay::LOVE_UNKNOWN %>
-            <img class="icon" src="<%= image_url("love/#{date_note[:regular_day].love}.svg") %>"
-                 title="<%= t ".love_#{date_note[:regular_day].love}" %>"
-                 alt="<%= t ".love_#{date_note[:regular_day].love}" %>" />
-          <% end %>
-          <% if !date_note[:critical_day_value].nil? && date_note[:critical_day_value] != CriticalDay::VALUE_UNKNOWN %>
-            <img class="icon" src="<%= image_url("critical_day_value/#{date_note[:critical_day_value]}.svg") %>"
-                 title="<%= t ".value_#{date_note[:critical_day_value]}" %>"
-                 alt="<%= t ".value_#{date_note[:critical_day_value]}" %>" />
-          <% end %>
-        </div>
       </li>
   <% end %>
 </ul>

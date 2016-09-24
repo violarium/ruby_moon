@@ -380,12 +380,32 @@ describe CalendarDayForm do
       expect(regular_day.love).to eq(RegularDay::LOVE_UNPROTECTED)
     end
 
-    it 'should chan\ge love value for existing regular day' do
+    it 'should change love value for existing regular day' do
       regular_day = user.regular_days.create!(date: Date.new(2015, 1, 7), love: RegularDay::LOVE_PROTECTED)
       form.submit
       regular_day.reload
       expect(regular_day.date).to eq(Date.new(2015, 1, 7))
       expect(regular_day.love).to eq(RegularDay::LOVE_UNPROTECTED)
+    end
+  end
+
+
+  describe 'set notes' do
+    let(:form) { CalendarDayForm.new(user, Date.new(2015, 1, 7), {notes: 'Notes'}) }
+
+    it 'should set note value and create regular day with it' do
+      form.submit
+      regular_day = user.regular_days.first
+      expect(regular_day.date).to eq(Date.new(2015, 1, 7))
+      expect(regular_day.notes).to eq('Notes')
+    end
+
+    it 'should change notes value for existing regular day' do
+      regular_day = user.regular_days.create!(date: Date.new(2015, 1, 7), notes: 'Notes')
+      form.submit
+      regular_day.reload
+      expect(regular_day.date).to eq(Date.new(2015, 1, 7))
+      expect(regular_day.notes).to eq('Notes')
     end
   end
 end

@@ -10,6 +10,7 @@ class RegularDay
 
   field :date, type: Date
   field :love, type: String, default: LOVE_UNKNOWN
+  field :notes, type: String, default: ''
 
   index({ user_id: 1, date: 1 }, { unique: true })
 

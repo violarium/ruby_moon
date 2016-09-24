@@ -8,6 +8,13 @@ describe RegularDay do
   end
 
 
+  describe '#notes' do
+    it 'should be empty string by default' do
+      expect(RegularDay.new.notes).to eq ''
+    end
+  end
+
+
   describe 'validation' do
     let(:user) { FactoryGirl.create(:user) }
     let(:day) { user.regular_days.build(date: Date.new(2016, 9, 15)) }

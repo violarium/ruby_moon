@@ -4,4 +4,5 @@ ru:
       calendar_day_form:
         critical_day_value: Обильность выделений
         love: Половой акт
+        notes: Заметки
         delete_way: Удалить критический период

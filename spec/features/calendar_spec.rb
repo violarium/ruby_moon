@@ -340,4 +340,18 @@ describe 'Calendar page' do
       expect(critical_day.date).to eq Date.new(2015, 2, 10)
     end
   end
+
+
+  describe 'day notes' do
+    it 'should save regular day with notes I need' do
+      visit '/calendar/2015/2'
+      find('.month-days-grid .day > a', text: 10).click
+      fill_in 'Notes', with: 'My notes'
+      click_on 'Save'
+
+      critical_day = user.regular_days.first
+      expect(critical_day.notes).to eq 'My notes'
+      expect(critical_day.date).to eq Date.new(2015, 2, 10)
+    end
+  end
 end

@@ -11,6 +11,7 @@ ru:
       calendar_grid:
         <<: *love_values
         <<: *critical_day_values
+        notes: Заметки
       calendar_info:
         current_day: "Текущий день: %{date}"
         critical_day_example: критический день

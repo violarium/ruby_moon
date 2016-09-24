@@ -4,4 +4,5 @@ en:
       calendar_day_form:
         critical_day_value: Critical day value
         love: Sex
+        notes: Notes
         delete_way: Delete critical period

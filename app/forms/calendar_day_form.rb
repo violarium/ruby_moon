@@ -15,7 +15,7 @@ class CalendarDayForm
 
   attr_reader :user, :date
   attr_accessor :is_critical, :delete_way, :critical_day_value
-  delegate :love, :love=, to: :regular_day
+  delegate :love, :love=, :notes, :notes=, to: :regular_day
 
   validates :is_critical, inclusion: { in: [true, false] }
   validates :delete_way, inclusion: { in: [DELETE_WAY_HEAD, DELETE_WAY_TAIL, DELETE_WAY_ENTIRELY] }
@@ -36,7 +36,7 @@ class CalendarDayForm
     @user = user
     @date = date
 
-    super(params.slice(:is_critical, :delete_way, :critical_day_value, :love))
+    super(params.slice(:is_critical, :delete_way, :critical_day_value, :love, :notes))
 
     if @is_critical.nil?
       @is_critical = !current_critical_period.nil?
