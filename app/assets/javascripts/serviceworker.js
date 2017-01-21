@@ -1,10 +1,6 @@
 // The serviceworker context can respond to 'push' events and trigger
 // notifications on the registration property
 self.addEventListener("push", function (event) {
-    if (!(self.Notification && self.notification.permission === 'granted')) {
-        return;
-    }
-
     var data = {};
     if (event.data) {
         data = event.data.json();
@@ -14,11 +10,12 @@ self.addEventListener("push", function (event) {
     var message = data.message;
     var link = data.link;
 
-    var notification = new Notification(title, {body: message});
+    event.waitUntil(
+        self.registration.showNotification(title, {body: message})
+    );
 
-    notification.addEventListener('click', function() {
-        if (clients.openWindow) {
-            clients.openWindow(link);
-        }
+    self.addEventListener('notificationclick', function (event) {
+        clients.openWindow(link);
+        event.notification.close();
     });
 });
