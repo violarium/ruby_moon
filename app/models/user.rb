@@ -27,6 +27,7 @@ class User
   field :notify_before, type: Array, default: ALLOWED_NOTIFY_BEFORE
   field :notify_at, type: Integer, default: 8
   field :locale, type: Symbol, default: :en
+  field :web_subscription, type: Hash
 
   has_many :user_tokens, dependent: :delete
   has_many :critical_periods, dependent: :delete

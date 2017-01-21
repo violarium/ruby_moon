@@ -11,7 +11,7 @@ if (navigator.serviceWorker) {
                 userVisibleOnly: true,
                 applicationServerKey: window.vapidPublicKey
             }).then(function(subscription) {
-                console.log(subscription);
+                $.post(window.webpush.subscribePath, { subscription: subscription.toJSON() });
             });
         });
     }

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     put '/profile/password' => 'profiles/passwords#update'
     get '/profile/notifications' => 'profiles/notifications#edit', as: 'profile_notifications'
     put '/profile/notifications' => 'profiles/notifications#update'
+    post '/profile/web-subscription/subscribe' => 'profiles/web_subscriptions#create', as: 'profile_web_subscribe'
 
     get '/calendar/(:year/:month)' => 'calendar#index', as: 'calendar'
     get '/calendar/day/:year/:month/:day' => 'calendar#edit', as: 'calendar_day'
