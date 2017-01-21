@@ -27,12 +27,12 @@ class User
   field :notify_before, type: Array, default: ALLOWED_NOTIFY_BEFORE
   field :notify_at, type: Integer, default: 8
   field :locale, type: Symbol, default: :en
-  field :web_subscription, type: Hash
 
   has_many :user_tokens, dependent: :delete
   has_many :critical_periods, dependent: :delete
   has_many :future_critical_periods, dependent: :delete
   has_many :regular_days, dependent: :delete
+  has_many :user_web_subscriptions, dependent: :delete
 
   index({ email: 1 }, { unique: true })
 
@@ -86,6 +86,23 @@ class User
     end
   end
 
+
+  # Save web subscription for user
+  #
+  # @param subscription_input [Hash]
+  #
+  def save_web_subscription(subscription_input)
+    subscription_data = { endpoint: subscription_input[:endpoint] }
+    if subscription_input[:keys]
+      subscription_data[:p256dh] = subscription_input[:keys][:p256dh]
+      subscription_data[:auth] = subscription_input[:keys][:auth]
+    end
+    # Find and update or create
+    subscription = user_web_subscriptions.where(endpoint: subscription_data[:endpoint]).first
+    subscription = user_web_subscriptions.build if subscription.nil?
+    subscription.attributes = subscription_data
+    subscription.save
+  end
 
   private
 

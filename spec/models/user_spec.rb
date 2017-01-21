@@ -67,6 +67,37 @@ describe User do
   end
 
 
+  describe '#save_web_subscription' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'creates new subscription note for user' do
+      expect do
+        user.save_web_subscription(endpoint: '123', keys: {p256dh: '1', auth: '2'})
+      end.to change { UserWebSubscription.count }.by(1)
+      user.reload
+
+      subscription = user.user_web_subscriptions.first
+      expect(subscription.endpoint).to eq '123'
+      expect(subscription.p256dh).to eq '1'
+      expect(subscription.auth).to eq '2'
+    end
+
+    it 'updated existing subscription' do
+      user.user_web_subscriptions.create!(endpoint: '123')
+
+      expect do
+        user.save_web_subscription(endpoint: '123', keys: {p256dh: 'foo', auth: 'bar'})
+      end.not_to change { UserWebSubscription.count }
+      user.reload
+
+      subscription = user.user_web_subscriptions.first
+      expect(subscription.endpoint).to eq '123'
+      expect(subscription.p256dh).to eq 'foo'
+      expect(subscription.auth).to eq 'bar'
+    end
+  end
+
+
   describe 'validation' do
     let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456', time_zone: 'Moscow') }
 
@@ -215,6 +246,12 @@ describe User do
       user.regular_days.create!(date: Date.new(2015, 1, 2))
       user.regular_days.create!(date: Date.new(2015, 1, 3))
       expect { user.delete }.to change { RegularDay.count }.by(-2)
+    end
+
+    it 'deletes user subscriptions' do
+      user.user_web_subscriptions.create!(endpoint: '1')
+      user.user_web_subscriptions.create!(endpoint: '2')
+      expect { user.delete }.to change { UserWebSubscription.count }.by(-2)
     end
   end
 end

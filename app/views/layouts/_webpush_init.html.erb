@@ -1,0 +1,9 @@
+<script>
+    <% if (Rails.application.secrets.dig(:webpush, :public_key)) %>
+    window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(Rails.application.secrets.dig(:webpush, :public_key)).bytes %>);
+    <% end %>
+    window.webpush = {
+        active: <%= current_user.nil? ? 'false' : 'true' %>,
+        subscribePath: '<%= profile_web_subscribe_path %>'
+    };
+</script>

@@ -8,12 +8,11 @@ describe Profiles::WebSubscriptionsController do
   end
 
   describe 'when user signed in' do
-    before { @user = controller_sign_in }
-
-    it 'should update user web_subscription with input params' do
-      subscription_data = {'endpoint' => 'endpoint', 'keys' => {'auth' => 'auth', 'p256dh' => 'p256dh'}}
+    it 'should save subscription for user' do
+      user = controller_sign_in
+      subscription_data = {endpoint: 'endpoint', keys: {auth: 'auth', p256dh: 'p256dh'}}
+      expect(user).to receive(:save_web_subscription).with(subscription_data)
       post :create, subscription: subscription_data
-      expect(@user.reload.web_subscription).to eq subscription_data
     end
   end
 end

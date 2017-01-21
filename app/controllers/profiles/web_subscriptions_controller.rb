@@ -3,8 +3,7 @@ module Profiles
     before_filter :require_sign_in
 
     def create
-      current_user.web_subscription = params[:subscription]
-      current_user.save!
+      current_user.save_web_subscription(params[:subscription])
       head :ok
     end
   end
