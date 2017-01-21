@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require calendar
-//= require serviceworker-companion.js.erb
+//= require serviceworker-companion
