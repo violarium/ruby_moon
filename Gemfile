@@ -65,3 +65,8 @@ end
 
 # For markup
 gem 'bootstrap-sass', '~> 3.3.3'
+
+
+# For web push notifications
+gem 'webpush', '~> 0.3.1'
+gem 'serviceworker-rails', '~> 0.5.3'
