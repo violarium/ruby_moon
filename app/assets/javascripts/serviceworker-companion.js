@@ -1,7 +1,7 @@
 // Register the serviceWorker script at /serviceworker.js from your server if supported
 if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/serviceworker.js');
-    if (window.vapidPublicKey) {
+    if (window.vapidPublicKey && window.webpush.active) {
         navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
             serviceWorkerRegistration.pushManager.subscribe({
                 userVisibleOnly: true,
