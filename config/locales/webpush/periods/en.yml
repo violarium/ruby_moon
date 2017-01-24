@@ -1,0 +1,14 @@
+en:
+  webpush:
+    periods:
+      critical_period:
+        subject:
+          zero: 'Today critical period will happen'
+          one: 'Tomorrow critical period will happen'
+          other: 'Critical period will happen after %{days_left} days'
+        content:
+          dates: 'Start: %{start}, end: %{end}.'
+          duration:
+            one: 'Duration: %{duration} day.'
+            other: 'Duration: %{duration} days.'
+        open_link: 'Go to site'

@@ -7,5 +7,13 @@ registry.define_lazy :period_predictor do
 end
 
 registry.define_lazy :notification_sender do
-  NotificationSender.new
+  NotificationSender.new [registry[:notification_sender_webpush], registry[:notification_sender_mail]]
+end
+
+registry.define_lazy :notification_sender_webpush do
+  NotificationSender::WebpushSender.new(Rails.application.secrets.webpush)
+end
+
+registry.define_lazy :notification_sender_mail do
+  NotificationSender::MailSender.new
 end

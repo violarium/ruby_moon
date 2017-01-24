@@ -188,8 +188,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    serviceworker-rails (0.5.3)
-      railties (>= 3.1)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -253,7 +251,6 @@ DEPENDENCIES
   rufus-scheduler (~> 3.2.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  serviceworker-rails (~> 0.5.3)
   spring
   timecop (~> 0.8.0)
   turbolinks

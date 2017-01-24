@@ -1,0 +1,18 @@
+ru:
+  webpush:
+    periods:
+      critical_period:
+        subject:
+          zero: 'Сегодня наступят критические дни'
+          one: 'Завтра наступят критические дни'
+          few: 'Через %{days_left} дня наступят критические дни'
+          many: 'Через %{days_left} дней наступят критические дни'
+          other: 'Через %{days_left} дней наступят критические дни'
+        content:
+          dates: 'Начало: %{start}, конец: %{end}.'
+          duration:
+            one: 'Длительность: %{duration} день.'
+            few: 'Длительность: %{duration} дня.'
+            many: 'Длительность: %{duration} дней.'
+            other: 'Длительность: %{duration} дней.'
+        open_link: 'Перейти на сайт'

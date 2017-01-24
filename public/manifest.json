@@ -1,0 +1,13 @@
+{
+  "name": "Ruby Moon App",
+  "short_name": "RubyMoon",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icons/manifest/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

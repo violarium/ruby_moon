@@ -1,18 +1,19 @@
 require 'rails_helper'
 
 describe NotificationSender do
-  let(:sender) { NotificationSender.new }
-
   describe '#notify_upcoming' do
     let(:user) { FactoryGirl.create(:user) }
 
-    it 'sends notification for critical period by mail' do
+    it 'sends notification for critical period with all available senders' do
+      sender_1 = double('sender_1')
+      sender_2 = double('sender_1')
+      sender = NotificationSender.new([sender_1, sender_2])
+
       p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
       p.notifications.create!(time: Time.new(2015, 1, 27, 10, 0, 0))
 
-      mail = double('notify_mail_period')
-      expect(PeriodsMailer).to receive(:critical_period).with(p).and_return(mail)
-      expect(mail).to receive(:deliver_now)
+      expect(sender_1).to receive(:send_notification).with(p)
+      expect(sender_2).to receive(:send_notification).with(p)
 
       Timecop.freeze(Time.new(2015, 1, 27, 10, 0, 0)) do
         sender.notify_upcoming
@@ -20,6 +21,8 @@ describe NotificationSender do
     end
 
     it 'deletes notification notes' do
+      sender = NotificationSender.new([])
+
       p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
       p.notifications.create!(time: Time.new(2015, 1, 27, 10, 0, 0))
       p.notifications.create!(time: Time.new(2015, 1, 27, 9, 0, 0))
@@ -32,10 +35,15 @@ describe NotificationSender do
     end
 
     it 'does not send notifications which have not came' do
+      sender_1 = double('sender_1')
+      sender_2 = double('sender_1')
+      sender = NotificationSender.new([sender_1, sender_2])
+
       p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
       p.notifications.create!(time: Time.new(2015, 1, 27, 10, 0, 0))
 
-      expect(PeriodsMailer).not_to receive(:critical_period)
+      expect(sender_1).not_to receive(:send_notification)
+      expect(sender_2).not_to receive(:send_notification)
 
       Timecop.freeze(Time.new(2015, 1, 26, 10, 0, 0)) do
         sender.notify_upcoming
@@ -43,6 +51,8 @@ describe NotificationSender do
     end
 
     it 'does not delete notification notes which are not sent' do
+      sender = NotificationSender.new([])
+
       p = user.future_critical_periods.create!(from: Date.new(2015, 1, 29), to: Date.new(2015, 1, 30))
       p.notifications.create!(time: Time.new(2015, 1, 26, 10, 0, 0))
       p.notifications.create!(time: Time.new(2015, 1, 27, 10, 0, 0))
@@ -62,13 +72,20 @@ describe NotificationSender do
       end
 
       it 'does not send notifications to periods without users' do
-        expect(PeriodsMailer).not_to receive(:critical_period)
+        sender_1 = double('sender_1')
+        sender_2 = double('sender_1')
+        sender = NotificationSender.new([sender_1, sender_2])
+
+        expect(sender_1).not_to receive(:send_notification)
+        expect(sender_2).not_to receive(:send_notification)
+
         Timecop.freeze(Time.new(2015, 1, 27, 10, 0, 0)) do
           sender.notify_upcoming
         end
       end
 
       it 'deletes it period notifications which were to send' do
+        sender = NotificationSender.new([])
         Timecop.freeze(Time.new(2015, 1, 27, 10, 0, 0)) do
           sender.notify_upcoming
         end
