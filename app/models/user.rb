@@ -21,6 +21,9 @@ class User
   # Allowed locales for #locale and system ar all
   ALLOWED_LOCALES = { en: 'English', ru: 'Русский' }
 
+  # Max count of web subscriptions
+  MAX_WEB_SUBSCRIPTIONS = 5
+
   field :email, type: String
   field :encrypted_password, type: String
   field :time_zone, type: String, default: 'UTC'
@@ -102,6 +105,12 @@ class User
     subscription = user_web_subscriptions.build if subscription.nil?
     subscription.attributes = subscription_data
     subscription.save
+    # Leave only newest MAX_WEB_SUBSCRIPTIONS
+    if user_web_subscriptions.count > MAX_WEB_SUBSCRIPTIONS
+      user_web_subscriptions.order_by(:created_at => 'desc', :updated_at => 'desc').all.each_with_index do |s, i|
+        s.delete if i >= MAX_WEB_SUBSCRIPTIONS
+      end
+    end
   end
 
   private

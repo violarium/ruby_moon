@@ -95,6 +95,30 @@ describe User do
       expect(subscription.p256dh).to eq 'foo'
       expect(subscription.auth).to eq 'bar'
     end
+
+    it 'keeps only up to 5 new subscriptions' do
+      Timecop.freeze(Time.new(2015, 1, 1)) do
+        user.save_web_subscription(endpoint: '1', keys: {p256dh: '1', auth: '2'})
+      end
+      Timecop.freeze(Time.new(2015, 1, 2)) do
+        user.save_web_subscription(endpoint: '2', keys: {p256dh: '1', auth: '2'})
+        user.save_web_subscription(endpoint: '3', keys: {p256dh: '1', auth: '2'})
+        user.save_web_subscription(endpoint: '4', keys: {p256dh: '1', auth: '2'})
+        user.save_web_subscription(endpoint: '5', keys: {p256dh: '1', auth: '2'})
+      end
+      expect(user.user_web_subscriptions.count).to eq 5
+
+      Timecop.freeze(Time.new(2015, 1, 3)) do
+        user.save_web_subscription(endpoint: '6', keys: {p256dh: '1', auth: '2'})
+      end
+      expect(user.user_web_subscriptions.count).to eq 5
+
+      endpoints = []
+      user.user_web_subscriptions.all.each do |s|
+        endpoints.push(s.endpoint)
+      end
+      expect(endpoints).not_to include('1')
+    end
   end
 
 
