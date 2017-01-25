@@ -22,11 +22,17 @@ class NotificationSender::WebpushSender
       compiled_message = message.to_json
 
       user.user_web_subscriptions.all.each do |subscription|
-        ::Webpush.payload_send message: compiled_message,
-                               endpoint: subscription.endpoint,
-                               p256dh: subscription.p256dh,
-                               auth: subscription.auth,
-                               vapid: @vapid
+        begin
+          ::Webpush.payload_send message: compiled_message,
+                                 endpoint: subscription.endpoint,
+                                 p256dh: subscription.p256dh,
+                                 auth: subscription.auth,
+                                 vapid: @vapid
+        rescue Webpush::InvalidSubscription
+          subscription.delete
+        rescue Webpush::ResponseError
+          # do nothing
+        end
       end
     end
   end
