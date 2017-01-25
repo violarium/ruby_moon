@@ -18,8 +18,7 @@ var getNotificationOptions = function (event) {
         parameters = {
             body: data.message,
             icon: '/icons/notifications/critical_period.png',
-            data: data,
-            actions: [{action: 'open_link', title: data.link_title}]
+            data: data
         };
     } else {
         title = null;
@@ -40,7 +39,7 @@ var performNotificationClick = function (event) {
         data = event.notification.data;
     }
 
-    if (event.action === 'open_link') {
+    if (data.link) {
         event.waitUntil(
             clients.matchAll({
                 includeUncontrolled: true,
@@ -61,7 +60,7 @@ var performNotificationClick = function (event) {
 // Handle push event
 self.addEventListener("push", function (event) {
     var options = getNotificationOptions(event);
-    if (options.title != null) {
+    if (options.title) {
         event.waitUntil(self.registration.showNotification(options.title, options.parameters));
     }
 });

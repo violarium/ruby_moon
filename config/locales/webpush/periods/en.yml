@@ -11,4 +11,3 @@ en:
           duration:
             one: 'Duration: %{duration} day.'
             other: 'Duration: %{duration} days.'
-        open_link: 'Go to site'

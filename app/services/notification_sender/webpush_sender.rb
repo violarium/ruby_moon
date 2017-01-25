@@ -16,9 +16,11 @@ class NotificationSender::WebpushSender
           "\n" +
           I18n.t('webpush.periods.critical_period.content.duration', duration: duration, count: duration)
 
+      locale = user.locale
+      locale = '' if user.locale == I18n.default_locale
       message = {type: 'critical_period',
                  title: message_title, message: message_body,
-                 link: calendar_path, link_title: I18n.t('webpush.periods.critical_period.open_link')}
+                 link: calendar_path(locale: locale)}
       compiled_message = message.to_json
 
       user.user_web_subscriptions.all.each do |subscription|

@@ -15,4 +15,3 @@ ru:
             few: 'Длительность: %{duration} дня.'
             many: 'Длительность: %{duration} дней.'
             other: 'Длительность: %{duration} дней.'
-        open_link: 'Перейти на сайт'
