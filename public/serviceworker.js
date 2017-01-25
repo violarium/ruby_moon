@@ -40,19 +40,7 @@ var performNotificationClick = function (event) {
     }
 
     if (data.link) {
-        event.waitUntil(
-            clients.matchAll({
-                includeUncontrolled: true,
-                type: 'window'
-            }).then(function (activeClients) {
-                if (activeClients.length > 0) {
-                    activeClients[0].navigate(data.link);
-                    activeClients[0].focus();
-                } else {
-                    clients.openWindow(data.link);
-                }
-            })
-        );
+        event.waitUntil(clients.openWindow(data.link));
     }
 };
 
