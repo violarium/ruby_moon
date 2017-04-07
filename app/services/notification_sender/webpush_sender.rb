@@ -1,4 +1,7 @@
 class NotificationSender::WebpushSender
+  # TTL is one day
+  TTL = 60 * 60 * 60
+
   include Rails.application.routes.url_helpers
 
   def initialize(vapid)
@@ -18,9 +21,9 @@ class NotificationSender::WebpushSender
 
       locale = user.locale
       locale = '' if user.locale == I18n.default_locale
-      message = {type: 'critical_period',
-                 title: message_title, message: message_body,
-                 link: calendar_path(locale: locale)}
+      message = { type: 'critical_period',
+                  title: message_title, message: message_body,
+                  link: calendar_path(locale: locale) }
       compiled_message = message.to_json
 
       user.user_web_subscriptions.all.each do |subscription|
@@ -29,7 +32,8 @@ class NotificationSender::WebpushSender
                                  endpoint: subscription.endpoint,
                                  p256dh: subscription.p256dh,
                                  auth: subscription.auth,
-                                 vapid: @vapid
+                                 vapid: @vapid,
+                                 ttl: TTL
         rescue Webpush::InvalidSubscription
           subscription.delete
         rescue Webpush::ResponseError
