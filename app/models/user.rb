@@ -67,6 +67,7 @@ class User
     time.in_time_zone(time_zone)
   end
 
+
   # Get today date for user.
   #
   # @return [Date]
@@ -85,30 +86,6 @@ class User
       if user_token.valid?
         user_token.save
         break token
-      end
-    end
-  end
-
-
-  # Save web subscription for user
-  #
-  # @param subscription_input [Hash]
-  #
-  def save_web_subscription(subscription_input)
-    subscription_data = { endpoint: subscription_input[:endpoint] }
-    if subscription_input[:keys]
-      subscription_data[:p256dh] = subscription_input[:keys][:p256dh]
-      subscription_data[:auth] = subscription_input[:keys][:auth]
-    end
-    # Find and update or create
-    subscription = user_web_subscriptions.where(endpoint: subscription_data[:endpoint]).first
-    subscription = user_web_subscriptions.build if subscription.nil?
-    subscription.attributes = subscription_data
-    subscription.save
-    # Leave only newest MAX_WEB_SUBSCRIPTIONS
-    if user_web_subscriptions.count > MAX_WEB_SUBSCRIPTIONS
-      user_web_subscriptions.order_by(:created_at => 'desc', :updated_at => 'desc').all.each_with_index do |s, i|
-        s.delete if i >= MAX_WEB_SUBSCRIPTIONS
       end
     end
   end
