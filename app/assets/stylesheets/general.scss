@@ -9,3 +9,28 @@ h1 {
     font-size: 32px;
   }
 }
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  background: url('bg.png') top center repeat;
+  margin-bottom: 30px;
+}
+
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-height: 30px;
+  color: #907172;
+  text-align: right;
+  padding: 4px 20px;
+
+  a {
+    color: #907172;
+  }
+}

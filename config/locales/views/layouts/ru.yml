@@ -3,7 +3,6 @@ ru:
     navbar:
       toggle_menu: Развернуть/свернуть меню
       about: О проекте
-      documentation: Документация
       help: Помощь
       sign_in: Войти
       sign_out: Выйти
@@ -14,5 +13,7 @@ ru:
       edit_profile: Изменить профиль
       edit_password: Изменить пароль
       edit_notifications: Уведомления
+    footer:
+      source_code: Исходный код
     mailer:
       visit_site: Посетите сайт

@@ -3,7 +3,6 @@ en:
     navbar:
       toggle_menu: Toggle menu
       about: About
-      documentation: Documentation
       help: Help
       sign_in: Sign in
       sign_out: Sign out
@@ -14,5 +13,7 @@ en:
       edit_profile: Edit profile
       edit_password: Change password
       edit_notifications: Notifications
+    footer:
+      source_code: Source code
     mailer:
       visit_site: Visit the site

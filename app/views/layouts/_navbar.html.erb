@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-ruby-moon">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -8,14 +8,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= home_page_url %>"><%= t('project_name') %></a>
+      <a class="navbar-brand" href="<%= home_page_url %>">
+        <img src="<%= image_url('logo.svg') %>" alt="" />
+        <%= t('project_name') %>
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="main-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#"><%= t('.about') %></a></li><!--  class="active" on li -->
-        <li><a href="#"><%= t('.documentation') %></a></li>
+        <li><a href="#"><%= t('.about') %></a></li>
         <li><a href="#"><%= t('.help') %></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -42,8 +44,8 @@
               </ul>
             </li>
         <% else %>
-            <li class="<%= params[:controller] == 'user_sessions' ? 'active' : '' %>"><%= link_to t('.sign_in'), sign_in_url %></li>
-            <li class="<%= params[:controller] == 'users' ? 'active' : '' %>"><%= link_to t('.sign_up'), sign_up_url %></li>
+            <li class="<%= params[:controller] == 'sessions' ? 'active' : '' %>"><%= link_to t('.sign_in'), sign_in_url %></li>
+            <li class="<%= "#{params[:controller]}##{params[:action]}" == 'profiles#new' ? 'active' : '' %>"><%= link_to t('.sign_up'), sign_up_url %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
