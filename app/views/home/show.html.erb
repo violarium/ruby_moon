@@ -1,1 +1,31 @@
-<div class="home-promo">Ruby moon can help women to track unhappy days.</div>
+<div class="home-promo"><%= t('.promo') %></div>
+
+<div class="home-gallery">
+  <div class="home-gallery-el first">
+    <img src="<%= image_url('home/step_1.svg') %>" alt="" />
+    <div class="home-gallery-title">1. <%= t('.step_1') %></div>
+  </div>
+  <div class="home-gallery-el second">
+    <img src="<%= image_url('home/step_2.svg') %>" alt="" />
+    <div class="home-gallery-title">2. <%= t('.step_2') %></div>
+  </div>
+  <div class="home-gallery-el third">
+    <img src="<%= image_url('home/step_3.svg') %>" alt="" />
+    <div class="home-gallery-title">3. <%= t('.step_3') %></div>
+  </div>
+</div>
+
+<div class="home-buttons">
+  <% if user_signed_in? %>
+    <a class="btn btn-lg" href="<%= calendar_url %>">
+      <%= t('.go_to_calendar') %>
+    </a>
+  <% else %>
+    <a class="btn btn-lg" href="<%= sign_in_url %>">
+      <%= t('.sign_in') %>
+    </a>
+    <a class="btn btn-lg" href="<%= sign_up_url %>">
+      <%= t('.sign_up') %>
+    </a>
+  <% end %>
+</div>

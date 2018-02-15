@@ -2,8 +2,7 @@ en:
   layouts:
     navbar:
       toggle_menu: Toggle menu
-      about: About
-      help: Help
+      about: About project
       sign_in: Sign in
       sign_out: Sign out
       sign_up: Sign up

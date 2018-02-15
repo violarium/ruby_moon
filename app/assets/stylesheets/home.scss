@@ -1,3 +1,95 @@
 .home-promo {
-  font-size: 2em;
+  color: #E0224B;
+  font-size: 4rem;
+  margin-bottom: 26px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+
+.home-gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  @media (min-width: $screen-md-min) {
+    justify-content: space-between;
+  }
+}
+
+.home-gallery-el {
+  width: 100%;
+  margin-bottom: 20px;
+
+  @media (min-width: $screen-sm-min) {
+    width: 45%;
+
+    &.first {
+      margin-right: 5%;
+    }
+    &.second {
+      margin-left: 5%;
+    }
+    &.third {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  @media (min-width: $screen-md-min) {
+    width: 30%;
+    &.first,
+    &.second,
+    &.third {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+
+.home-gallery-el img {
+  width: 100%;
+  padding: 4px;
+  background: white;
+  border: 2px solid #ff777d;
+  box-shadow: 0 0 6px #ff8487;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.home-gallery-el .home-gallery-title {
+  color: #E1234C;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 2rem;
+  }
+}
+
+
+.home-buttons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.home-buttons .btn {
+  margin: 0 10px 10px 0;
+  color: #E1234C;
+  background-color: #fff;
+  border: 2px solid #ff777d;
+  width: 100%;
+
+  &:hover {
+    background-color: #ff777d;
+    color: white;
+  }
+
+
+  @media (min-width: $screen-sm-min) {
+    width: auto;
+  }
 }

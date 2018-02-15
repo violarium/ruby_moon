@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="100mm" width="100mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 354.33071 354.33071">
+ <g transform="translate(0 -698.03)">
+  <g transform="translate(117.14 82.754)">
+   <g transform="translate(52.857 87.143)">
+    <rect stroke-linejoin="round" height="137.14" width="136.43" stroke="#e1234c" stroke-linecap="round" y="720.22" x="20.714" stroke-width="4" fill="#fff"/>
+    <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" transform="scale(.95418 1.048)" font-size="78.947px" y="762.11609" x="41.751907" font-family="sans-serif" line-height="125%" fill="#e1234c"><tspan x="41.751907" y="762.11609">15</tspan></text>
+    <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" y="841.4137" x="50.262527" font-family="sans-serif" line-height="125%" fill="#e1234c"><tspan x="50.262527" y="841.4137">Dec</tspan></text>
+   </g>
+   <flowRoot style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="40px" line-height="125%" font-family="sans-serif" fill="black"><flowRegion><rect y="62.188" width="215.71" x="72.143" height="262.14"/></flowRegion><flowPara/></flowRoot>
+   <g stroke-linejoin="round" stroke="#e1234c" stroke-linecap="round">
+    <ellipse rx="76.017" ry="77.027" cy="710.31" cx="-21.287" stroke-width="4" fill="#fff"/>
+    <path d="m-20.303 711.9 32.749-48.51" stroke-width="9.098" fill="none"/>
+    <path d="m-20.952 714.18-60.165-27.88" stroke-width="4.5186" fill="none"/>
+   </g>
+   <g stroke-width="0" fill="#e1234c">
+    <ellipse rx="4.6088" ry="4.4194" cy="644.42" cx="-22.77"/>
+    <ellipse rx="4.6088" ry="4.4194" cy="777.47" cx="-22.321"/>
+    <ellipse rx="4.6088" ry="4.4194" cy="709.61" cx="44.107"/>
+    <ellipse rx="4.6088" ry="4.4194" cy="710.86" cx="-84.643"/>
+   </g>
+   <g stroke-linejoin="round" stroke="#e1234c" stroke-linecap="round">
+    <ellipse rx="46.462" ry="45.326" cy="682.82" cx="114.29" stroke-width="2.3989" fill="#fff"/>
+    <path d="m113.89 683.99 33.879 8.2353" stroke-width="4" fill="none"/>
+    <path d="m113.57 649.92 0.38326 33.875" stroke-width="2.6635" fill="none"/>
+   </g>
+   <g stroke-width="0" fill="#e1234c">
+    <ellipse rx="2.8169" ry="2.6006" cy="644.05" cx="113.38"/>
+    <ellipse rx="2.8169" ry="2.6006" cy="722.34" cx="113.65"/>
+    <ellipse rx="2.8169" ry="2.6006" cy="682.41" cx="154.26"/>
+    <ellipse rx="2.8169" ry="2.6006" cy="683.15" cx="75.563"/>
+   </g>
+   <g stroke-linejoin="round" stroke="#e1234c" stroke-linecap="round">
+    <ellipse rx="32" ry="32.293" cy="748" cx="187.32" stroke-width="1.6804" fill="#fff"/>
+    <path d="m186.89 748.86-15.33-19.2" stroke-width="3" fill="none"/>
+    <path d="m211.45 760.99-25.32-11.69" stroke-width="1.8983" fill="none"/>
+   </g>
+   <g stroke-width="0" fill="#e1234c">
+    <ellipse rx="1.9401" ry="1.8528" cy="720.38" cx="186.7"/>
+    <ellipse rx="1.9401" ry="1.8528" cy="776.16" cx="186.89"/>
+    <ellipse rx="1.9401" ry="1.8528" cy="747.71" cx="214.85"/>
+    <ellipse rx="1.9401" ry="1.8528" cy="748.23" cx="160.65"/>
+    <ellipse rx="3.7008" ry="3.4844" cy="683.75" cx="113.95"/>
+    <ellipse rx="6.9302" ry="6.8301" cy="713.27" cx="-21.607"/>
+    <ellipse rx="2.9503" ry="2.9261" cy="749.21" cx="187.17"/>
+   </g>
+   <path stroke-linejoin="round" transform="matrix(.73063 0 0 .85956 -3.86 129.19)" stroke="#e1234c" stroke-linecap="round" stroke-width="4" fill="#fff" d="m58.195 874.04-69.643 40.208v-80.417z" stroke-miterlimit="10"/>
+   <path stroke-linejoin="round" transform="matrix(.73063 0 0 .85956 -63.75 128.78)" stroke="#e1234c" stroke-linecap="round" stroke-width="4" fill="#fff" d="m58.195 874.04-69.643 40.208v-80.417z" stroke-miterlimit="10"/>
+  </g>
+ </g>
+</svg>
