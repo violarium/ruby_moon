@@ -15,7 +15,9 @@ describe 'Sign up' do
 
   it 'should show sign up page when I click sign up on home page' do
     visit '/'
-    click_link 'Sign up'
+    within '.navbar-ruby-moon' do
+      click_link 'Sign up'
+    end
     expect(page).to have_title('Sign up')
   end
 

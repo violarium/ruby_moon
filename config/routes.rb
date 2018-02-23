@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   scope '(:locale)', locale: /#{locales.join('|')}/ do
     root 'home#show', as: 'home_page'
+    get '/about' => 'pages#about', as: 'about_page'
 
     get '/sign_in' => 'sessions#new', as: 'sign_in'
     post '/sign_in' => 'sessions#create'

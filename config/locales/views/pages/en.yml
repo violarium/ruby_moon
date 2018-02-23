@@ -1,0 +1,13 @@
+en:
+  pages:
+    about:
+      header: About project
+      description: This project has been created for my wife. It allows you to check different kinds of women's days, get information about them and receive notifications later.
+      functional_title: For now you can
+      functional:
+        f1: Check days of menstruation with additional info
+        f2: Check days of sex
+        f3: Specify text comments for each day
+        f4: Receive notifications about upcoming menstruation days via your browser and phone (web push) or email
+      open_source: This project is open source. Source code
+      contact_me: Contact me

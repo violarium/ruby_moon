@@ -17,7 +17,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="main-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#"><%= t('.about') %></a></li>
+        <li class="<%= "#{params[:controller]}##{params[:action]}" == 'pages#about' ? 'active' : '' %>"><a href="<%= about_page_url %>"><%= t('.about') %></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
