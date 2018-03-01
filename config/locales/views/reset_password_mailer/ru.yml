@@ -1,0 +1,6 @@
+ru:
+  reset_password_mailer:
+    send_reset_link:
+      description: На сайте RubyMoon был запрошен сброс пароля.
+      link: Для сброса пароля перейдите по ссылке <a href="%{link}">%{link}</a>.
+      warning: Если Вы не запрашивали сброс пароля, проигнорируйте это сообщение.

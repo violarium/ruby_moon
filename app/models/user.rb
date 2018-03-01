@@ -30,6 +30,8 @@ class User
   field :notify_before, type: Array, default: ALLOWED_NOTIFY_BEFORE
   field :notify_at, type: Integer, default: 8
   field :locale, type: Symbol, default: :en
+  field :reset_password_token, type: String
+  field :reset_password_at, type: Time
 
   has_many :user_tokens, dependent: :delete
   has_many :critical_periods, dependent: :delete
@@ -38,6 +40,7 @@ class User
   has_many :user_web_subscriptions, dependent: :delete
 
   index({ email: 1 }, { unique: true })
+  index({ reset_password_token: 1 }, { unique: true, sparse: true })
 
 
   validates :email, presence: true, uniqueness: true, email: true
@@ -46,6 +49,7 @@ class User
   validate :validate_notify_before
   validates :notify_at, presence: true, hour: true
   validates :locale, inclusion: { in: ALLOWED_LOCALES.keys }
+  validates :reset_password_token, uniqueness: true, allow_nil: true
 
 
   # Get first upcoming future critical period.
@@ -89,6 +93,31 @@ class User
       end
     end
   end
+
+
+  # Generate reset password data for user
+  #
+  # @return [String]
+  def generate_reset_password
+    loop do
+      token = SecureRandom.hex
+      self.reset_password_token = SecureRandom.hex
+      self.reset_password_at = Time.now
+      if valid?
+        save
+        break token
+      end
+    end
+  end
+
+
+  # Find user by token if it's not expired
+  #
+  # @return [self]
+  def self.find_by_reset_token(token)
+    where(reset_password_token: token).where(:reset_password_at.gt => Time.now - 1.hour).first
+  end
+
 
   private
 

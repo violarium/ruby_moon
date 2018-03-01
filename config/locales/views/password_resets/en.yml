@@ -1,0 +1,10 @@
+en:
+  password_resets:
+    new:
+      title: Password reset
+      header: Enter your email and follow instructions
+      send: Send instructions
+    edit:
+      title: Enter new password
+      errors: Please, fill the form correctly
+      update: Change password

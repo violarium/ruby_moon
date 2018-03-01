@@ -1,0 +1,14 @@
+en:
+  form_object:
+    attributes:
+      password_reset/send_form:
+        email: E-mail
+      password_reset/reset_form:
+        new_password: New password
+        new_password_confirmation: Password confirmation
+    errors:
+      models:
+        password_reset/send_form:
+          attributes:
+            base:
+              no_user_with_such_email: There are no user with such email

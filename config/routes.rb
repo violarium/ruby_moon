@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     get '/sign_up' => 'profiles#new', as: 'sign_up'
     post '/sign_up' => 'profiles#create'
 
+    get '/password-reset' => 'password_resets#new', as: 'send_password_reset'
+    post '/password-reset' => 'password_resets#create'
+    get '/password-reset/:token' => 'password_resets#edit', as: 'reset_password'
+    put '/password-reset/:token' => 'password_resets#update'
+
     get '/profile' => 'profiles#edit', as: 'profile'
     put '/profile' => 'profiles#update'
     get '/profile/password' => 'profiles/passwords#edit', as: 'profile_password'

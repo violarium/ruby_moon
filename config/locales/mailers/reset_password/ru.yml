@@ -1,0 +1,5 @@
+ru:
+  mailers:
+    reset_password:
+      send_reset_link:
+        subject: Сброс пароля на сайте RubyMoon

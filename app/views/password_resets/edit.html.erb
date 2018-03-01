@@ -1,0 +1,36 @@
+<% content_for(:title, t('.title')) %>
+
+<div class="user-form-container">
+  <h1><%= t('.title') %></h1>
+
+  <%= form_for(@reset_form, builder: BootstrapFormBuilder, url: reset_password_url, method: :put, html: { class: 'form-horizontal' }) do |f| %>
+
+    <% if f.object.errors.count > 0 %>
+      <div class="form-group">
+        <div class="text-danger col-sm-8 col-sm-offset-4"><%= t '.errors' %></div>
+      </div>
+    <% end %>
+
+    <%= f.form_group(:new_password) do %>
+      <%= f.label(:new_password, nil, class: 'col-sm-4 control-label') %>
+      <div class="col-sm-8">
+        <%= f.password_field(:new_password, placeholder: human_attribute(f.object, :new_password), class: 'form-control') %>
+        <%= f.full_errors_for(:new_password) %>
+      </div>
+    <% end %>
+
+    <%= f.form_group(:new_password_confirmation) do %>
+      <%= f.label(:new_password_confirmation, nil, class: 'col-sm-4 control-label') %>
+      <div class="col-sm-8">
+        <%= f.password_field(:new_password_confirmation, placeholder: human_attribute(f.object, :new_password_confirmation), class: 'form-control') %>
+        <%= f.full_errors_for(:new_password_confirmation) %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <div class="col-sm-offset-4 col-sm-8">
+        <%= f.button(t('.update'), class: 'btn btn-default') %>
+      </div>
+    </div>
+  <% end %>
+</div>

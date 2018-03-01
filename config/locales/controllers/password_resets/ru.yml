@@ -1,0 +1,5 @@
+ru:
+  controllers:
+    password_resets:
+      sent: Инструкции для сброса пароля были отправлены на Ваш e-mail
+      updated: Ваш пароль обновлён

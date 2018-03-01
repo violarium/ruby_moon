@@ -1,0 +1,14 @@
+ru:
+  form_object:
+    attributes:
+      password_reset/send_form:
+        email: E-mail
+      password_reset/reset_form:
+        new_password: Новый пароль
+        new_password_confirmation: Подтверждение пароля
+    errors:
+      models:
+        password_reset/send_form:
+          attributes:
+            base:
+              no_user_with_such_email: Пользователя с таким e-mail не существует

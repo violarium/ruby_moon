@@ -1,0 +1,6 @@
+en:
+  reset_password_mailer:
+    send_reset_link:
+      description: Password reset was initiated on site RubyMoon.
+      link: To reset password followe the link <a href="%{link}">%{link}</a>.
+      warning: If you have not ordered password reset, ignore this message.

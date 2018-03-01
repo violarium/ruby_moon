@@ -67,6 +67,43 @@ describe User do
   end
 
 
+  describe '#generate_reset_password' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'generates values for fields' do
+      Timecop.freeze(Time.new(2015, 1, 1)) do
+        user.generate_reset_password
+      end
+      expect(user.reset_password_token).not_to be_nil
+      expect(user.reset_password_at).to eq Time.new(2015, 1, 1)
+    end
+  end
+
+
+  describe '.find_by_reset_token' do
+    it 'should find user with correct token and correct date' do
+      user = FactoryGirl.create(:user, {reset_password_token: '123456', reset_password_at: Time.new(2015, 1, 1, 0, 0, 0)})
+      Timecop.freeze(Time.new(2015, 1, 1, 0, 59, 59)) do
+        expect(User.find_by_reset_token('123456')).to eq(user)
+      end
+    end
+
+    it 'should return nil when token is not correct' do
+      FactoryGirl.create(:user, {reset_password_token: '123456', reset_password_at: Time.new(2015, 1, 1, 0, 0, 0)})
+      Timecop.freeze(Time.new(2015, 1, 1, 0, 59, 59)) do
+        expect(User.find_by_reset_token('123456_incorrect')).to be_nil
+      end
+    end
+
+    it 'should return nil when token is correct but expired' do
+      FactoryGirl.create(:user, {reset_password_token: '123456', reset_password_at: Time.new(2015, 1, 1, 0, 0, 0)})
+      Timecop.freeze(Time.new(2015, 1, 1, 1, 0, 1)) do
+        expect(User.find_by_reset_token('123456')).to be_nil
+      end
+    end
+  end
+
+
   describe 'validation' do
     let(:user) { User.new(email: 'example@email.com', password: '123456', password_confirmation: '123456', time_zone: 'Moscow') }
 
@@ -188,6 +225,31 @@ describe User do
       it 'should not be valid with wrong locale' do
         user.locale = :pirate
         expect(user).not_to be_valid
+      end
+    end
+
+    describe 'reset_password_token' do
+      it 'should be unique' do
+        user.reset_password_token = '12345'
+
+        another_user = user.dup
+        another_user.email = 'another_example@email.com'
+        another_user.save!
+
+        expect(user).not_to be_valid
+      end
+
+      it 'should not be required' do
+        user.reset_password_token = nil
+        expect(user).to be_valid
+      end
+
+      it 'should not be unique if nil' do
+        user.reset_password_token = nil
+        another_user = user.dup
+        another_user.email = 'another_example@email.com'
+        another_user.save!
+        expect(user).to be_valid
       end
     end
   end

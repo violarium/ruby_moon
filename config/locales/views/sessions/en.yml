@@ -2,3 +2,4 @@ en:
   sessions:
     new:
       sign_in: Sign in
+      forgot: Forgot your password?

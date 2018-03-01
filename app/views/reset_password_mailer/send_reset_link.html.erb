@@ -1,0 +1,5 @@
+<% content_for(:header, @subject) %>
+
+<p><%= t('.description') %></p>
+<p><%== t('.link', link: reset_password_url(token: @user.reset_password_token)) %></p>
+<p><%= t('.warning') %></p>

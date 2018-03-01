@@ -1,0 +1,5 @@
+en:
+  mailers:
+    reset_password:
+      send_reset_link:
+        subject: Reset password on site RubyMoon
